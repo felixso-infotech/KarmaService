@@ -140,15 +140,6 @@ public class AggregateResource {
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
 
-	/**
-	 * GET /content-records : get all the contentRecordss from project
-	 * XapiLaunchKarma.
-	 *
-	 * @param pageable the pagination information
-	 * @return the ResponseEntity with status 200 (OK) and the list of
-	 *         contentRecords in body
-	 */
-
 	@GetMapping("/content-records")
 	@Timed
 	public ResponseEntity<List<ContentRecordDTO>> getAllContentRecords(Pageable pageable) {
