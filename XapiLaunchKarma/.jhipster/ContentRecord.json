@@ -1,0 +1,80 @@
+{
+    "name": "ContentRecord",
+    "fields": [
+        {
+            "fieldName": "iconURL",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "packageLink",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "launchType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "owner",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "accessed",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "url",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "v",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "launches",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "customData",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "mediaTypeKey",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "publicKey",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "sessionLength",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "timeToConsume",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190323065330",
+    "entityTableName": "content_record",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "XapiLaunchKarma",
+    "applications": "*",
+    "microserviceName": "XapiLaunchKarma"
+}

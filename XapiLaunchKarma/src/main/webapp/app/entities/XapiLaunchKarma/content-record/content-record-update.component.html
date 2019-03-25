@@ -1,0 +1,108 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-content-record-heading">Create or edit a Content Record</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!contentRecord.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="contentRecord.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_iconURL">Icon URL</label>
+                    <input type="text" class="form-control" name="iconURL" id="field_iconURL"
+                        [(ngModel)]="contentRecord.iconURL" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_packageLink">Package Link</label>
+                    <input type="text" class="form-control" name="packageLink" id="field_packageLink"
+                        [(ngModel)]="contentRecord.packageLink" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_launchType">Launch Type</label>
+                    <input type="text" class="form-control" name="launchType" id="field_launchType"
+                        [(ngModel)]="contentRecord.launchType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_owner">Owner</label>
+                    <input type="text" class="form-control" name="owner" id="field_owner"
+                        [(ngModel)]="contentRecord.owner" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_accessed">Accessed</label>
+                    <div class="d-flex">
+                        <input id="field_accessed" type="datetime-local" class="form-control" name="accessed" [(ngModel)]="accessed"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_created">Created</label>
+                    <div class="d-flex">
+                        <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="created"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="contentRecord.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_title">Title</label>
+                    <input type="text" class="form-control" name="title" id="field_title"
+                        [(ngModel)]="contentRecord.title" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_url">Url</label>
+                    <input type="text" class="form-control" name="url" id="field_url"
+                        [(ngModel)]="contentRecord.url" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_v">V</label>
+                    <input type="number" class="form-control" name="v" id="field_v"
+                        [(ngModel)]="contentRecord.v" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_launches">Launches</label>
+                    <input type="number" class="form-control" name="launches" id="field_launches"
+                        [(ngModel)]="contentRecord.launches" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_customData">Custom Data</label>
+                    <input type="text" class="form-control" name="customData" id="field_customData"
+                        [(ngModel)]="contentRecord.customData" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_mediaTypeKey">Media Type Key</label>
+                    <input type="text" class="form-control" name="mediaTypeKey" id="field_mediaTypeKey"
+                        [(ngModel)]="contentRecord.mediaTypeKey" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_publicKey">Public Key</label>
+                    <input type="text" class="form-control" name="publicKey" id="field_publicKey"
+                        [(ngModel)]="contentRecord.publicKey" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_sessionLength">Session Length</label>
+                    <input type="number" class="form-control" name="sessionLength" id="field_sessionLength"
+                        [(ngModel)]="contentRecord.sessionLength" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_timeToConsume">Time To Consume</label>
+                    <input type="number" class="form-control" name="timeToConsume" id="field_timeToConsume"
+                        [(ngModel)]="contentRecord.timeToConsume" />
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
