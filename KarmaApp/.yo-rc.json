@@ -28,5 +28,16 @@
     "clientPackageManager": "npm",
     "skipClient": true,
     "skipUserManagement": true
+  },
+  "generator-jhipster-swagger-cli": {
+    "promptValues": {
+      "inputSpec": "http://localhost:8088/v2/api-docs",
+      "cliName": "XapiLaunchKarmaApp"
+    },
+    "apis": {
+      "XapiLaunchKarmaApp": {
+        "spec": "http://localhost:8088/v2/api-docs"
+      }
+    }
   }
 }

@@ -1,0 +1,15 @@
+/**
+ * RegisteredUser entity.
+ * @author Muhammed Ruhail
+ */
+entity RegisteredUser{
+	profilePic Blob
+}
+
+relationship OneToOne{
+RegisteredUser{user} to User
+}
+paginate * with pagination
+dto * with mapstruct
+service all with serviceImpl
+
