@@ -23,12 +23,13 @@ public class FelixsoMongoEventServiceImpl implements FelixsoMongoEventService {
 	}
 
 	@Override
-	public List<MongoEvent> findCompletedEvents() {
+	public List<MongoEvent> findCompletedEventsByName(String userId) {
 		List<MongoEvent> events = findAll();
 		List<MongoEvent> temp = new ArrayList<MongoEvent>();
 		for (MongoEvent me : events) {
 			System.out.println(me.getEvent().getAction());
-			if (me.getEvent().getAction().equals("http://purl.imsglobal.org/vocab/caliper/v1/action#Completed")) {
+			if (me.getEvent().getAction().equals("http://purl.imsglobal.org/vocab/caliper/v1/action#Completed")
+					&& me.getUserId().equals(userId)) {
 				temp.add(me);
 			}
 		}
@@ -36,13 +37,14 @@ public class FelixsoMongoEventServiceImpl implements FelixsoMongoEventService {
 	}
 
 	@Override
-	public List<MongoEvent> findStartedEvents() {
+	public List<MongoEvent> findStartedEventsByName(String userId) {
 		List<MongoEvent> events = findAll();
 		List<MongoEvent> temp = new ArrayList<MongoEvent>();
 		for (MongoEvent me : events) {
 			System.out.println(me.getEvent().getAction());
-			if ((me.getEvent().getAction().equals("http://adlnet.gov/expapi/verbs/started"))
-					|| (me.getEvent().getAction().equals("http://adlnet.gov/expapi/verbs/initialized"))) {
+			if (((me.getEvent().getAction().equals("http://adlnet.gov/expapi/verbs/started"))
+					|| (me.getEvent().getAction().equals("http://adlnet.gov/expapi/verbs/initialized")))
+					&& me.getUserId().equals(userId)) {
 				temp.add(me);
 			}
 		}

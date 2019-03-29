@@ -153,19 +153,19 @@ public class AggregateResource {
 
 	}
 
-	@GetMapping("/completed-events")
+	@GetMapping("/completed-events/{userId}")
 	@Timed
-	public ResponseEntity<List<MongoEvent>> getCompletedEvents(Pageable pageable) {
+	public ResponseEntity<List<MongoEvent>> getCompletedEvents(@PathVariable String userId, Pageable pageable) {
 		log.debug("REST request to get a page of Completed Events");
-		return felixsoMongoEventControllerApi.getMongoCompletedEventsUsingGET();
+		return felixsoMongoEventControllerApi.getMongoCompletedEventsUsingGET(userId);
 
 	}
 
-	@GetMapping("/started-events")
+	@GetMapping("/started-events/{userId}")
 	@Timed
-	public ResponseEntity<List<MongoEvent>> getStartedEvents(Pageable pageable) {
+	public ResponseEntity<List<MongoEvent>> getStartedEvents(@PathVariable String userId, Pageable pageable) {
 		log.debug("REST request to get a page of Started Events");
-		return felixsoMongoEventControllerApi.getMongoEStartedEventsUsingGET();
+		return felixsoMongoEventControllerApi.getMongoEStartedEventsUsingGET(userId);
 
 	}
 
