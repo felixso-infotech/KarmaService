@@ -27,7 +27,6 @@ public class FelixsoMongoEventServiceImpl implements FelixsoMongoEventService {
 		List<MongoEvent> events = findAll();
 		List<MongoEvent> temp = new ArrayList<MongoEvent>();
 		for (MongoEvent me : events) {
-			System.out.println(me.getEvent().getAction());
 			if (me.getEvent().getAction().equals("http://purl.imsglobal.org/vocab/caliper/v1/action#Completed")
 					&& me.getUserId().equals(userId)) {
 				temp.add(me);
@@ -41,10 +40,8 @@ public class FelixsoMongoEventServiceImpl implements FelixsoMongoEventService {
 		List<MongoEvent> events = findAll();
 		List<MongoEvent> temp = new ArrayList<MongoEvent>();
 		for (MongoEvent me : events) {
-			System.out.println(me.getEvent().getAction());
-			if (((me.getEvent().getAction().equals("http://adlnet.gov/expapi/verbs/started"))
-					|| (me.getEvent().getAction().equals("http://adlnet.gov/expapi/verbs/initialized")))
-					&& me.getUserId().equals(userId)) {
+			if (me.getUserId().equals(userId) && !(me.getEvent().getAction()
+					.equals("http://purl.imsglobal.org/vocab/caliper/v1/action#Completed"))) {
 				temp.add(me);
 			}
 		}
