@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lxisoft.client.open_lrw.api.FelixsoMongoEventControllerApi;
+import com.lxisoft.client.open_lrw.model.MongoEvent;
 import com.lxisoft.client.xapi_launch_karma_app.api.ContentRecordResourceApi;
 import com.lxisoft.client.xapi_launch_karma_app.model.ContentRecordDTO;
 import com.lxisoft.service.RegisteredUserService;
@@ -41,6 +43,8 @@ public class AggregateResource {
 
 	@Autowired
 	ContentRecordResourceApi contentRecordResourceApi;
+	@Autowired
+	FelixsoMongoEventControllerApi felixsoMongoEventControllerApi;
 
 	private final RegisteredUserService registeredUserService;
 
@@ -146,6 +150,22 @@ public class AggregateResource {
 		log.debug("REST request to get a page of ContentRecords");
 		return contentRecordResourceApi.getAllContentRecordsUsingGET(null, null, null, null, null, null, null, null,
 				null, null);
+
+	}
+
+	@GetMapping("/completed-events")
+	@Timed
+	public ResponseEntity<List<MongoEvent>> getCompletedEvents(Pageable pageable) {
+		log.debug("REST request to get a page of Completed Events");
+		return felixsoMongoEventControllerApi.getMongoCompletedEventsUsingGET();
+
+	}
+
+	@GetMapping("/started-events")
+	@Timed
+	public ResponseEntity<List<MongoEvent>> getStartedEvents(Pageable pageable) {
+		log.debug("REST request to get a page of Started Events");
+		return felixsoMongoEventControllerApi.getMongoEStartedEventsUsingGET();
 
 	}
 

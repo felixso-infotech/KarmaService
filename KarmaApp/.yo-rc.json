@@ -31,12 +31,15 @@
   },
   "generator-jhipster-swagger-cli": {
     "promptValues": {
-      "inputSpec": "http://localhost:8088/v2/api-docs",
-      "cliName": "XapiLaunchKarmaApp"
+      "inputSpec": "http://localhost:9966/v2/api-docs",
+      "cliName": "OpenLRW"
     },
     "apis": {
       "XapiLaunchKarmaApp": {
         "spec": "http://localhost:8088/v2/api-docs"
+      },
+      "OpenLRW": {
+        "spec": "http://localhost:9966/v2/api-docs"
       }
     }
   }
