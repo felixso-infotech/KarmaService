@@ -291,3 +291,7 @@ XapiLaunchKarma/!.mvn/wrapper/maven-wrapper.jar
 ######################
 XapiLaunchKarma/.eslintcache
 
+######################
+# Project OpenLRW
+######################
+OpenLRW/target/
