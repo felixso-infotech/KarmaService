@@ -7,8 +7,6 @@ import org.apereo.openlrw.caliper.service.repository.MongoEvent;
 public interface FelixsoMongoEventService {
 	public List<MongoEvent> findAll();
 
-	public List<MongoEvent> findCompletedEventsByName(String userId);
-
-	public List<MongoEvent> findStartedEventsByName(String userId);
+	public List<MongoEvent> findByUserIdAndAction(String userId, String action);
 
 }

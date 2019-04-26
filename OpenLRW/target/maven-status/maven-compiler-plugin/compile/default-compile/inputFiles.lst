@@ -109,6 +109,7 @@ E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\oneroster\servic
 E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\security\exception\JwtExpiredTokenException.java
 E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\risk\service\RiskService.java
 E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\xapi\exception\InvalidXAPIRequestException.java
+E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\felixso\model\CustomEvent.java
 E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\oneroster\endpoint\LineItemController.java
 E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\entity\MongoDataSyncRepository.java
 E:\GIT-KARMA-NEW\Karma\OpenLRW\src\main\java\org\apereo\openlrw\oneroster\service\repository\MongoClass.java

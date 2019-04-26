@@ -16,16 +16,10 @@ public class FelixsoMongoEventController {
 	@Autowired
 	private FelixsoMongoEventService felixsoMongoEventService;
 
-	@RequestMapping("/completed-events/{userId}")
-	public ResponseEntity<List<MongoEvent>> getMongoCompletedEvents(@PathVariable String userId) {
-		List<MongoEvent> mongoEvents = felixsoMongoEventService.findCompletedEventsByName(userId);
+	@RequestMapping("/events/{userId}/{action}")
+	public ResponseEntity<List<MongoEvent>> getMongoEventsByUserIdAndAction(@PathVariable String userId,
+			@PathVariable String action) {
+		List<MongoEvent> mongoEvents = felixsoMongoEventService.findByUserIdAndAction(userId, action);
 		return ResponseEntity.ok().body(mongoEvents);
 	}
-
-	@RequestMapping("/started-events/{userId}")
-	public ResponseEntity<List<MongoEvent>> getMongoEStartedEvents(@PathVariable String userId) {
-		List<MongoEvent> mongoEvents = felixsoMongoEventService.findStartedEventsByName(userId);
-		return ResponseEntity.ok().body(mongoEvents);
-	}
-
 }

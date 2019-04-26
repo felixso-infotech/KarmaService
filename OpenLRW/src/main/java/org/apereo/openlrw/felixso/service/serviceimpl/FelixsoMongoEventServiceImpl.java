@@ -23,28 +23,15 @@ public class FelixsoMongoEventServiceImpl implements FelixsoMongoEventService {
 	}
 
 	@Override
-	public List<MongoEvent> findCompletedEventsByName(String userId) {
-		List<MongoEvent> events = findAll();
-		List<MongoEvent> temp = new ArrayList<MongoEvent>();
-		for (MongoEvent me : events) {
-			if (me.getEvent().getAction().equals("http://purl.imsglobal.org/vocab/caliper/v1/action#Completed")
-					&& me.getUserId().equals(userId)) {
-				temp.add(me);
-			}
-		}
-		return temp;
+	public List<MongoEvent> findByUserIdAndAction(String userId, String action) {
+		List<MongoEvent> events = felixsoMongoEventRepository.findByUserIdAndEventAction(userId, action);
+		List<MongoEvent> completedEvents = new ArrayList<MongoEvent>();
+		events.forEach(ev -> {
+			if (ev.getEvent().getAction().equals(action))
+				completedEvents.add(ev);
+		});
+		return completedEvents;
+
 	}
 
-	@Override
-	public List<MongoEvent> findStartedEventsByName(String userId) {
-		List<MongoEvent> events = findAll();
-		List<MongoEvent> temp = new ArrayList<MongoEvent>();
-		for (MongoEvent me : events) {
-			if (me.getUserId().equals(userId) && !(me.getEvent().getAction()
-					.equals("http://purl.imsglobal.org/vocab/caliper/v1/action#Completed"))) {
-				temp.add(me);
-			}
-		}
-		return temp;
-	}
 }
