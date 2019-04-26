@@ -34,7 +34,7 @@ import com.lxisoft.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 
 @RestController
-@RequestMapping("/karma-api")
+@RequestMapping("/api")
 public class AggregateResource {
 	private final Logger log = LoggerFactory.getLogger(AggregateResource.class);
 
@@ -58,7 +58,7 @@ public class AggregateResource {
 					"idexists");
 		}
 		RegisteredUserDTO result = aggregateService.saveRegisteredUser(registeredUserDTO);
-		return ResponseEntity.created(new URI("/karma-api/registeredUser/" + result.getId()))
+		return ResponseEntity.created(new URI("/api/registeredUser/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
 
@@ -81,7 +81,7 @@ public class AggregateResource {
 	public ResponseEntity<List<RegisteredUserDTO>> getAllRegisteredUsers(Pageable pageable) {
 		log.debug("REST request to get a page of RegisteredUsers");
 		Page<RegisteredUserDTO> page = aggregateService.findAllRegisteredUsers(pageable);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/karma-api/registeredUsers");
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/registeredUsers");
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
@@ -126,7 +126,7 @@ public class AggregateResource {
 		System.out.println("*****************************************");
 		log.debug("REST request to get a page of Activitiy");
 		Page<ActivityDTO> page = aggregateService.findAllActivities(pageable);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/karma-api/activity");
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activity");
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 
 	}
