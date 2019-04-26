@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-registered-user-heading">Create or edit a Registered User</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!registeredUser.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="registeredUser.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="field_firstName"
+                        [(ngModel)]="registeredUser.firstName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="field_lastName"
+                        [(ngModel)]="registeredUser.lastName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_email">Email</label>
+                    <input type="text" class="form-control" name="email" id="field_email"
+                        [(ngModel)]="registeredUser.email" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_phoneNumber">Phone Number</label>
+                    <input type="number" class="form-control" name="phoneNumber" id="field_phoneNumber"
+                        [(ngModel)]="registeredUser.phoneNumber" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_noOfCoins">No Of Coins</label>
+                    <input type="number" class="form-control" name="noOfCoins" id="field_noOfCoins"
+                        [(ngModel)]="registeredUser.noOfCoins" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_noOfBronzeMedals">No Of Bronze Medals</label>
+                    <input type="number" class="form-control" name="noOfBronzeMedals" id="field_noOfBronzeMedals"
+                        [(ngModel)]="registeredUser.noOfBronzeMedals" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_noOfSilverMedals">No Of Silver Medals</label>
+                    <input type="number" class="form-control" name="noOfSilverMedals" id="field_noOfSilverMedals"
+                        [(ngModel)]="registeredUser.noOfSilverMedals" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_noOfGoldMedals">No Of Gold Medals</label>
+                    <input type="number" class="form-control" name="noOfGoldMedals" id="field_noOfGoldMedals"
+                        [(ngModel)]="registeredUser.noOfGoldMedals" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_profilePic">Profile Pic</label>
+                    <select class="form-control" id="field_profilePic" name="profilePic" [(ngModel)]="registeredUser.profilePicId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="mediaOption.id" *ngFor="let mediaOption of profilepics; trackBy: trackMediaById">{{mediaOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
