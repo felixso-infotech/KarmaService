@@ -85,11 +85,11 @@ public class AggregateResource {
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
-	@GetMapping("/registeredUser/{registeredUserId}")
+	@GetMapping("/registeredUser/{phoneNumber}")
 	@Timed
-	public ResponseEntity<RegisteredUserDTO> getRegisteredUser(@PathVariable Long registeredUserId) {
+	public ResponseEntity<RegisteredUserDTO> getRegisteredUser(@PathVariable Long phoneNumber) {
 		log.debug("REST request to get a RegisteredUser");
-		Optional<RegisteredUserDTO> registeredUserDTO = aggregateService.findRegisteredUserById(registeredUserId);
+		Optional<RegisteredUserDTO> registeredUserDTO = aggregateService.findRegisteredUserByPhoneNumber(phoneNumber);
 		return ResponseUtil.wrapOrNotFound(registeredUserDTO);
 	}
 

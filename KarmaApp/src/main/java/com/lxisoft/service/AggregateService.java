@@ -33,7 +33,7 @@ public interface AggregateService {
 
 	MediaDTO saveMedia(MediaDTO mediaDTO);
 
-	Optional<RegisteredUserDTO> findRegisteredUserById(Long registeredUserId);
+	Optional<RegisteredUserDTO> findRegisteredUserByPhoneNumber(Long phoneNumber);
 
 	Page<ActivityDTO> findAllActivities(Pageable pageable);
 

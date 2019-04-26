@@ -194,9 +194,9 @@ public class AggregateServiceImpl implements AggregateService {
 	}
 
 	@Override
-	public Optional<RegisteredUserDTO> findRegisteredUserById(Long registeredUserId) {
+	public Optional<RegisteredUserDTO> findRegisteredUserByPhoneNumber(Long phoneNumber) {
 		log.debug("Request to get all RegisteredUser");
-		RegisteredUser registeredUser = registeredUserRepository.findById(registeredUserId).get();
+		RegisteredUser registeredUser = registeredUserRepository.findByPhoneNumber(phoneNumber).get();
 		RegisteredUserDTO registeredUserDTO = null;
 		if ((registeredUser != null) && (registeredUser.getProfilePic() != null)) {
 			registeredUserDTO = registeredUserMapper.toDto(registeredUser);
