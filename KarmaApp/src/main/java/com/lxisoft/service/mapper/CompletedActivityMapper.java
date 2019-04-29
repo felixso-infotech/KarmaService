@@ -12,12 +12,12 @@ import org.mapstruct.*;
 public interface CompletedActivityMapper extends EntityMapper<CompletedActivityDTO, CompletedActivity> {
 
     @Mapping(source = "registeredUser.id", target = "registeredUserId")
-    @Mapping(source = "activity.id", target = "activityId")
+    @Mapping(source = "activityid.id", target = "activityId")
     CompletedActivityDTO toDto(CompletedActivity completedActivity);
 
     @Mapping(source = "registeredUserId", target = "registeredUser")
-    @Mapping(source = "activityId", target = "activity")
     @Mapping(target = "proofs", ignore = true)
+    @Mapping(source = "activityId", target = "activityid")
     CompletedActivity toEntity(CompletedActivityDTO completedActivityDTO);
 
     default CompletedActivity fromId(Long id) {

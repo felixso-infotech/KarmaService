@@ -236,15 +236,15 @@ public class AggregateServiceImpl implements AggregateService {
 	public CompletedActivityDTO findCompletedActivityById(Long completedActivityId) {
 		CompletedActivity completedActivity = completedActivityRepository.findById(completedActivityId).get();
 		CompletedActivityDTO completedActivityDTO = completedActivityMapper.toDto(completedActivity);
-		ActivityDTO activityDTO = activityMapper.toDto(completedActivity.getActivity());
+		ActivityDTO activityDTO = activityMapper.toDto(completedActivity.getActivityid());
 		Set<String> encodedFiles = new HashSet<String>();
-		Set<Media> files = completedActivity.getActivity().getFiles();
+		Set<Media> files = completedActivity.getActivityid().getFiles();
 		for (Media media : files) {
 			String encodedFile = Base64.encodeBase64String(media.getFile());
 			encodedFiles.add(encodedFile);
 		}
 		activityDTO.setEncodedFiles(encodedFiles);
-		InstructionVideo instructionVideo = completedActivity.getActivity().getInstructionVideo();
+		InstructionVideo instructionVideo = completedActivity.getActivityid().getInstructionVideo();
 		String encodedInstructionVideo = Base64.encodeBase64String(instructionVideo.getFile());
 		activityDTO.setEncodedInstructionVideo(encodedInstructionVideo);
 		completedActivityDTO.setActivityDTO(activityDTO);
@@ -271,15 +271,15 @@ public class AggregateServiceImpl implements AggregateService {
 		List<CompletedActivityDTO> completedActivityDTOs = new ArrayList<CompletedActivityDTO>();
 		for (CompletedActivity completedActivity : completedActivities) {
 			CompletedActivityDTO completedActivityDTO = completedActivityMapper.toDto(completedActivity);
-			ActivityDTO activityDTO = activityMapper.toDto(completedActivity.getActivity());
+			ActivityDTO activityDTO = activityMapper.toDto(completedActivity.getActivityid());
 			Set<String> encodedFiles = new HashSet<String>();
-			Set<Media> files = completedActivity.getActivity().getFiles();
+			Set<Media> files = completedActivity.getActivityid().getFiles();
 			for (Media media : files) {
 				String encodedFile = Base64.encodeBase64String(media.getFile());
 				encodedFiles.add(encodedFile);
 			}
 			activityDTO.setEncodedFiles(encodedFiles);
-			InstructionVideo instructionVideo = completedActivity.getActivity().getInstructionVideo();
+			InstructionVideo instructionVideo = completedActivity.getActivityid().getInstructionVideo();
 			String encodedInstructionVideo = Base64.encodeBase64String(instructionVideo.getFile());
 			activityDTO.setEncodedInstructionVideo(encodedInstructionVideo);
 			completedActivityDTO.setActivityDTO(activityDTO);
@@ -300,7 +300,7 @@ public class AggregateServiceImpl implements AggregateService {
 		return new PageImpl<CompletedActivityDTO>(completedActivityDTOs, pageable, completedActivityDTOs.size());
 	}
 
-	@Override
+	/*@Override
 	public Page<ActivityDTO> findIncompletedActivityByRegisteredUserId(Long registeredUserId, Pageable pageable) {
 		List<CompletedActivityDTO> completedActivityDTOs = findCompletedActivityByRegisteredUserId(registeredUserId,
 				pageable).getContent();
@@ -313,6 +313,30 @@ public class AggregateServiceImpl implements AggregateService {
 			}
 		}
 		return new PageImpl<ActivityDTO>(activityDTOs, pageable, activityDTOs.size());
+	}*/
+	
+	public Page<ActivityDTO> findIncompletedActivityByRegisteredUserId(Long registeredUserId, Pageable pageable) {
+		List<CompletedActivityDTO> completedActivityDTOs = findCompletedActivityByRegisteredUserId(registeredUserId,
+				pageable).getContent();
+		List<ActivityDTO> activityDTOs = findAllActivities(pageable).getContent();
+		List<ActivityDTO> incompletedActivityDTOs = new ArrayList<ActivityDTO>();
+		
+		for (ActivityDTO activityDTO : activityDTOs) {
+			for (CompletedActivityDTO completedActivityDTO : completedActivityDTOs) {
+				if (activityDTO.getId() != completedActivityDTO.getActivityDTO().getId()) {
+					incompletedActivityDTOs.add(activityDTO);
+				}
+			}
+		}
+		
+		for(ActivityDTO ic:incompletedActivityDTOs){
+			
+			System.out.println("***********************incomplete activity id{}"+ic.getId());
+		}
+		
+		System.out.println("***********************incomplete activity size{}"+incompletedActivityDTOs.size());
+		
+		return new PageImpl<ActivityDTO>(incompletedActivityDTOs, pageable, incompletedActivityDTOs.size());
 	}
 
 }

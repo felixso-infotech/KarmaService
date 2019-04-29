@@ -30,13 +30,13 @@ entity InstructionVideo{
 }
 relationship OneToOne{
 	Activity{instructionVideo} to InstructionVideo,
-	RegisteredUser{profilePic} to Media,
-    CompletedActivity{activity} to Activity
+	RegisteredUser{profilePic} to Media
 }
 relationship OneToMany{
 	Activity{files} to Media,
     RegisteredUser{completedActivities} to CompletedActivity,
-    CompletedActivity{proofs} to Media
+    CompletedActivity{proofs} to Media,
+    Activity{completedActivities} to CompletedActivity{activityid}
 }
 paginate * with pagination
 dto * with mapstruct

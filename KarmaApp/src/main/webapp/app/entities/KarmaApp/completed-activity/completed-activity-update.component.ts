@@ -42,18 +42,9 @@ export class CompletedActivityUpdateComponent implements OnInit {
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
-    this.activityService.query({ filter: 'completedactivity-is-null' }).subscribe(
+    this.activityService.query().subscribe(
       (res: HttpResponse<IActivity[]>) => {
-        if (!this.completedActivity.activityId) {
-          this.activities = res.body;
-        } else {
-          this.activityService.find(this.completedActivity.activityId).subscribe(
-            (subRes: HttpResponse<IActivity>) => {
-              this.activities = [subRes.body].concat(res.body);
-            },
-            (subRes: HttpErrorResponse) => this.onError(subRes.message)
-          );
-        }
+        this.activities = res.body;
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );

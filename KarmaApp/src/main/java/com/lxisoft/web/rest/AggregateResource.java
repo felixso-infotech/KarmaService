@@ -172,7 +172,7 @@ public class AggregateResource {
 	// do**************************************888
 	@GetMapping("/incompletedActivity/{registeredUserId}")
 	@Timed
-	public ResponseEntity<List<ActivityDTO>> findInompletedActivityByRegisteredUserId(
+	public ResponseEntity<List<ActivityDTO>> findIncompletedActivityByRegisteredUserId(
 			@PathVariable Long registeredUserId, Pageable pageable) throws URISyntaxException {
 		log.debug("REST request to save CompletedActivity");
 		Page<ActivityDTO> page = aggregateService.findIncompletedActivityByRegisteredUserId(registeredUserId, pageable);

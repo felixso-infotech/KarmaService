@@ -1,15 +1,16 @@
 package com.lxisoft.repository;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.lxisoft.domain.CompletedActivity;
 import com.lxisoft.domain.RegisteredUser;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
+
+
 /**
- * Spring Data repository for the CompletedActivity entity.
+ * Spring Data  repository for the CompletedActivity entity.
  */
 @SuppressWarnings("unused")
 @Repository

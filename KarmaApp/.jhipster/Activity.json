@@ -32,6 +32,12 @@
             "relationshipName": "files",
             "otherEntityName": "media",
             "otherEntityRelationshipName": "activity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "completedActivities",
+            "otherEntityName": "completedActivity",
+            "otherEntityRelationshipName": "activityid"
         }
     ],
     "changelogDate": "20190425115206",

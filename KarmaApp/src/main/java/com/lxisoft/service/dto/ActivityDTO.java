@@ -12,19 +12,19 @@ import com.lxisoft.domain.Media;
  */
 public class ActivityDTO implements Serializable {
 
-	private Long id;
+    private Long id;
 
-	private String title;
+    private String title;
 
-	private String description;
+    private String description;
 
-	private String successMessage;
+    private String successMessage;
 
-	private String url;
+    private String url;
 
-	private Long instructionVideoId;
-
-	private Set<Media> files;// added
+    private Long instructionVideoId;
+    
+    private Set<Media> files;// added
 
 	private InstructionVideo instructionVideo;// added
 
@@ -32,21 +32,86 @@ public class ActivityDTO implements Serializable {
 
 	private String encodedInstructionVideo;
 
-	public Set<String> getEncodedFiles() {
-		return encodedFiles;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setEncodedFiles(Set<String> encodedFiles) {
-		this.encodedFiles = encodedFiles;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getEncodedInstructionVideo() {
-		return encodedInstructionVideo;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setEncodedInstructionVideo(String encodedInstructionVideo) {
-		this.encodedInstructionVideo = encodedInstructionVideo;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Long getInstructionVideoId() {
+        return instructionVideoId;
+    }
+
+    public void setInstructionVideoId(Long instructionVideoId) {
+        this.instructionVideoId = instructionVideoId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ActivityDTO activityDTO = (ActivityDTO) o;
+        if (activityDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), activityDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "ActivityDTO{" +
+            "id=" + getId() +
+            ", title='" + getTitle() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", successMessage='" + getSuccessMessage() + "'" +
+            ", url='" + getUrl() + "'" +
+            ", instructionVideo=" + getInstructionVideoId() +
+            "}";
+    }
 
 	public Set<Media> getFiles() {
 		return files;
@@ -64,79 +129,19 @@ public class ActivityDTO implements Serializable {
 		this.instructionVideo = instructionVideo;
 	}
 
-	public Long getId() {
-		return id;
+	public Set<String> getEncodedFiles() {
+		return encodedFiles;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setEncodedFiles(Set<String> encodedFiles) {
+		this.encodedFiles = encodedFiles;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getEncodedInstructionVideo() {
+		return encodedInstructionVideo;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getSuccessMessage() {
-		return successMessage;
-	}
-
-	public void setSuccessMessage(String successMessage) {
-		this.successMessage = successMessage;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public Long getInstructionVideoId() {
-		return instructionVideoId;
-	}
-
-	public void setInstructionVideoId(Long instructionVideoId) {
-		this.instructionVideoId = instructionVideoId;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		ActivityDTO activityDTO = (ActivityDTO) o;
-		if (activityDTO.getId() == null || getId() == null) {
-			return false;
-		}
-		return Objects.equals(getId(), activityDTO.getId());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(getId());
-	}
-
-	@Override
-	public String toString() {
-		return "ActivityDTO{" + "id=" + getId() + ", title='" + getTitle() + "'" + ", description='" + getDescription()
-				+ "'" + ", successMessage='" + getSuccessMessage() + "'" + ", url='" + getUrl() + "'"
-				+ ", instructionVideo=" + getInstructionVideoId() + "}";
+	public void setEncodedInstructionVideo(String encodedInstructionVideo) {
+		this.encodedInstructionVideo = encodedInstructionVideo;
 	}
 }

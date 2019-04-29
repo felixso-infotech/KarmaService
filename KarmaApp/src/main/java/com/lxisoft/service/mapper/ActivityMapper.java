@@ -16,6 +16,7 @@ public interface ActivityMapper extends EntityMapper<ActivityDTO, Activity> {
 
     @Mapping(source = "instructionVideoId", target = "instructionVideo")
     @Mapping(target = "files", ignore = true)
+    @Mapping(target = "completedActivities", ignore = true)
     Activity toEntity(ActivityDTO activityDTO);
 
     default Activity fromId(Long id) {

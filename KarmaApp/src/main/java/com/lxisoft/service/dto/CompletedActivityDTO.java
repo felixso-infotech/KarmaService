@@ -9,16 +9,70 @@ import java.util.Set;
  */
 public class CompletedActivityDTO implements Serializable {
 
-	private Long id;
+    private Long id;
 
-	private Long registeredUserId;
+    private Long registeredUserId;
 
-	private Long activityId;
+    private Long activityId;
 
-	private ActivityDTO activityDTO;// added
+    private ActivityDTO activityDTO;// added
 	private RegisteredUserDTO registeredUserDTO;// added
 	// private Set<Media> proofs;// added
 	private Set<String> encodedProofs;// added
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getRegisteredUserId() {
+        return registeredUserId;
+    }
+
+    public void setRegisteredUserId(Long registeredUserId) {
+        this.registeredUserId = registeredUserId;
+    }
+
+    public Long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CompletedActivityDTO completedActivityDTO = (CompletedActivityDTO) o;
+        if (completedActivityDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), completedActivityDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "CompletedActivityDTO{" +
+            "id=" + getId() +
+            ", registeredUser=" + getRegisteredUserId() +
+            ", activityid=" + getActivityId() +
+            "}";
+    }
 
 	public ActivityDTO getActivityDTO() {
 		return activityDTO;
@@ -42,56 +96,5 @@ public class CompletedActivityDTO implements Serializable {
 
 	public void setEncodedProofs(Set<String> encodedProofs) {
 		this.encodedProofs = encodedProofs;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getRegisteredUserId() {
-		return registeredUserId;
-	}
-
-	public void setRegisteredUserId(Long registeredUserId) {
-		this.registeredUserId = registeredUserId;
-	}
-
-	public Long getActivityId() {
-		return activityId;
-	}
-
-	public void setActivityId(Long activityId) {
-		this.activityId = activityId;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		CompletedActivityDTO completedActivityDTO = (CompletedActivityDTO) o;
-		if (completedActivityDTO.getId() == null || getId() == null) {
-			return false;
-		}
-		return Objects.equals(getId(), completedActivityDTO.getId());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(getId());
-	}
-
-	@Override
-	public String toString() {
-		return "CompletedActivityDTO{" + "id=" + getId() + ", registeredUser=" + getRegisteredUserId() + ", activity="
-				+ getActivityId() + "}";
 	}
 }

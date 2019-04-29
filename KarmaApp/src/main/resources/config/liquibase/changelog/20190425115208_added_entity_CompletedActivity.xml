@@ -25,9 +25,11 @@
             <column name="registered_user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="activity_id" type="bigint">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_completed_activity_activity_id" />
+
+            <column name="activityid_id" type="bigint">
+                <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

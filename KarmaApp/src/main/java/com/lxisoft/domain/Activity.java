@@ -39,6 +39,8 @@ public class Activity implements Serializable {
 
     @OneToMany(mappedBy = "activity")
     private Set<Media> files = new HashSet<>();
+    @OneToMany(mappedBy = "activityid")
+    private Set<CompletedActivity> completedActivities = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -136,6 +138,31 @@ public class Activity implements Serializable {
 
     public void setFiles(Set<Media> media) {
         this.files = media;
+    }
+
+    public Set<CompletedActivity> getCompletedActivities() {
+        return completedActivities;
+    }
+
+    public Activity completedActivities(Set<CompletedActivity> completedActivities) {
+        this.completedActivities = completedActivities;
+        return this;
+    }
+
+    public Activity addCompletedActivities(CompletedActivity completedActivity) {
+        this.completedActivities.add(completedActivity);
+        completedActivity.setActivityid(this);
+        return this;
+    }
+
+    public Activity removeCompletedActivities(CompletedActivity completedActivity) {
+        this.completedActivities.remove(completedActivity);
+        completedActivity.setActivityid(null);
+        return this;
+    }
+
+    public void setCompletedActivities(Set<CompletedActivity> completedActivities) {
+        this.completedActivities = completedActivities;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

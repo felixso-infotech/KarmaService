@@ -9,18 +9,16 @@
             "otherEntityField": "id"
         },
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "activity",
-            "otherEntityName": "activity",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "completedActivity"
-        },
-        {
             "relationshipType": "one-to-many",
             "relationshipName": "proofs",
             "otherEntityName": "media",
             "otherEntityRelationshipName": "completedActivity"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "activityid",
+            "otherEntityName": "activity",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20190425115208",

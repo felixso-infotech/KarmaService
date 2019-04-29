@@ -1,4 +1,5 @@
 import { IMedia } from 'app/shared/model/KarmaApp/media.model';
+import { ICompletedActivity } from 'app/shared/model/KarmaApp/completed-activity.model';
 
 export interface IActivity {
   id?: number;
@@ -8,6 +9,7 @@ export interface IActivity {
   url?: string;
   instructionVideoId?: number;
   files?: IMedia[];
+  completedActivities?: ICompletedActivity[];
 }
 
 export class Activity implements IActivity {
@@ -18,6 +20,7 @@ export class Activity implements IActivity {
     public successMessage?: string,
     public url?: string,
     public instructionVideoId?: number,
-    public files?: IMedia[]
+    public files?: IMedia[],
+    public completedActivities?: ICompletedActivity[]
   ) {}
 }

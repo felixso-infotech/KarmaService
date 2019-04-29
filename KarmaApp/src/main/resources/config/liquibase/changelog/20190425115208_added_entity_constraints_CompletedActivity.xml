@@ -14,9 +14,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="registered_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="activity_id"
+        <addForeignKeyConstraint baseColumnNames="activityid_id"
                                  baseTableName="completed_activity"
-                                 constraintName="fk_completed_activity_activity_id"
+                                 constraintName="fk_completed_activity_activityid_id"
                                  referencedColumnNames="id"
                                  referencedTableName="activity"/>
 

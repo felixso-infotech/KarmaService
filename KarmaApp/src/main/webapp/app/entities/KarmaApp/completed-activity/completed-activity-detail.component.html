@@ -11,10 +11,10 @@
                         <a [routerLink]="['/registered-user', completedActivity.registeredUserId, 'view']">{{completedActivity.registeredUserId}}</a>
                     </div>
                 </dd>
-                <dt><span>Activity</span></dt>
+                <dt><span>Activityid</span></dt>
                 <dd>
-                    <div *ngIf="completedActivity.activityId">
-                        <a [routerLink]="['/activity', completedActivity.activityId, 'view']">{{completedActivity.activityId}}</a>
+                    <div *ngIf="completedActivity.activityidId">
+                        <a [routerLink]="['/activity', completedActivity.activityidId, 'view']">{{completedActivity.activityidId}}</a>
                     </div>
                 </dd>
             </dl>

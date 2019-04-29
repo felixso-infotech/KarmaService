@@ -27,11 +27,12 @@ public class CompletedActivity implements Serializable {
     @JsonIgnoreProperties("completedActivities")
     private RegisteredUser registeredUser;
 
-    @OneToOne    @JoinColumn(unique = true)
-    private Activity activity;
-
     @OneToMany(mappedBy = "completedActivity")
     private Set<Media> proofs = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties("completedActivities")
+    private Activity activityid;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -52,19 +53,6 @@ public class CompletedActivity implements Serializable {
 
     public void setRegisteredUser(RegisteredUser registeredUser) {
         this.registeredUser = registeredUser;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-
-    public CompletedActivity activity(Activity activity) {
-        this.activity = activity;
-        return this;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
     }
 
     public Set<Media> getProofs() {
@@ -90,6 +78,19 @@ public class CompletedActivity implements Serializable {
 
     public void setProofs(Set<Media> media) {
         this.proofs = media;
+    }
+
+    public Activity getActivityid() {
+        return activityid;
+    }
+
+    public CompletedActivity activityid(Activity activity) {
+        this.activityid = activity;
+        return this;
+    }
+
+    public void setActivityid(Activity activity) {
+        this.activityid = activity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

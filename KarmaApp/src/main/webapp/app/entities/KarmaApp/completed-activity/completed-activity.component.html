@@ -16,7 +16,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="registeredUserId"><span>Registered User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="activityId"><span>Activity</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="activityidId"><span>Activityid</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -29,8 +29,8 @@
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="completedActivity.activityId">
-                        <a [routerLink]="['../activity', completedActivity.activityId , 'view' ]" >{{completedActivity.activityId}}</a>
+                    <div *ngIf="completedActivity.activityidId">
+                        <a [routerLink]="['../activity', completedActivity.activityidId , 'view' ]" >{{completedActivity.activityidId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
