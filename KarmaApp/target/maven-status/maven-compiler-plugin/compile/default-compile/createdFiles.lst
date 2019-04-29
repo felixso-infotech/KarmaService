@@ -1,0 +1,14 @@
+com\lxisoft\domain\InstructionVideo_.class
+com\lxisoft\domain\Media_.class
+com\lxisoft\domain\Activity_.class
+com\lxisoft\domain\AbstractAuditingEntity_.class
+com\lxisoft\service\mapper\MediaMapperImpl.class
+com\lxisoft\service\mapper\ActivityMapperImpl.class
+com\lxisoft\domain\CompletedActivity_.class
+com\lxisoft\service\mapper\RegisteredUserMapperImpl.class
+com\lxisoft\domain\Authority_.class
+com\lxisoft\domain\RegisteredUser_.class
+com\lxisoft\domain\PersistentAuditEvent_.class
+com\lxisoft\service\mapper\CompletedActivityMapperImpl.class
+com\lxisoft\domain\User_.class
+com\lxisoft\service\mapper\InstructionVideoMapperImpl.class
