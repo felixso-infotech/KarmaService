@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="registeredUser">
+            <h2><span>Registered User</span> {{registeredUser.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>First Name</span></dt>
+                <dd>
+                    <span>{{registeredUser.firstName}}</span>
+                </dd>
+                <dt><span>Last Name</span></dt>
+                <dd>
+                    <span>{{registeredUser.lastName}}</span>
+                </dd>
+                <dt><span>Email</span></dt>
+                <dd>
+                    <span>{{registeredUser.email}}</span>
+                </dd>
+                <dt><span>Phone Number</span></dt>
+                <dd>
+                    <span>{{registeredUser.phoneNumber}}</span>
+                </dd>
+                <dt><span>No Of Coins</span></dt>
+                <dd>
+                    <span>{{registeredUser.noOfCoins}}</span>
+                </dd>
+                <dt><span>No Of Bronze Medals</span></dt>
+                <dd>
+                    <span>{{registeredUser.noOfBronzeMedals}}</span>
+                </dd>
+                <dt><span>No Of Silver Medals</span></dt>
+                <dd>
+                    <span>{{registeredUser.noOfSilverMedals}}</span>
+                </dd>
+                <dt><span>No Of Gold Medals</span></dt>
+                <dd>
+                    <span>{{registeredUser.noOfGoldMedals}}</span>
+                </dd>
+                <dt><span>Profile Pic</span></dt>
+                <dd>
+                    <div *ngIf="registeredUser.profilePicId">
+                        <a [routerLink]="['/media', registeredUser.profilePicId, 'view']">{{registeredUser.profilePicId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/registered-user', registeredUser.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

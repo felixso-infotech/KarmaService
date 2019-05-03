@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity CompletedActivity.
+    -->
+    <changeSet id="20190425115208-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="registered_user_id"
+                                 baseTableName="completed_activity"
+                                 constraintName="fk_completed_activity_registered_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="registered_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="activityid_id"
+                                 baseTableName="completed_activity"
+                                 constraintName="fk_completed_activity_activityid_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="activity"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2019-04-29T15:23:24+0530",
+    date = "2019-05-03T11:35:11+0530",
     comments = "version: 1.2.0.Final, compiler: javac, environment: Java 1.8.0_131 (Oracle Corporation)"
 )
 @Component
@@ -60,7 +60,6 @@ public class RegisteredUserMapperImpl implements RegisteredUserMapper {
         if ( id != null ) {
             registeredUserDTO.setProfilePicId( id );
         }
-        registeredUserDTO.setProfilePic( registeredUser.getProfilePic() );
         registeredUserDTO.setId( registeredUser.getId() );
         registeredUserDTO.setFirstName( registeredUser.getFirstName() );
         registeredUserDTO.setLastName( registeredUser.getLastName() );

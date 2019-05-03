@@ -1,0 +1,64 @@
+{
+    "name": "RegisteredUser",
+    "fields": [
+        {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "phoneNumber",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "noOfCoins",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "noOfBronzeMedals",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "noOfSilverMedals",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "noOfGoldMedals",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "profilePic",
+            "otherEntityName": "media",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "registeredUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "completedActivities",
+            "otherEntityName": "completedActivity",
+            "otherEntityRelationshipName": "registeredUser"
+        }
+    ],
+    "changelogDate": "20190425115205",
+    "javadoc": "RegisteredUser entity.\n@author Muhammed Ruhail",
+    "entityTableName": "registered_user",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "KarmaApp",
+    "applications": "*",
+    "microserviceName": "KarmaApp"
+}
