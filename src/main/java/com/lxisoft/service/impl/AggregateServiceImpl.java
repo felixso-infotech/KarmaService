@@ -1,6 +1,5 @@
 package com.lxisoft.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -217,60 +216,6 @@ public class AggregateServiceImpl implements AggregateService {
 	}
 
 	/**
-	 * Get list of incompletedActivity by registeredUserId.
-	 *
-	 * @param registeredUserId the id of the entity
-	 * @return the list of entity
-	 */
-	@Override
-	public Page<ActivityDTO> findIncompletedActivityByRegisteredUserId(Long registeredUserId, Pageable pageable) {
-		List<CompletedActivityDTO> completedActivityDTOs = completedActivityRepository
-				.findByRegisteredUserId(registeredUserId, pageable).map(completedActivityMapper::toDto).getContent();
-		List<ActivityDTO> activityDTOs = findAllActivities(pageable).getContent();
-		List<ActivityDTO> dtos = new ArrayList<ActivityDTO>();
-		dtos.addAll(activityDTOs);
-		List<ActivityDTO> toRemove = new ArrayList<ActivityDTO>();
-
-		for (ActivityDTO activityDTO : activityDTOs) {
-			for (CompletedActivityDTO completedActivityDTO : completedActivityDTOs) {
-				if (activityDTO.getId() == completedActivityDTO.getActivityId()) {
-
-					toRemove.add(activityDTO);
-				}
-			}
-		}
-		dtos.removeAll(toRemove);
-		return new PageImpl<ActivityDTO>(dtos, pageable, dtos.size());
-	}
-
-	/**
-	 * Get list of incompletedActivity by phoneNumber.
-	 *
-	 * @param phoneNumber the id of the entity
-	 * @return the list of entity
-	 */
-	@Override
-	public Page<ActivityDTO> findIncompletedActivityByRegisteredUserPhoneNumber(Long phoneNumber, Pageable pageable) {
-		List<CompletedActivityDTO> completedActivityDTOs = completedActivityRepository
-				.findByRegisteredUserPhoneNumber(phoneNumber, pageable).map(completedActivityMapper::toDto)
-				.getContent();
-		List<ActivityDTO> activityDTOs = findAllActivities(pageable).getContent();
-		List<ActivityDTO> dtos = new ArrayList<ActivityDTO>();
-		dtos.addAll(activityDTOs);
-		List<ActivityDTO> toRemove = new ArrayList<ActivityDTO>();
-
-		for (ActivityDTO activityDTO : activityDTOs) {
-			for (CompletedActivityDTO completedActivityDTO : completedActivityDTOs) {
-				if (activityDTO.getId() == completedActivityDTO.getActivityId()) {
-					toRemove.add(activityDTO);
-				}
-			}
-		}
-		dtos.removeAll(toRemove);
-		return new PageImpl<ActivityDTO>(dtos, pageable, dtos.size());
-	}
-
-	/**
 	 * Get one instructionVideo by activityId.
 	 *
 	 * @param activityId the id of the activity of instruction video
@@ -333,6 +278,32 @@ public class AggregateServiceImpl implements AggregateService {
 	public Page<MediaDTO> findMediaByCompletedActivityId(Long completedActivityId, Pageable pageable) {
 
 		return mediaRepository.findByCompletedActivityId(completedActivityId, pageable).map(mediaMapper::toDto);
+	}
+
+	/**
+	 * Get list of incompletedActivity by registeredUserId.
+	 *
+	 * @param registeredUserId the id of the entity
+	 * @return the list of entity
+	 */
+	@Override
+	public Page<ActivityDTO> findIncompletedActivityByRegisteredUserId(Long registeredUserId, Pageable pageable) {
+		List<ActivityDTO> activityDTOs = activityRepository.findIncompletedActivitiesByQuery(registeredUserId, pageable)
+				.map(activityMapper::toDto).getContent();
+		return new PageImpl<ActivityDTO>(activityDTOs, pageable, activityDTOs.size());
+	}
+
+	/**
+	 * Get list of incompletedActivity by phoneNumber.
+	 *
+	 * @param phoneNumber the id of the entity
+	 * @return the list of entity
+	 */
+	@Override
+	public Page<ActivityDTO> findIncompletedActivityByRegisteredUserPhoneNumber(Long phoneNumber, Pageable pageable) {
+		List<ActivityDTO> activityDTOs = activityRepository
+				.findIncompletedActivitiesByPhoneNumber(phoneNumber, pageable).map(activityMapper::toDto).getContent();
+		return new PageImpl<ActivityDTO>(activityDTOs, pageable, activityDTOs.size());
 	}
 
 }

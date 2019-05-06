@@ -222,7 +222,7 @@ public class AggregateResource {
 	@GetMapping("/activity/{activityId}")
 	@Timed
 	public ResponseEntity<ActivityModel> getActivityById(@PathVariable Long activityId, Pageable pageable) {
-		log.debug("REST request to get a page of Activitiy");
+		log.debug("REST request to get a activitiy");
 		ActivityDTO activityDTO = aggregateService.findActivityById(activityId).orElse(null);
 		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&77" + activityDTO);
 		ActivityModel activityModel = new ActivityModel();
@@ -353,7 +353,7 @@ public class AggregateResource {
 	@Timed
 	public ResponseEntity<List<CompletedActivityModel>> findCompletedActivityByRegisteredUserId(
 			@PathVariable Long registeredUserId, Pageable pageable) throws URISyntaxException {
-		log.debug("REST request to save CompletedActivity");
+		log.debug("REST request to get completedActivity by registeredUderId : {}", registeredUserId);
 		Page<CompletedActivityDTO> page = aggregateService.findCompletedActivityByRegisteredUserId(registeredUserId,
 				pageable);
 		List<CompletedActivityModel> completedActivityModels = new ArrayList<CompletedActivityModel>();
@@ -379,41 +379,6 @@ public class AggregateResource {
 	}
 
 	/**
-	 * GET /incompleted-activity/:registeredUserId : get the "registeredUserId"
-	 * incompletedActivity.
-	 *
-	 * @param registeredUserId the id of the completedActivityDTO to retrieve
-	 * @return the ResponseEntity with status 200 (OK) and with body the
-	 *         completedActivityDTO, or with status 404 (Not Found)
-	 */
-	@GetMapping("/incompleted-activity-by-registered-user/{registeredUserId}")
-	@Timed
-	public ResponseEntity<List<ActivityModel>> findIncompletedActivityByRegisteredUserId(
-			@PathVariable Long registeredUserId, Pageable pageable) throws URISyntaxException {
-		log.debug("REST request to save CompletedActivity");
-		Page<ActivityDTO> page = aggregateService.findIncompletedActivityByRegisteredUserId(registeredUserId, pageable);
-		List<ActivityModel> activityModels = new ArrayList<ActivityModel>();
-		for (ActivityDTO activityDTO : page.getContent()) {
-			ActivityModel activityModel = new ActivityModel();
-			InstructionVideoDTO instructionVideoDTO = aggregateService
-					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
-			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
-					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
-					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
-			/*
-			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
-			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
-			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
-			 * ;
-			 */
-			activityModels.add(activityModel);
-		}
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
-				"/api//incompleted-activity-by-registered-user/{registeredUserId}");
-		return ResponseEntity.ok().headers(headers).body(activityModels);
-	}
-
-	/**
 	 * GET /completed-activity/:phoneNumber : get the "phoneNumber"
 	 * completedActivity.
 	 *
@@ -426,7 +391,7 @@ public class AggregateResource {
 	@Timed
 	public ResponseEntity<List<CompletedActivityModel>> findCompletedActivityByRegisteredUserPhoneNumber(
 			@PathVariable Long phoneNumber, Pageable pageable) throws URISyntaxException {
-		log.debug("REST request to save CompletedActivity");
+		log.debug("REST request to get completedActivity by phoneNumber : {}", phoneNumber);
 		Page<CompletedActivityDTO> page = aggregateService.findCompletedActivityByRegisteredUserPhoneNumber(phoneNumber,
 				pageable);
 		List<CompletedActivityModel> completedActivityModels = new ArrayList<CompletedActivityModel>();
@@ -452,42 +417,6 @@ public class AggregateResource {
 	}
 
 	/**
-	 * GET /incompleted-activity/:phoneNumber : get the "phoneNumber"
-	 * incompletedActivity.
-	 *
-	 * @param registeredUserId the id of the completedActivityDTO to retrieve
-	 * @return the ResponseEntity with status 200 (OK) and with body the
-	 *         completedActivityDTO, or with status 404 (Not Found)
-	 */
-	@GetMapping("/incompleted-activity-by-phonenumber/{phoneNumber}")
-	@Timed
-	public ResponseEntity<List<ActivityModel>> findIncompletedActivityByRegisteredUserPhoneNumber(
-			@PathVariable Long phoneNumber, Pageable pageable) throws URISyntaxException {
-		log.debug("REST request to get InCompletedActivity");
-		Page<ActivityDTO> page = aggregateService.findIncompletedActivityByRegisteredUserPhoneNumber(phoneNumber,
-				pageable);
-		List<ActivityModel> activityModels = new ArrayList<ActivityModel>();
-		for (ActivityDTO activityDTO : page.getContent()) {
-			ActivityModel activityModel = new ActivityModel();
-			InstructionVideoDTO instructionVideoDTO = aggregateService
-					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
-			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
-					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
-					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
-			/*
-			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
-			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
-			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
-			 * ;
-			 */
-			activityModels.add(activityModel);
-		}
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
-				"/api/incompleted-activity-by-phonenumber/{phoneNumber}");
-		return ResponseEntity.ok().headers(headers).body(activityModels);
-	}
-
-	/**
 	 * GET /instruction-videos/:activityId : get the "activityId" of
 	 * instructionVideo.
 	 *
@@ -509,6 +438,77 @@ public class AggregateResource {
 
 		}
 		return ResponseEntity.ok().body(instructionVideoModel);
+	}
+
+	/**
+	 * GET /incompleted-activity/:registeredUserId : get the "registeredUserId"
+	 * incompletedActivity.
+	 *
+	 * @param registeredUserId the id of the completedActivityDTO to retrieve
+	 * @return the ResponseEntity with status 200 (OK) and with body the
+	 *         completedActivityDTO, or with status 404 (Not Found)
+	 */
+	@GetMapping("/incompleted-activity-by-registered-user/{registeredUserId}")
+	@Timed
+	public ResponseEntity<List<ActivityModel>> findIncompletedActivityByRegisteredUserIdByQuery(
+			@PathVariable Long registeredUserId, Pageable pageable) throws URISyntaxException {
+		log.debug("REST request to get incompletedActivity by registeredUserId: {}", registeredUserId);
+		Page<ActivityDTO> page = aggregateService.findIncompletedActivityByRegisteredUserId(registeredUserId, pageable);
+		List<ActivityModel> activityModels = new ArrayList<ActivityModel>();
+		for (ActivityDTO activityDTO : page.getContent()) {
+			ActivityModel activityModel = new ActivityModel();
+			InstructionVideoDTO instructionVideoDTO = aggregateService
+					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
+			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
+					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
+					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
+			/*
+			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
+			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
+			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
+			 * ;
+			 */
+			activityModels.add(activityModel);
+		}
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
+				"/api/incompleted-activity-by-registered-user-by-query/{registeredUserId}");
+		return ResponseEntity.ok().headers(headers).body(activityModels);
+	}
+
+	/**
+	 * GET /incompleted-activity/:registeredUserId : get the "registeredUserId"
+	 * incompletedActivity.
+	 *
+	 * @param registeredUserId the id of the completedActivityDTO to retrieve
+	 * @return the ResponseEntity with status 200 (OK) and with body the
+	 *         completedActivityDTO, or with status 404 (Not Found)
+	 */
+	@GetMapping("/incompleted-activity-by-phone-number/{phoneNumber}")
+	@Timed
+	public ResponseEntity<List<ActivityModel>> findIncompletedActivityByPhoneNumberByQuery(
+			@PathVariable Long phoneNumber, Pageable pageable) throws URISyntaxException {
+		log.debug("REST request to get incompletedActivity by phoneNumber: {}", phoneNumber);
+		Page<ActivityDTO> page = aggregateService.findIncompletedActivityByRegisteredUserPhoneNumber(phoneNumber,
+				pageable);
+		List<ActivityModel> activityModels = new ArrayList<ActivityModel>();
+		for (ActivityDTO activityDTO : page.getContent()) {
+			ActivityModel activityModel = new ActivityModel();
+			InstructionVideoDTO instructionVideoDTO = aggregateService
+					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
+			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
+					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
+					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
+			/*
+			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
+			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
+			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
+			 * ;
+			 */
+			activityModels.add(activityModel);
+		}
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
+				"/api/incompleted-activity-by-phone-number-query/{phoneNumber}");
+		return ResponseEntity.ok().headers(headers).body(activityModels);
 	}
 
 }
