@@ -10,16 +10,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.lxisoft.domain.CompletedActivity;
-import com.lxisoft.domain.Media;
-import com.lxisoft.domain.RegisteredUser;
 import com.lxisoft.repository.ActivityRepository;
 import com.lxisoft.repository.CompletedActivityRepository;
 import com.lxisoft.repository.InstructionVideoRepository;
 import com.lxisoft.repository.MediaRepository;
 import com.lxisoft.repository.RegisteredUserRepository;
-import com.lxisoft.service.AggregateService;
+import com.lxisoft.service.AggregateQueryService;
 import com.lxisoft.service.dto.ActivityDTO;
 import com.lxisoft.service.dto.CompletedActivityDTO;
 import com.lxisoft.service.dto.InstructionVideoDTO;
@@ -33,9 +29,9 @@ import com.lxisoft.service.mapper.RegisteredUserMapper;
 
 @Service
 @Transactional
-public class AggregateServiceImpl implements AggregateService {
+public class AggregateQueryServiceImpl implements AggregateQueryService {
 
-	private final Logger log = LoggerFactory.getLogger(AggregateServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(AggregateQueryServiceImpl.class);
 
 	private final RegisteredUserRepository registeredUserRepository;
 
@@ -57,7 +53,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 	private final InstructionVideoMapper instructionVideoMapper;
 
-	public AggregateServiceImpl(RegisteredUserRepository registeredUserRepository,
+	public AggregateQueryServiceImpl(RegisteredUserRepository registeredUserRepository,
 			RegisteredUserMapper registeredUserMapper, ActivityMapper activityMapper,
 			ActivityRepository activityRepository, CompletedActivityRepository completedActivityRepository,
 			MediaRepository mediaRepository, MediaMapper mediaMapper, CompletedActivityMapper completedActivityMapper,
@@ -75,20 +71,7 @@ public class AggregateServiceImpl implements AggregateService {
 		this.instructionVideoMapper = instructionVideoMapper;
 	}
 
-	/**
-	 * Save a registeredUser.
-	 *
-	 * @param RegisteredUserDTO the entity to save
-	 * @return the persisted entity
-	 */
-
-	@Override
-	public RegisteredUserDTO saveRegisteredUser(RegisteredUserDTO registeredUserDTO) {
-		log.debug("Request to save RegisteredUser : {}", registeredUserDTO);
-		RegisteredUser registeredUser = registeredUserMapper.toEntity(registeredUserDTO);
-		registeredUser = registeredUserRepository.save(registeredUser);
-		return registeredUserMapper.toDto(registeredUser);
-	}
+	
 
 	/**
 	 * Get all the registeredUsers.
@@ -114,32 +97,7 @@ public class AggregateServiceImpl implements AggregateService {
 		return activityRepository.findById(id).map(activityMapper::toDto);
 	}
 
-	/**
-	 * Save a registeredActivity.
-	 *
-	 * @param CompletedActivityDTO the entity to save
-	 * @return the persisted entity
-	 */
-	@Override
-	public CompletedActivityDTO saveCompletedActivity(CompletedActivityDTO completedActivityDTO) {
-
-		CompletedActivity completedActivity = completedActivityMapper.toEntity(completedActivityDTO);
-		completedActivity = completedActivityRepository.save(completedActivity);
-		return completedActivityMapper.toDto(completedActivity);
-	}
-
-	/**
-	 * Save a media.
-	 *
-	 * @param MediaDTO the entity to save
-	 * @return the persisted entity
-	 */
-	@Override
-	public MediaDTO saveMedia(MediaDTO mediaDTO) {
-		Media media = mediaMapper.toEntity(mediaDTO);
-		media = mediaRepository.save(media);
-		return mediaMapper.toDto(media);
-	}
+	
 
 	/**
 	 * Get one media by id.

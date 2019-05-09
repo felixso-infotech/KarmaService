@@ -11,15 +11,7 @@ import com.lxisoft.service.dto.InstructionVideoDTO;
 import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
 
-public interface AggregateService {
-
-	/**
-	 * Save a registeredUser.
-	 *
-	 * @param RegisteredUserDTO the entity to save
-	 * @return the persisted entity
-	 */
-	RegisteredUserDTO saveRegisteredUser(RegisteredUserDTO registeredUserDTO);
+public interface AggregateQueryService {	
 
 	/**
 	 * Get all the registeredUsers.
@@ -52,23 +44,7 @@ public interface AggregateService {
 	 * @return the entity
 	 */
 	Optional<ActivityDTO> findActivityById(Long activityId);
-
-	/**
-	 * Save a registeredActivity.
-	 *
-	 * @param CompletedActivityDTO the entity to save
-	 * @return the persisted entity
-	 */
-	CompletedActivityDTO saveCompletedActivity(CompletedActivityDTO completedActivityDTO);
-
-	/**
-	 * Save a media.
-	 *
-	 * @param MediaDTO the entity to save
-	 * @return the persisted entity
-	 */
-	MediaDTO saveMedia(MediaDTO mediaDTO);
-
+	
 	/**
 	 * Get one media by id.
 	 *
