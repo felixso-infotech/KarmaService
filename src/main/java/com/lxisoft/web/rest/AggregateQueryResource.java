@@ -1,8 +1,9 @@
 package com.lxisoft.web.rest;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
-import com.lxisoft.model.ActivityModel;
-import com.lxisoft.model.CompletedActivityModel;
-import com.lxisoft.model.InstructionVideoModel;
-import com.lxisoft.model.RegisteredUserModel;
 import com.lxisoft.service.AggregateQueryService;
 //import com.lxisoft.client.openlrw.api.FelixsoMongoEventControllerApi;
 import com.lxisoft.service.dto.ActivityDTO;
@@ -28,18 +25,18 @@ import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
 import com.lxisoft.web.rest.util.PaginationUtil;
 
+import io.github.jhipster.web.util.ResponseUtil;
+
 @RestController
 @RequestMapping("/api")
 public class AggregateQueryResource {
 	private final Logger log = LoggerFactory.getLogger(AggregateQueryResource.class);
-	
+
 	private AggregateQueryService aggregateQueryService;
 
-	 public AggregateQueryResource(AggregateQueryService aggregateQueryService)
-	 {
-	  this.aggregateQueryService = aggregateQueryService;
-	 }
-	 
+	public AggregateQueryResource(AggregateQueryService aggregateQueryService) {
+		this.aggregateQueryService = aggregateQueryService;
+	}
 
 	/**
 	 * GET /registered-users : get all the registeredUsers.
@@ -51,28 +48,26 @@ public class AggregateQueryResource {
 
 	@GetMapping("/query/registered-users")
 	@Timed
-	public ResponseEntity<List<RegisteredUserModel>> getAllRegisteredUsers(Pageable pageable) {
+	public ResponseEntity<List<RegisteredUserDTO>> getAllRegisteredUsers(Pageable pageable) {
 		log.debug("REST request to get a page of RegisteredUsers");
 		Page<RegisteredUserDTO> page = aggregateQueryService.findAllRegisteredUsers(pageable);
-		List<RegisteredUserModel> registeredUserModels = new ArrayList<RegisteredUserModel>();
-		
-		for (RegisteredUserDTO registeredUserDTO : page.getContent()) {
-			MediaDTO mediaDTO = aggregateQueryService.findMediaById(registeredUserDTO.getProfilePicId()).get();
-			RegisteredUserModel registeredUserModel = new RegisteredUserModel();
-			registeredUserModel = registeredUserModel.setRegisteredUserId(registeredUserDTO.getId())
-					.setFirstName(registeredUserDTO.getFirstName()).setLastName(registeredUserDTO.getLastName())
-					.setEmail(registeredUserDTO.getEmail()).setPhoneNumber(registeredUserDTO.getPhoneNumber())
-					.setNoOfCoins(registeredUserDTO.getNoOfCoins())
-					.setNoOfBronzeMedals(registeredUserDTO.getNoOfBronzeMedals())
-					.setNoOfSilverMedals(registeredUserDTO.getNoOfSilverMedals())
-					.setNoOfGoldMedals(registeredUserDTO.getNoOfGoldMedals()).setProfilePicId(mediaDTO.getId())
-					.setProfilePicFileName(mediaDTO.getFileName()).setProfilePicFile(mediaDTO.getFile())
-					.setProfilePicFileContentType(mediaDTO.getFileContentType());
-			registeredUserModels.add(registeredUserModel);
-		}
-		
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/registered-users");
-		return ResponseEntity.ok().headers(headers).body(registeredUserModels);
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/query/registered-users");
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
+	}
+
+	/**
+	 * GET /media : get media.
+	 *
+	 * @return the ResponseEntity with status 200 (OK) and with body the mediaDTO,
+	 *         or with status 404 (Not Found)
+	 */
+
+	@GetMapping("/query/media/{id}")
+	@Timed
+	public ResponseEntity<MediaDTO> getMediaById(@PathVariable Long id) {
+		log.debug("REST request to get media:{}", id);
+		Optional<MediaDTO> mediaDTO = aggregateQueryService.findMediaById(id);
+		return ResponseUtil.wrapOrNotFound(mediaDTO);
 	}
 
 	/**
@@ -85,24 +80,11 @@ public class AggregateQueryResource {
 
 	@GetMapping("/query/registered-users-by-phonenumber/{phoneNumber}")
 	@Timed
-	public ResponseEntity<RegisteredUserModel> getRegisteredUserByPhoneNumber(@PathVariable Long phoneNumber) {
+	public ResponseEntity<RegisteredUserDTO> getRegisteredUserByPhoneNumber(@PathVariable Long phoneNumber) {
 		log.debug("REST request to get a RegisteredUser by phone number");
-		RegisteredUserDTO registeredUserDTO = aggregateQueryService.findRegisteredUserByPhoneNumber(phoneNumber)
-				.orElse(null);
-		RegisteredUserModel registeredUserModel = new RegisteredUserModel();
-		if (registeredUserDTO != null) {
-			MediaDTO mediaDTO = aggregateQueryService.findMediaById(registeredUserDTO.getProfilePicId()).get();
-			registeredUserModel = registeredUserModel.setRegisteredUserId(registeredUserDTO.getId())
-					.setFirstName(registeredUserDTO.getFirstName()).setLastName(registeredUserDTO.getLastName())
-					.setEmail(registeredUserDTO.getEmail()).setPhoneNumber(registeredUserDTO.getPhoneNumber())
-					.setNoOfCoins(registeredUserDTO.getNoOfCoins())
-					.setNoOfBronzeMedals(registeredUserDTO.getNoOfBronzeMedals())
-					.setNoOfSilverMedals(registeredUserDTO.getNoOfSilverMedals())
-					.setNoOfGoldMedals(registeredUserDTO.getNoOfGoldMedals()).setProfilePicId(mediaDTO.getId())
-					.setProfilePicFileName(mediaDTO.getFileName()).setProfilePicFile(mediaDTO.getFile())
-					.setProfilePicFileContentType(mediaDTO.getFileContentType());
-		}
-		return ResponseEntity.ok().body(registeredUserModel);
+		Optional<RegisteredUserDTO> registeredUserDTO = aggregateQueryService
+				.findRegisteredUserByPhoneNumber(phoneNumber);
+		return ResponseUtil.wrapOrNotFound(registeredUserDTO);
 	}
 
 	/**
@@ -114,24 +96,11 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/registered-users/{id}")
 	@Timed
-	public ResponseEntity<RegisteredUserModel> getRegisteredUser(@PathVariable Long id) {
+	public ResponseEntity<RegisteredUserDTO> getRegisteredUserById(@PathVariable Long id) {
 		log.debug("REST request to get RegisteredUser : {}", id);
-		RegisteredUserDTO registeredUserDTO = aggregateQueryService.findRegisteredUserById(id).orElse(null);
-		//System.out.println("&&&&&&&&&&&&&&&&7" + registeredUserDTO);
-		RegisteredUserModel registeredUserModel = new RegisteredUserModel();
-		if (registeredUserDTO != null) {
-			MediaDTO mediaDTO = aggregateQueryService.findMediaById(registeredUserDTO.getProfilePicId()).get();
-			registeredUserModel = registeredUserModel.setRegisteredUserId(registeredUserDTO.getId())
-					.setFirstName(registeredUserDTO.getFirstName()).setLastName(registeredUserDTO.getLastName())
-					.setEmail(registeredUserDTO.getEmail()).setPhoneNumber(registeredUserDTO.getPhoneNumber())
-					.setNoOfCoins(registeredUserDTO.getNoOfCoins())
-					.setNoOfBronzeMedals(registeredUserDTO.getNoOfBronzeMedals())
-					.setNoOfSilverMedals(registeredUserDTO.getNoOfSilverMedals())
-					.setNoOfGoldMedals(registeredUserDTO.getNoOfGoldMedals()).setProfilePicId(mediaDTO.getId())
-					.setProfilePicFileName(mediaDTO.getFileName()).setProfilePicFile(mediaDTO.getFile())
-					.setProfilePicFileContentType(mediaDTO.getFileContentType());
-		}
-		return ResponseEntity.ok().body(registeredUserModel);
+		Optional<RegisteredUserDTO> registeredUserDTO = aggregateQueryService.findRegisteredUserById(id);
+
+		return ResponseUtil.wrapOrNotFound(registeredUserDTO);
 	}
 
 	/**
@@ -143,25 +112,28 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/activity/{activityId}")
 	@Timed
-	public ResponseEntity<ActivityModel> getActivityById(@PathVariable Long activityId, Pageable pageable) {
+	public ResponseEntity<ActivityDTO> getActivityById(@PathVariable Long activityId) {
 		log.debug("REST request to get a activitiy");
-		ActivityDTO activityDTO = aggregateQueryService.findActivityById(activityId).orElse(null);
-		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&77" + activityDTO);
-		ActivityModel activityModel = new ActivityModel();
-		if (activityDTO != null) {
-			InstructionVideoDTO instructionVideoDTO = aggregateQueryService
-					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
-			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
-					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
-					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
-			/*
-			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
-			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
-			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
-			 * ;
-			 */
-		}
-		return ResponseEntity.ok().body(activityModel);
+		Optional<ActivityDTO> activityDTO = aggregateQueryService.findActivityById(activityId);
+		return ResponseUtil.wrapOrNotFound(activityDTO);
+	}
+
+	/**
+	 * GET /query/instruction-video/:instructionVideoId : get the
+	 * "instructionVideoId" instruction video.
+	 *
+	 * @param instructionVideoId the instructionVideoId of the instructionVideoDTO
+	 *                           to retrieve
+	 * @return the ResponseEntity with status 200 (OK) and with body the
+	 *         instructionVideoDTO, or with status 404 (Not Found)
+	 */
+	@GetMapping("/query/instruction-video/{instructionVideoId}")
+	@Timed
+	public ResponseEntity<InstructionVideoDTO> getInstructionVideoById(@PathVariable Long instructionVideoId) {
+		log.debug("REST request to get a instructionvideo");
+		Optional<InstructionVideoDTO> instructionVideoDTO = aggregateQueryService
+				.findInstructionVideoById(instructionVideoId);
+		return ResponseUtil.wrapOrNotFound(instructionVideoDTO);
 	}
 
 	/**
@@ -173,27 +145,11 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/activities")
 	@Timed
-	public ResponseEntity<List<ActivityModel>> getAllActivities(Pageable pageable) {
+	public ResponseEntity<List<ActivityDTO>> getAllActivities(Pageable pageable) {
 		log.debug("REST request to get a page of Activitiy");
 		Page<ActivityDTO> page = aggregateQueryService.findAllActivities(pageable);
-		List<ActivityModel> activityModels = new ArrayList<ActivityModel>();
-		for (ActivityDTO activityDTO : page.getContent()) {
-			ActivityModel activityModel = new ActivityModel();
-			InstructionVideoDTO instructionVideoDTO = aggregateQueryService
-					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
-			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
-					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
-					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
-			/*
-			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
-			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
-			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
-			 * ;
-			 */
-			activityModels.add(activityModel);
-		}
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activities");
-		return ResponseEntity.ok().headers(headers).body(activityModels);
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
 
 	}
 
@@ -207,30 +163,32 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/completed-activity/{completedActivityId}")
 	@Timed
-	public ResponseEntity<CompletedActivityModel> findCompletedActivityById(@PathVariable Long completedActivityId,
-			Pageable pageable) throws URISyntaxException {
+	public ResponseEntity<CompletedActivityDTO> getCompletedActivityById(@PathVariable Long completedActivityId)
+			throws URISyntaxException {
 		log.debug("REST request to get CompletedActivity by id : {}", completedActivityId);
 
-		CompletedActivityDTO completedActivityDTO = aggregateQueryService.findCompletedActivityById(completedActivityId)
-				.orElse(null);
-		CompletedActivityModel completedActivityModel = new CompletedActivityModel();
-		if (completedActivityDTO != null) {
-			ActivityDTO activityDTO = aggregateQueryService.findActivityById(completedActivityDTO.getActivityId())
-					.orElse(null);
-			completedActivityModel.setId(completedActivityDTO.getId())
-					.setRegisteredUserId(completedActivityDTO.getRegisteredUserId())
-					.setActivityId(completedActivityDTO.getActivityId());
-			if (activityDTO != null) {
-				completedActivityModel.setActivityTitle(activityDTO.getTitle())
-						.setActivityDescription(activityDTO.getDescription());
-			}
-			List<MediaDTO> mediaDTOs = aggregateQueryService
-					.findMediaByCompletedActivityId(completedActivityDTO.getId(), pageable).getContent();
-			completedActivityModel.setProofs(mediaDTOs);
-		}
+		Optional<CompletedActivityDTO> completedActivityDTO = aggregateQueryService
+				.findCompletedActivityById(completedActivityId);
+		return ResponseUtil.wrapOrNotFound(completedActivityDTO);
+	}
 
-		return ResponseEntity.ok().body(completedActivityModel);
+	/**
+	 * GET /activities : get all the activities.
+	 *
+	 * @param pageable the pagination information
+	 * @return the ResponseEntity with status 200 (OK) and the list of activities in
+	 *         body
+	 */
+	@GetMapping("/query/completed-activity-media/{completedActivityId}")
+	@Timed
+	public ResponseEntity<List<MediaDTO>> getMediaByCompletedActivityId(@PathVariable Long completedActivityId,
+			Pageable pageable) throws URISyntaxException {
 
+		Page<MediaDTO> page = aggregateQueryService.findMediaByCompletedActivityId(completedActivityId, pageable);
+
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
+				"/api/query/completed-activity/{completedActivityId}");
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
 	/**
@@ -243,31 +201,14 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/completed-activity-by-registered-user/{registeredUserId}")
 	@Timed
-	public ResponseEntity<List<CompletedActivityModel>> findCompletedActivityByRegisteredUserId(
+	public ResponseEntity<List<CompletedActivityDTO>> getCompletedActivityByRegisteredUserId(
 			@PathVariable Long registeredUserId, Pageable pageable) throws URISyntaxException {
 		log.debug("REST request to get completedActivity by registeredUderId : {}", registeredUserId);
-		Page<CompletedActivityDTO> page = aggregateQueryService.findCompletedActivityByRegisteredUserId(registeredUserId,
-				pageable);
-		List<CompletedActivityModel> completedActivityModels = new ArrayList<CompletedActivityModel>();
-		for (CompletedActivityDTO completedActivityDTO : page.getContent()) {
-			CompletedActivityModel completedActivityModel = new CompletedActivityModel();
-			ActivityDTO activityDTO = aggregateQueryService.findActivityById(completedActivityDTO.getActivityId())
-					.orElse(null);
-			completedActivityModel.setId(completedActivityDTO.getId())
-					.setRegisteredUserId(completedActivityDTO.getRegisteredUserId())
-					.setActivityId(completedActivityDTO.getActivityId());
-			if (activityDTO != null) {
-				completedActivityModel.setActivityTitle(activityDTO.getTitle())
-						.setActivityDescription(activityDTO.getDescription());
-			}
-			List<MediaDTO> mediaDTOs = aggregateQueryService
-					.findMediaByCompletedActivityId(completedActivityDTO.getId(), pageable).getContent();
-			completedActivityModel.setProofs(mediaDTOs);
-			completedActivityModels.add(completedActivityModel);
-		}
+		Page<CompletedActivityDTO> page = aggregateQueryService
+				.findCompletedActivityByRegisteredUserId(registeredUserId, pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
-				"/api/completed-activity-by-registered-user/{registeredUserId}");
-		return ResponseEntity.ok().headers(headers).body(completedActivityModels);
+				"/api/query/completed-activity-by-registered-user/{registeredUserId}");
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
 	/**
@@ -281,31 +222,14 @@ public class AggregateQueryResource {
 
 	@GetMapping("/query/completed-activity-by-phonenumber/{phoneNumber}")
 	@Timed
-	public ResponseEntity<List<CompletedActivityModel>> findCompletedActivityByRegisteredUserPhoneNumber(
+	public ResponseEntity<List<CompletedActivityDTO>> getCompletedActivityByRegisteredUserPhoneNumber(
 			@PathVariable Long phoneNumber, Pageable pageable) throws URISyntaxException {
 		log.debug("REST request to get completedActivity by phoneNumber : {}", phoneNumber);
-		Page<CompletedActivityDTO> page = aggregateQueryService.findCompletedActivityByRegisteredUserPhoneNumber(phoneNumber,
-				pageable);
-		List<CompletedActivityModel> completedActivityModels = new ArrayList<CompletedActivityModel>();
-		for (CompletedActivityDTO completedActivityDTO : page.getContent()) {
-			CompletedActivityModel completedActivityModel = new CompletedActivityModel();
-			ActivityDTO activityDTO = aggregateQueryService.findActivityById(completedActivityDTO.getActivityId())
-					.orElse(null);
-			completedActivityModel.setId(completedActivityDTO.getId())
-					.setRegisteredUserId(completedActivityDTO.getRegisteredUserId())
-					.setActivityId(completedActivityDTO.getActivityId());
-			if (activityDTO != null) {
-				completedActivityModel.setActivityTitle(activityDTO.getTitle())
-						.setActivityDescription(activityDTO.getDescription());
-			}
-			List<MediaDTO> mediaDTOs = aggregateQueryService
-					.findMediaByCompletedActivityId(completedActivityDTO.getId(), pageable).getContent();
-			completedActivityModel.setProofs(mediaDTOs);
-			completedActivityModels.add(completedActivityModel);
-		}
+		Page<CompletedActivityDTO> page = aggregateQueryService
+				.findCompletedActivityByRegisteredUserPhoneNumber(phoneNumber, pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
-				"/api/completed-activity-by-phonenumber/{phoneNumber}");
-		return ResponseEntity.ok().headers(headers).body(completedActivityModels);
+				"/api/query/completed-activity-by-phonenumber/{phoneNumber}");
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
 	/**
@@ -318,18 +242,11 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/instruction-video-by-activityId/{activityId}")
 	@Timed
-	public ResponseEntity<InstructionVideoModel> getInstructionVideoByActivityId(@PathVariable Long activityId) {
+	public ResponseEntity<InstructionVideoDTO> getInstructionVideoByActivityId(@PathVariable Long activityId) {
 		log.debug("REST request to get InstructionVideo : {}", activityId);
-		InstructionVideoDTO instructionVideoDTO = aggregateQueryService.findInstructionVideoByActivityId(activityId)
-				.orElse(null);
-		InstructionVideoModel instructionVideoModel = new InstructionVideoModel();
-		if (instructionVideoDTO != null) {
-			instructionVideoModel.setId(instructionVideoDTO.getId()).setFileName(instructionVideoDTO.getFileName())
-					.setFile(instructionVideoDTO.getFile())
-					.setFileContentType(instructionVideoDTO.getFileContentType());
-
-		}
-		return ResponseEntity.ok().body(instructionVideoModel);
+		Optional<InstructionVideoDTO> instructionVideoDTO = aggregateQueryService
+				.findInstructionVideoByActivityId(activityId);
+		return ResponseUtil.wrapOrNotFound(instructionVideoDTO);
 	}
 
 	/**
@@ -342,29 +259,14 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/incompleted-activity-by-registered-user/{registeredUserId}")
 	@Timed
-	public ResponseEntity<List<ActivityModel>> findIncompletedActivityByRegisteredUserIdByQuery(
+	public ResponseEntity<List<ActivityDTO>> findIncompletedActivityByRegisteredUserId(
 			@PathVariable Long registeredUserId, Pageable pageable) throws URISyntaxException {
 		log.debug("REST request to get incompletedActivity by registeredUserId: {}", registeredUserId);
-		Page<ActivityDTO> page = aggregateQueryService.findIncompletedActivityByRegisteredUserId(registeredUserId, pageable);
-		List<ActivityModel> activityModels = new ArrayList<ActivityModel>();
-		for (ActivityDTO activityDTO : page.getContent()) {
-			ActivityModel activityModel = new ActivityModel();
-			InstructionVideoDTO instructionVideoDTO = aggregateQueryService
-					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
-			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
-					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
-					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
-			/*
-			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
-			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
-			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
-			 * ;
-			 */
-			activityModels.add(activityModel);
-		}
+		Page<ActivityDTO> page = aggregateQueryService.findIncompletedActivityByRegisteredUserId(registeredUserId,
+				pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
 				"/api/incompleted-activity-by-registered-user-by-query/{registeredUserId}");
-		return ResponseEntity.ok().headers(headers).body(activityModels);
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
 	/**
@@ -377,30 +279,14 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/incompleted-activity-by-phone-number/{phoneNumber}")
 	@Timed
-	public ResponseEntity<List<ActivityModel>> findIncompletedActivityByPhoneNumberByQuery(
-			@PathVariable Long phoneNumber, Pageable pageable) throws URISyntaxException {
+	public ResponseEntity<List<ActivityDTO>> findIncompletedActivityByPhoneNumber(@PathVariable Long phoneNumber,
+			Pageable pageable) throws URISyntaxException {
 		log.debug("REST request to get incompletedActivity by phoneNumber: {}", phoneNumber);
 		Page<ActivityDTO> page = aggregateQueryService.findIncompletedActivityByRegisteredUserPhoneNumber(phoneNumber,
 				pageable);
-		List<ActivityModel> activityModels = new ArrayList<ActivityModel>();
-		for (ActivityDTO activityDTO : page.getContent()) {
-			ActivityModel activityModel = new ActivityModel();
-			InstructionVideoDTO instructionVideoDTO = aggregateQueryService
-					.findInstructionVideoById(activityDTO.getInstructionVideoId()).orElse(null);
-			activityModel.setId(activityDTO.getId()).setTitle(activityDTO.getTitle())
-					.setDescription(activityDTO.getDescription()).setSuccessMessage(activityDTO.getSuccessMessage())
-					.setUrl(activityDTO.getUrl()).setInstructionVideoId(instructionVideoDTO.getId());
-			/*
-			 * .setInstructionVideoFileName(instructionVideoDTO.getFileName())
-			 * .setInstructionVideoFile(instructionVideoDTO.getFile())
-			 * .setInstructionVideoFileContentType(instructionVideoDTO.getFileContentType())
-			 * ;
-			 */
-			activityModels.add(activityModel);
-		}
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,
 				"/api/incompleted-activity-by-phone-number-query/{phoneNumber}");
-		return ResponseEntity.ok().headers(headers).body(activityModels);
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
 }
