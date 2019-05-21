@@ -11,7 +11,7 @@ import com.lxisoft.service.dto.InstructionVideoDTO;
 import com.lxisoft.service.dto.MediaDTO;
 import com.lxisoft.service.dto.RegisteredUserDTO;
 
-public interface AggregateQueryService {	
+public interface AggregateQueryService {
 
 	/**
 	 * Get all the registeredUsers.
@@ -44,7 +44,7 @@ public interface AggregateQueryService {
 	 * @return the entity
 	 */
 	Optional<ActivityDTO> findActivityById(Long activityId);
-	
+
 	/**
 	 * Get one media by id.
 	 *
@@ -132,5 +132,13 @@ public interface AggregateQueryService {
 	 * @return the list of entity
 	 */
 	Page<MediaDTO> findMediaByCompletedActivityId(Long completedActivityId, Pageable pageable);
+
+	/**
+	 * Get one registeredUser by userIdd.
+	 *
+	 * @param userId the id of the entity
+	 * @return the entity
+	 */
+	Optional<RegisteredUserDTO> findRegisteredUserByUserId(String userId);
 
 }

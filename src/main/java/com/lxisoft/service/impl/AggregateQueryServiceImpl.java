@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.lxisoft.repository.ActivityRepository;
 import com.lxisoft.repository.CompletedActivityRepository;
 import com.lxisoft.repository.InstructionVideoRepository;
@@ -71,8 +72,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		this.instructionVideoMapper = instructionVideoMapper;
 	}
 
-	
-
 	/**
 	 * Get all the registeredUsers.
 	 *
@@ -96,8 +95,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	public Optional<ActivityDTO> findActivityById(Long id) {
 		return activityRepository.findById(id).map(activityMapper::toDto);
 	}
-
-	
 
 	/**
 	 * Get one media by id.
@@ -262,6 +259,18 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		List<ActivityDTO> activityDTOs = activityRepository
 				.findIncompletedActivitiesByPhoneNumber(phoneNumber, pageable).map(activityMapper::toDto).getContent();
 		return new PageImpl<ActivityDTO>(activityDTOs, pageable, activityDTOs.size());
+	}
+
+	/**
+	 * Get one registeredUser by userIdd.
+	 *
+	 * @param userId the id of the entity
+	 * @return the entity
+	 */
+	@Override
+	public Optional<RegisteredUserDTO> findRegisteredUserByUserId(String userId) {
+		log.debug("Request to get RegisteredUser by userId");
+		return registeredUserRepository.findByUserId(userId).map(registeredUserMapper::toDto);
 	}
 
 }

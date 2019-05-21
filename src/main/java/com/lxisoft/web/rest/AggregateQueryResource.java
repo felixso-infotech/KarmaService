@@ -289,4 +289,19 @@ public class AggregateQueryResource {
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
+	/**
+	 * GET /registered-user/:userId : get the "userId" registeredUser.
+	 *
+	 * @param userId the id of the registeredUserDTO to retrieve
+	 * @return the ResponseEntity with status 200 (OK) and with body the
+	 *         registeredUserDTO, or with status 404 (Not Found)
+	 */
+	@GetMapping("/query/registered-user/userId")
+	@Timed
+	public ResponseEntity<RegisteredUserDTO> getRegisteredUserByUserId(@PathVariable String userId) {
+		log.debug("REST request to get RegisteredUser : {}", userId);
+		Optional<RegisteredUserDTO> registeredUserDTO = aggregateQueryService.findRegisteredUserByUserId(userId);
+		return ResponseUtil.wrapOrNotFound(registeredUserDTO);
+	}
+
 }
