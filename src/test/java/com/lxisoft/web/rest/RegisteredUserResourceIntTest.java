@@ -42,6 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = KarmaApp.class)
 public class RegisteredUserResourceIntTest {
 
+    private static final String DEFAULT_USER_ID = "AAAAAAAAAA";
+    private static final String UPDATED_USER_ID = "BBBBBBBBBB";
+
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
 
@@ -110,6 +113,7 @@ public class RegisteredUserResourceIntTest {
      */
     public static RegisteredUser createEntity(EntityManager em) {
         RegisteredUser registeredUser = new RegisteredUser()
+            .userId(DEFAULT_USER_ID)
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
             .email(DEFAULT_EMAIL)
@@ -142,6 +146,7 @@ public class RegisteredUserResourceIntTest {
         List<RegisteredUser> registeredUserList = registeredUserRepository.findAll();
         assertThat(registeredUserList).hasSize(databaseSizeBeforeCreate + 1);
         RegisteredUser testRegisteredUser = registeredUserList.get(registeredUserList.size() - 1);
+        assertThat(testRegisteredUser.getUserId()).isEqualTo(DEFAULT_USER_ID);
         assertThat(testRegisteredUser.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testRegisteredUser.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testRegisteredUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
@@ -183,6 +188,7 @@ public class RegisteredUserResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(registeredUser.getId().intValue())))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.toString())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
@@ -204,6 +210,7 @@ public class RegisteredUserResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(registeredUser.getId().intValue()))
+            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.toString()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
@@ -235,6 +242,7 @@ public class RegisteredUserResourceIntTest {
         // Disconnect from session so that the updates on updatedRegisteredUser are not directly saved in db
         em.detach(updatedRegisteredUser);
         updatedRegisteredUser
+            .userId(UPDATED_USER_ID)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
@@ -254,6 +262,7 @@ public class RegisteredUserResourceIntTest {
         List<RegisteredUser> registeredUserList = registeredUserRepository.findAll();
         assertThat(registeredUserList).hasSize(databaseSizeBeforeUpdate);
         RegisteredUser testRegisteredUser = registeredUserList.get(registeredUserList.size() - 1);
+        assertThat(testRegisteredUser.getUserId()).isEqualTo(UPDATED_USER_ID);
         assertThat(testRegisteredUser.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testRegisteredUser.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testRegisteredUser.getEmail()).isEqualTo(UPDATED_EMAIL);

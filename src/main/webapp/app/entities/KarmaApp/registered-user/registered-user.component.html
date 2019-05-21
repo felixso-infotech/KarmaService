@@ -15,6 +15,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userId"><span>User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="firstName"><span>First Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="lastName"><span>Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="email"><span>Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -30,6 +31,7 @@
             <tbody>
             <tr *ngFor="let registeredUser of registeredUsers ;trackBy: trackId">
                 <td><a [routerLink]="['/registered-user', registeredUser.id, 'view' ]">{{registeredUser.id}}</a></td>
+                <td>{{registeredUser.userId}}</td>
                 <td>{{registeredUser.firstName}}</td>
                 <td>{{registeredUser.lastName}}</td>
                 <td>{{registeredUser.email}}</td>

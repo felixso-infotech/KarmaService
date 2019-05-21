@@ -21,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(RegisteredUserService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new RegisteredUser(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 0, 0, 0, 0);
+      elemDefault = new RegisteredUser(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 0, 0, 0, 0);
     });
 
     describe('Service methods', async () => {
@@ -55,6 +55,7 @@ describe('Service Tests', () => {
       it('should update a RegisteredUser', async () => {
         const returnedFromService = Object.assign(
           {
+            userId: 'BBBBBB',
             firstName: 'BBBBBB',
             lastName: 'BBBBBB',
             email: 'BBBBBB',
@@ -79,6 +80,7 @@ describe('Service Tests', () => {
       it('should return a list of RegisteredUser', async () => {
         const returnedFromService = Object.assign(
           {
+            userId: 'BBBBBB',
             firstName: 'BBBBBB',
             lastName: 'BBBBBB',
             email: 'BBBBBB',

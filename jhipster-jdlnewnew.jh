@@ -3,6 +3,7 @@
  * @author Muhammed Ruhail
  */
 entity RegisteredUser{
+	userId String,
 	firstName String,
     lastName String, 
     email String,

@@ -2,6 +2,7 @@ import { ICompletedActivity } from 'app/shared/model/KarmaApp/completed-activity
 
 export interface IRegisteredUser {
   id?: number;
+  userId?: string;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -17,6 +18,7 @@ export interface IRegisteredUser {
 export class RegisteredUser implements IRegisteredUser {
   constructor(
     public id?: number,
+    public userId?: string,
     public firstName?: string,
     public lastName?: string,
     public email?: string,

@@ -2,6 +2,10 @@
     "name": "RegisteredUser",
     "fields": [
         {
+            "fieldName": "userId",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "firstName",
             "fieldType": "String"
         },

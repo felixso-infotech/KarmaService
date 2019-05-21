@@ -25,6 +25,9 @@ public class RegisteredUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id")
+    private String userId;
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -61,6 +64,19 @@ public class RegisteredUser implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public RegisteredUser userId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -230,6 +246,7 @@ public class RegisteredUser implements Serializable {
     public String toString() {
         return "RegisteredUser{" +
             "id=" + getId() +
+            ", userId='" + getUserId() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +

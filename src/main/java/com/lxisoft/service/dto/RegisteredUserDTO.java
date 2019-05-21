@@ -8,133 +8,151 @@ import java.util.Objects;
  */
 public class RegisteredUserDTO implements Serializable {
 
-	private Long id;
+    private Long id;
 
-	private String firstName;
+    private String userId;
 
-	private String lastName;
+    private String firstName;
 
-	private String email;
+    private String lastName;
 
-	private Long phoneNumber;
+    private String email;
 
-	private Long noOfCoins;
+    private Long phoneNumber;
 
-	private Long noOfBronzeMedals;
+    private Long noOfCoins;
 
-	private Long noOfSilverMedals;
+    private Long noOfBronzeMedals;
 
-	private Long noOfGoldMedals;
+    private Long noOfSilverMedals;
 
-	private Long profilePicId;
+    private Long noOfGoldMedals;
 
-	public Long getId() {
-		return id;
-	}
+    private Long profilePicId;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public Long getPhoneNumber() {
-		return phoneNumber;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setPhoneNumber(Long phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Long getNoOfCoins() {
-		return noOfCoins;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setNoOfCoins(Long noOfCoins) {
-		this.noOfCoins = noOfCoins;
-	}
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public Long getNoOfBronzeMedals() {
-		return noOfBronzeMedals;
-	}
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setNoOfBronzeMedals(Long noOfBronzeMedals) {
-		this.noOfBronzeMedals = noOfBronzeMedals;
-	}
+    public Long getNoOfCoins() {
+        return noOfCoins;
+    }
 
-	public Long getNoOfSilverMedals() {
-		return noOfSilverMedals;
-	}
+    public void setNoOfCoins(Long noOfCoins) {
+        this.noOfCoins = noOfCoins;
+    }
 
-	public void setNoOfSilverMedals(Long noOfSilverMedals) {
-		this.noOfSilverMedals = noOfSilverMedals;
-	}
+    public Long getNoOfBronzeMedals() {
+        return noOfBronzeMedals;
+    }
 
-	public Long getNoOfGoldMedals() {
-		return noOfGoldMedals;
-	}
+    public void setNoOfBronzeMedals(Long noOfBronzeMedals) {
+        this.noOfBronzeMedals = noOfBronzeMedals;
+    }
 
-	public void setNoOfGoldMedals(Long noOfGoldMedals) {
-		this.noOfGoldMedals = noOfGoldMedals;
-	}
+    public Long getNoOfSilverMedals() {
+        return noOfSilverMedals;
+    }
 
-	public Long getProfilePicId() {
-		return profilePicId;
-	}
+    public void setNoOfSilverMedals(Long noOfSilverMedals) {
+        this.noOfSilverMedals = noOfSilverMedals;
+    }
 
-	public void setProfilePicId(Long mediaId) {
-		this.profilePicId = mediaId;
-	}
+    public Long getNoOfGoldMedals() {
+        return noOfGoldMedals;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+    public void setNoOfGoldMedals(Long noOfGoldMedals) {
+        this.noOfGoldMedals = noOfGoldMedals;
+    }
 
-		RegisteredUserDTO registeredUserDTO = (RegisteredUserDTO) o;
-		if (registeredUserDTO.getId() == null || getId() == null) {
-			return false;
-		}
-		return Objects.equals(getId(), registeredUserDTO.getId());
-	}
+    public Long getProfilePicId() {
+        return profilePicId;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(getId());
-	}
+    public void setProfilePicId(Long mediaId) {
+        this.profilePicId = mediaId;
+    }
 
-	@Override
-	public String toString() {
-		return "RegisteredUserDTO{" + "id=" + getId() + ", firstName='" + getFirstName() + "'" + ", lastName='"
-				+ getLastName() + "'" + ", email='" + getEmail() + "'" + ", phoneNumber=" + getPhoneNumber()
-				+ ", noOfCoins=" + getNoOfCoins() + ", noOfBronzeMedals=" + getNoOfBronzeMedals()
-				+ ", noOfSilverMedals=" + getNoOfSilverMedals() + ", noOfGoldMedals=" + getNoOfGoldMedals()
-				+ ", profilePic=" + getProfilePicId() + "}";
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        RegisteredUserDTO registeredUserDTO = (RegisteredUserDTO) o;
+        if (registeredUserDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), registeredUserDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "RegisteredUserDTO{" +
+            "id=" + getId() +
+            ", userId='" + getUserId() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phoneNumber=" + getPhoneNumber() +
+            ", noOfCoins=" + getNoOfCoins() +
+            ", noOfBronzeMedals=" + getNoOfBronzeMedals() +
+            ", noOfSilverMedals=" + getNoOfSilverMedals() +
+            ", noOfGoldMedals=" + getNoOfGoldMedals() +
+            ", profilePic=" + getProfilePicId() +
+            "}";
+    }
 }
