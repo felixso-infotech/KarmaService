@@ -296,7 +296,7 @@ public class AggregateQueryResource {
 	 * @return the ResponseEntity with status 200 (OK) and with body the
 	 *         registeredUserDTO, or with status 404 (Not Found)
 	 */
-	@GetMapping("/query/registered-user/userId")
+	@GetMapping("/query/registered-user/{userId}")
 	@Timed
 	public ResponseEntity<RegisteredUserDTO> getRegisteredUserByUserId(@PathVariable String userId) {
 		log.debug("REST request to get RegisteredUser : {}", userId);
