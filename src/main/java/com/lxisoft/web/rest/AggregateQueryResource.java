@@ -303,5 +303,24 @@ public class AggregateQueryResource {
 		Optional<RegisteredUserDTO> registeredUserDTO = aggregateQueryService.findRegisteredUserByUserId(userId);
 		return ResponseUtil.wrapOrNotFound(registeredUserDTO);
 	}
+	
+	/**
+	 * GET /activities : get all medias of registered user.
+	 *
+	 * @param pageable the pagination information
+	 * @return the ResponseEntity with status 200 (OK) and the list of medias in
+	 *         body
+	 */
+	@GetMapping("/query/all-completed-activity-media/{registeredUserId}")
+	@Timed
+	public ResponseEntity<List<MediaDTO>> findAllCompletedActivityMediasByRegisteredUserId(@PathVariable Long registeredUserId,
+			Pageable pageable) throws URISyntaxException {
+
+		Page<MediaDTO> completedActivityMedias = aggregateQueryService.findAllCompletedActivityMediasByRegisteredUserId(registeredUserId, pageable);
+
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(completedActivityMedias,
+				"/api/query/completed-activity/{completedActivityId}");
+		return ResponseEntity.ok().headers(headers).body(completedActivityMedias.getContent());
+	}
 
 }

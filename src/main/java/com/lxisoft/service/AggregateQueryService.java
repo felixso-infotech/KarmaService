@@ -1,5 +1,6 @@
 package com.lxisoft.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -141,4 +142,12 @@ public interface AggregateQueryService {
 	 */
 	Optional<RegisteredUserDTO> findRegisteredUserByUserId(String userId);
 
+
+	/**
+	 * Get list of medias by registeredUserId.
+	 *
+	 * @param registeredUserId the id of the user
+	 * @return the list of entity
+	 */
+	Page<MediaDTO> findAllCompletedActivityMediasByRegisteredUserId(Long registeredUserId, Pageable pageable);
 }

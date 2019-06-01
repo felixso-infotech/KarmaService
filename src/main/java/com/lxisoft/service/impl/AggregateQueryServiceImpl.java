@@ -1,7 +1,9 @@
 package com.lxisoft.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lxisoft.domain.CompletedActivity;
+import com.lxisoft.domain.Media;
 import com.lxisoft.repository.ActivityRepository;
 import com.lxisoft.repository.CompletedActivityRepository;
 import com.lxisoft.repository.InstructionVideoRepository;
@@ -271,6 +275,39 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	public Optional<RegisteredUserDTO> findRegisteredUserByUserId(String userId) {
 		log.debug("Request to get RegisteredUser by userId");
 		return registeredUserRepository.findByUserId(userId).map(registeredUserMapper::toDto);
+	}
+
+	/**
+	 * Get list of medias by registeredUserId.
+	 *
+	 * @param registeredUserId the id of the user
+	 * @return the list of entity
+	 */
+	@Override
+	public Page<MediaDTO> findAllCompletedActivityMediasByRegisteredUserId(Long registeredUserId, Pageable pageable) {
+		log.debug("Request to get completed activity medias by registeredUserId");
+		
+		List<CompletedActivity> completedActivityList=completedActivityRepository.findByRegisteredUserId(registeredUserId, pageable).getContent();
+		List<MediaDTO> mediaDTOList=new ArrayList<MediaDTO>();
+		
+		for(CompletedActivity completedActivity:completedActivityList){
+			
+			log.debug("********completed activity proof size{}",completedActivity.getProofs().size());
+			
+			if(!completedActivity.getProofs().isEmpty()){
+				log.debug("********inside condition",completedActivity.getProofs().isEmpty());
+				
+				
+				for(Media media:completedActivity.getProofs()){	
+					Optional<MediaDTO> completedActivitymedia=mediaRepository.findById(media.getId()).map(mediaMapper::toDto);			
+					mediaDTOList.add(completedActivitymedia.get());
+				}	
+			}
+		}
+		Page<MediaDTO> mediaDtos = new PageImpl<MediaDTO>(mediaDTOList, pageable, mediaDTOList.size());
+		log.debug("********mediaDTOList size{}",mediaDtos.getSize());
+		
+		return mediaDtos;
 	}
 
 }
