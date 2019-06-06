@@ -30,7 +30,7 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
 		http.csrf().disable().exceptionHandling().authenticationEntryPoint(problemSupport)
 				.accessDeniedHandler(problemSupport).and().headers().frameOptions().disable().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().antMatchers("/")
-				.permitAll();
+				.authenticated();
 		/*
 		 * .antMatchers("/api/**").authenticated()
 		 * .antMatchers("/management/health").permitAll()
