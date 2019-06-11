@@ -1,5 +1,6 @@
 package com.lxisoft.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,8 +108,9 @@ public interface AggregateQueryService {
 	 *
 	 * @param activityId the id of the activity of instruction video
 	 * @return the entity
+	 * @throws IOException 
 	 */
-	Optional<InstructionVideoDTO> findInstructionVideoByActivityId(Long activityId);
+	Optional<InstructionVideoDTO> findInstructionVideoByActivityId(Long activityId) throws IOException;
 
 	/**
 	 * Get one instructionVideo by id.

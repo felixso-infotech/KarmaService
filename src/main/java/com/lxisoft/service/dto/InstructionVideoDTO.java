@@ -20,9 +20,19 @@ public class InstructionVideoDTO implements Serializable {
     private String fileContentType;
     
 	private String encodedInstructionVideo;
+	
+	private String fileUrl;
 
 
-    public Long getId() {
+    public String getFileUrl() {
+		return fileUrl;
+	}
+
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+	}
+
+	public Long getId() {
         return id;
     }
 

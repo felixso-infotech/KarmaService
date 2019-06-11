@@ -151,7 +151,10 @@ jhipster:
         contact-url:
         contact-email:
         license:
-        license-url:
+        license-url:   
+             
+upload:
+  path: src/main/resources/static/instruction-video/
 
 # ===================================================================
 # Application specific properties

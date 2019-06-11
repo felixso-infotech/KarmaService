@@ -1,5 +1,6 @@
 package com.lxisoft.web.rest;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
@@ -239,10 +240,11 @@ public class AggregateQueryResource {
 	 * @param id the id of the instructionVideoDTO to retrieve
 	 * @return the ResponseEntity with status 200 (OK) and with body the
 	 *         instructionVideoDTO, or with status 404 (Not Found)
+	 * @throws IOException http://localhost:8065
 	 */
 	@GetMapping("/query/instruction-video-by-activityId/{activityId}")
 	@Timed
-	public ResponseEntity<InstructionVideoDTO> getInstructionVideoByActivityId(@PathVariable Long activityId) {
+	public ResponseEntity<InstructionVideoDTO> getInstructionVideoByActivityId(@PathVariable Long activityId) throws IOException {
 		log.debug("REST request to get InstructionVideo : {}", activityId);
 		Optional<InstructionVideoDTO> instructionVideoDTO = aggregateQueryService
 				.findInstructionVideoByActivityId(activityId);
