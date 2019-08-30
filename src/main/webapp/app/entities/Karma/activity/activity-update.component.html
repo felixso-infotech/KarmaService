@@ -1,0 +1,88 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-activity-heading">Create or edit a Activity</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!activity.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="activity.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_title">Title</label>
+                    <input type="text" class="form-control" name="title" id="field_title"
+                        [(ngModel)]="activity.title" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="activity.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_successMessage">Success Message</label>
+                    <input type="text" class="form-control" name="successMessage" id="field_successMessage"
+                        [(ngModel)]="activity.successMessage" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_type">Type</label>
+                    <select class="form-control" name="type" [(ngModel)]="activity.type" id="field_type" >
+                        <option value="SINGLE">SINGLE</option>
+                        <option value="TEAM">TEAM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createdDateAndTime">Created Date And Time</label>
+                    <div class="d-flex">
+                        <input id="field_createdDateAndTime" type="datetime-local" class="form-control" name="createdDateAndTime" [(ngModel)]="createdDateAndTime"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_proofType">Proof Type</label>
+                    <select class="form-control" name="proofType" [(ngModel)]="activity.proofType" id="field_proofType" >
+                        <option value="IMAGE">IMAGE</option>
+                        <option value="VIDEO">VIDEO</option>
+                        <option value="TEXT">TEXT</option>
+                        <option value="PDF">PDF</option>
+                        <option value="PPT">PPT</option>
+                        <option value="DOC">DOC</option>
+                        <option value="XLX">XLX</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_isMultipleProofsRequired">Is Multiple Proofs Required</label>
+                    <input type="checkbox" class="form-control" name="isMultipleProofsRequired" id="field_isMultipleProofsRequired"
+                        [(ngModel)]="activity.isMultipleProofsRequired" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_noOfPages">No Of Pages</label>
+                    <input type="number" class="form-control" name="noOfPages" id="field_noOfPages"
+                        [(ngModel)]="activity.noOfPages" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_challenge">Challenge</label>
+                    <select class="form-control" id="field_challenge" name="challenge" [(ngModel)]="activity.challengeId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="challengeOption.id" *ngFor="let challengeOption of challenges; trackBy: trackChallengeById">{{challengeOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="field_dimension">Dimension</label>
+                    <select class="form-control" id="field_dimension" multiple name="dimension" [(ngModel)]="activity.dimensions">
+                        <option [ngValue]="getSelected(activity.dimensions, dimensionOption)" *ngFor="let dimensionOption of dimensions; trackBy: trackDimensionById">{{dimensionOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

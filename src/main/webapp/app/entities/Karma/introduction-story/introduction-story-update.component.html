@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-introduction-story-heading">Create or edit a Introduction Story</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!introductionStory.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="introductionStory.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_story">Story</label>
+                    <input type="text" class="form-control" name="story" id="field_story"
+                        [(ngModel)]="introductionStory.story" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_image">Image</label>
+                    <div>
+                        <div *ngIf="introductionStory.image" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(introductionStory.imageContentType, introductionStory.image)">open</a><br>
+                            <span class="pull-left">{{introductionStory.imageContentType}}, {{byteSize(introductionStory.image)}}</span>
+                            <button type="button" (click)="introductionStory.image=null;introductionStory.imageContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_image" (change)="setFileData($event, introductionStory, 'image', false)"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="image" id="field_image"
+                        [(ngModel)]="introductionStory.image" />
+                    <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
+                        [(ngModel)]="introductionStory.imageContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_activity">Activity</label>
+                    <select class="form-control" id="field_activity" name="activity" [(ngModel)]="introductionStory.activityId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="activityOption.id" *ngFor="let activityOption of activities; trackBy: trackActivityById">{{activityOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

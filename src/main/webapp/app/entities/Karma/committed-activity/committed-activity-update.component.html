@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-committed-activity-heading">Create or edit a Committed Activity</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!committedActivity.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="committedActivity.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="committedActivity.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status">Status</label>
+                    <select class="form-control" name="status" [(ngModel)]="committedActivity.status" id="field_status" >
+                        <option value="TODO">TODO</option>
+                        <option value="INPROGRESS">INPROGRESS</option>
+                        <option value="DONE">DONE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createdDateAndTime">Created Date And Time</label>
+                    <div class="d-flex">
+                        <input id="field_createdDateAndTime" type="datetime-local" class="form-control" name="createdDateAndTime" [(ngModel)]="createdDateAndTime"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_activity">Activity</label>
+                    <select class="form-control" id="field_activity" name="activity" [(ngModel)]="committedActivity.activityId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="activityOption.id" *ngFor="let activityOption of activities; trackBy: trackActivityById">{{activityOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" [(ngModel)]="committedActivity.userId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_referenceId">Reference Id</label>
+                    <select class="form-control" id="field_referenceId" name="referenceId" [(ngModel)]="committedActivity.referenceIdId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="committedActivityOption.id" *ngFor="let committedActivityOption of committedactivities; trackBy: trackCommittedActivityById">{{committedActivityOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

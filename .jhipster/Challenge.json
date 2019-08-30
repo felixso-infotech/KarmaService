@@ -1,0 +1,42 @@
+{
+    "name": "Challenge",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "successMessage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdDateAndTime",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "completedChallenges",
+            "otherEntityName": "completedChallenge",
+            "otherEntityRelationshipName": "challenge"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "activity",
+            "otherEntityName": "activity",
+            "otherEntityRelationshipName": "challenge"
+        }
+    ],
+    "changelogDate": "20190828094816",
+    "javadoc": "Challenge entity.\n@author Sarangi Balu A",
+    "entityTableName": "challenge",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

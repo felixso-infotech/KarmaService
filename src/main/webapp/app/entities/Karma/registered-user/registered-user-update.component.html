@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-registered-user-heading">Create or edit a Registered User</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!registeredUser.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="registeredUser.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_profilePicture">Profile Picture</label>
+                    <div>
+                        <div *ngIf="registeredUser.profilePicture" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(registeredUser.profilePictureContentType, registeredUser.profilePicture)">open</a><br>
+                            <span class="pull-left">{{registeredUser.profilePictureContentType}}, {{byteSize(registeredUser.profilePicture)}}</span>
+                            <button type="button" (click)="registeredUser.profilePicture=null;registeredUser.profilePictureContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_profilePicture" (change)="setFileData($event, registeredUser, 'profilePicture', false)"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="profilePicture" id="field_profilePicture"
+                        [(ngModel)]="registeredUser.profilePicture" />
+                    <input type="hidden" class="form-control" name="profilePictureContentType" id="field_profilePictureContentType"
+                        [(ngModel)]="registeredUser.profilePictureContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_coverPhoto">Cover Photo</label>
+                    <div>
+                        <div *ngIf="registeredUser.coverPhoto" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(registeredUser.coverPhotoContentType, registeredUser.coverPhoto)">open</a><br>
+                            <span class="pull-left">{{registeredUser.coverPhotoContentType}}, {{byteSize(registeredUser.coverPhoto)}}</span>
+                            <button type="button" (click)="registeredUser.coverPhoto=null;registeredUser.coverPhotoContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_coverPhoto" (change)="setFileData($event, registeredUser, 'coverPhoto', false)"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="coverPhoto" id="field_coverPhoto"
+                        [(ngModel)]="registeredUser.coverPhoto" />
+                    <input type="hidden" class="form-control" name="coverPhotoContentType" id="field_coverPhotoContentType"
+                        [(ngModel)]="registeredUser.coverPhotoContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" [(ngModel)]="registeredUser.userId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+{
+    "name": "Activity",
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "successMessage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Type",
+            "fieldValues": "SINGLE,TEAM"
+        },
+        {
+            "fieldName": "createdDateAndTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "proofType",
+            "fieldType": "ProofType",
+            "fieldValues": "IMAGE,VIDEO,TEXT,PDF,PPT,DOC,XLX"
+        },
+        {
+            "fieldName": "isMultipleProofsRequired",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "noOfPages",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "stories",
+            "otherEntityName": "introductionStory",
+            "otherEntityRelationshipName": "activity"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "committededActivities",
+            "otherEntityName": "committedActivity",
+            "otherEntityRelationshipName": "activity"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "challenge",
+            "otherEntityName": "challenge",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "activity",
+            "relationshipName": "dimension",
+            "otherEntityName": "dimension",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20190828094813",
+    "javadoc": "Activity entity.\n@author Sarangi Balu A",
+    "entityTableName": "activity",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

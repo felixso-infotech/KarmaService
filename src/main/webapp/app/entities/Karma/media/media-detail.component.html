@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="media">
+            <h2><span>Media</span> {{media.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>File Name</span></dt>
+                <dd>
+                    <span>{{media.fileName}}</span>
+                </dd>
+                <dt><span>File</span></dt>
+                <dd>
+                    <div *ngIf="media.file">
+                        <a (click)="openFile(media.fileContentType, media.file)">open</a>
+                        {{media.fileContentType}}, {{byteSize(media.file)}}
+                    </div>
+                </dd>
+                <dt><span>Committed Activity</span></dt>
+                <dd>
+                    <div *ngIf="media.committedActivityId">
+                        <a [routerLink]="['/committed-activity', media.committedActivityId, 'view']">{{media.committedActivityId}}</a>
+                    </div>
+                </dd>
+                <dt><span>Completed Challenge</span></dt>
+                <dd>
+                    <div *ngIf="media.completedChallengeId">
+                        <a [routerLink]="['/completed-challenge', media.completedChallengeId, 'view']">{{media.completedChallengeId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/media', media.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

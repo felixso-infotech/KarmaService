@@ -1,0 +1,36 @@
+{
+    "name": "RegisteredUser",
+    "fields": [
+        {
+            "fieldName": "profilePicture",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "coverPhoto",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "registeredUser"
+        }
+    ],
+    "changelogDate": "20190828094812",
+    "javadoc": "RegisteredUser entity.\n@author Sanil Kumar p",
+    "entityTableName": "registered_user",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

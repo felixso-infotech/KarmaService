@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="introductionStory">
+            <h2><span>Introduction Story</span> {{introductionStory.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Story</span></dt>
+                <dd>
+                    <span>{{introductionStory.story}}</span>
+                </dd>
+                <dt><span>Image</span></dt>
+                <dd>
+                    <div *ngIf="introductionStory.image">
+                        <a (click)="openFile(introductionStory.imageContentType, introductionStory.image)">open</a>
+                        {{introductionStory.imageContentType}}, {{byteSize(introductionStory.image)}}
+                    </div>
+                </dd>
+                <dt><span>Activity</span></dt>
+                <dd>
+                    <div *ngIf="introductionStory.activityId">
+                        <a [routerLink]="['/activity', introductionStory.activityId, 'view']">{{introductionStory.activityId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/introduction-story', introductionStory.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

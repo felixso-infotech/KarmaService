@@ -1,0 +1,29 @@
+{
+    "name": "Dimension",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "activity",
+            "otherEntityName": "activity",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "dimension"
+        }
+    ],
+    "changelogDate": "20190828094818",
+    "javadoc": "Dimension entity.\n@author Sarangi Balu A",
+    "entityTableName": "dimension",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Karma",
+    "applications": "*",
+    "microserviceName": "Karma"
+}

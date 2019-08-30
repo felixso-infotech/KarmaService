@@ -1,0 +1,32 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.felixsoinfotech.karma"
+    },
+    "jhipsterVersion": "5.6.1",
+    "applicationType": "microservice",
+    "baseName": "Karma",
+    "packageName": "com.felixsoinfotech.karma",
+    "packageFolder": "com/felixsoinfotech/karma",
+    "serverPort": "8065",
+    "authenticationType": "oauth2",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "OWEwZWY0YzQwODE4YTdhNGE2Mzc4N2FiZjg1NGQ0OGExYWRhODhmMzc5OTdjZWY1MTJhMzFiZjVlZWQ4ODFlMzg3YTM2MmMwMGI1NDI0MDgxOGEyZGFiY2JjMTU2OTUxZjhmNTdiZTBiMjE5YjcyM2IyOGZkMmJiNjBhNWIwZDM=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true,
+    "enableHibernateCache": false
+  }
+}

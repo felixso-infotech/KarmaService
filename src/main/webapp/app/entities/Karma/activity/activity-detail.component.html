@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="activity">
+            <h2><span>Activity</span> {{activity.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Title</span></dt>
+                <dd>
+                    <span>{{activity.title}}</span>
+                </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{activity.description}}</span>
+                </dd>
+                <dt><span>Success Message</span></dt>
+                <dd>
+                    <span>{{activity.successMessage}}</span>
+                </dd>
+                <dt><span>Type</span></dt>
+                <dd>
+                    <span>{{activity.type}}</span>
+                </dd>
+                <dt><span>Created Date And Time</span></dt>
+                <dd>
+                    <span>{{activity.createdDateAndTime}}</span>
+                </dd>
+                <dt><span>Proof Type</span></dt>
+                <dd>
+                    <span>{{activity.proofType}}</span>
+                </dd>
+                <dt><span>Is Multiple Proofs Required</span></dt>
+                <dd>
+                    <span>{{activity.isMultipleProofsRequired}}</span>
+                </dd>
+                <dt><span>No Of Pages</span></dt>
+                <dd>
+                    <span>{{activity.noOfPages}}</span>
+                </dd>
+                <dt><span>Challenge</span></dt>
+                <dd>
+                    <div *ngIf="activity.challengeId">
+                        <a [routerLink]="['/challenge', activity.challengeId, 'view']">{{activity.challengeId}}</a>
+                    </div>
+                </dd>
+                <dt><span>Dimension</span></dt>
+                <dd>
+                    <span *ngFor="let dimension of activity.dimensions; let last = last">
+                        <a [routerLink]="['/dimension', dimension?.id, 'view' ]">{{dimension.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/activity', activity.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

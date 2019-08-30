@@ -1,0 +1,116 @@
+/**
+ * RegisteredUser entity.
+ * @author Sanil Kumar p
+ */
+entity RegisteredUser{
+  profilePicture Blob,
+  coverPhoto Blob	 
+}
+/**
+ * Activity entity.
+ * @author Sarangi Balu A
+ */
+entity Activity{
+	title String,
+    description String,
+    successMessage String,
+    type Type,
+    createdDateAndTime ZonedDateTime,
+    proofType ProofType,
+    isMultipleProofsRequired Boolean,
+    noOfPages Integer
+}
+/**
+ * IntroductionStory entity.
+ * @author Sanil Kumar p
+ */
+entity IntroductionStory {
+story String,
+image Blob
+}
+/**
+ * ProofType entity.
+ * @author Sarangi Balu A
+ */
+enum ProofType {
+IMAGE,VIDEO,TEXT,PDF,PPT,DOC,XLX
+}
+/**
+ * CommittedActivity entity.
+ * @author Sanil Kumar p
+ */
+entity CommittedActivity{
+     description String,
+     status Status,
+     createdDateAndTime ZonedDateTime  
+}
+/**
+ * Type entity.
+ * @author Sarangi Balu A
+ */
+enum Type {
+       SINGLE,TEAM
+}
+/**
+ * Status entity.
+ * @author Sanil Kumar p
+ */
+enum Status {
+       TODO,INPROGRESS,DONE
+}
+/**
+ * Challenge entity.
+ * @author Sarangi Balu A
+ */
+entity Challenge {
+	name String,
+    successMessage String,
+    createdDateAndTime ZonedDateTime    
+}
+/**
+ * CompletedChallenge entity.
+ * @author Sanil Kumar p
+ */
+entity CompletedChallenge {  
+    description String,
+    createdDateAndTime ZonedDateTime    
+}
+/**
+ * Dimension entity.
+ * @author Sarangi Balu A
+ */
+entity Dimension {
+ 	name String
+}
+/**
+ * Media entity.
+ * @author Sanil Kumar p
+ */
+entity Media{
+	fileName String,
+	file Blob
+}
+
+relationship OneToOne{
+	RegisteredUser to User    
+}
+relationship ManyToOne {
+	Activity to Challenge,
+    CommittedActivity to User,
+    CompletedChallenge to User,
+    
+}
+relationship OneToMany{
+	Activity{stories} to IntroductionStory,
+    CommittedActivity{activityProofs} to Media,
+    CompletedChallenge{proofs} to Media,
+    Activity{committededActivities} to CommittedActivity,  
+    Challenge{completedChallenges} to CompletedChallenge
+    CommittedActivity to CommittedActivity{referenceId}
+}   
+relationship ManyToMany {
+	Activity to Dimension
+}
+paginate * with pagination
+dto * with mapstruct
+service all with serviceImpl
