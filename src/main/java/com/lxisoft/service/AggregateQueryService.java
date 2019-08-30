@@ -1,7 +1,5 @@
 package com.lxisoft.service;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -108,10 +106,11 @@ public interface AggregateQueryService {
 	 *
 	 * @param activityId the id of the activity of instruction video
 	 * @return the entity
-	 * @throws IOException 
-	 */
-	Optional<InstructionVideoDTO> findInstructionVideoByActivityId(Long activityId) throws IOException;
-
+	 * @throws IOException
+	 *//*
+		 * Optional<InstructionVideoDTO> findInstructionVideoByActivityId(Long
+		 * activityId) throws IOException;
+		 */
 	/**
 	 * Get one instructionVideo by id.
 	 *
@@ -143,7 +142,6 @@ public interface AggregateQueryService {
 	 * @return the entity
 	 */
 	Optional<RegisteredUserDTO> findRegisteredUserByUserId(String userId);
-
 
 	/**
 	 * Get list of medias by registeredUserId.

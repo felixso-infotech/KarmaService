@@ -1,6 +1,5 @@
 package com.lxisoft.web.rest;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
@@ -233,23 +232,24 @@ public class AggregateQueryResource {
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
-	/**
-	 * GET /instruction-videos/:activityId : get the "activityId" of
-	 * instructionVideo.
-	 *
-	 * @param id the id of the instructionVideoDTO to retrieve
-	 * @return the ResponseEntity with status 200 (OK) and with body the
-	 *         instructionVideoDTO, or with status 404 (Not Found)
-	 * @throws IOException http://localhost:8065
-	 */
-	@GetMapping("/query/instruction-video-by-activityId/{activityId}")
-	@Timed
-	public ResponseEntity<InstructionVideoDTO> getInstructionVideoByActivityId(@PathVariable Long activityId) throws IOException {
-		log.debug("REST request to get InstructionVideo : {}", activityId);
-		Optional<InstructionVideoDTO> instructionVideoDTO = aggregateQueryService
-				.findInstructionVideoByActivityId(activityId);
-		return ResponseUtil.wrapOrNotFound(instructionVideoDTO);
-	}
+	/*	*//**
+			 * GET /instruction-videos/:activityId : get the "activityId" of
+			 * instructionVideo.
+			 *
+			 * @param id the id of the instructionVideoDTO to retrieve
+			 * @return the ResponseEntity with status 200 (OK) and with body the
+			 *         instructionVideoDTO, or with status 404 (Not Found)
+			 * @throws IOException http://localhost:8065
+			 *//*
+				 * @GetMapping("/query/instruction-video-by-activityId/{activityId}")
+				 * 
+				 * @Timed public ResponseEntity<InstructionVideoDTO>
+				 * getInstructionVideoByActivityId(@PathVariable Long activityId) throws
+				 * IOException { log.debug("REST request to get InstructionVideo : {}",
+				 * activityId); Optional<InstructionVideoDTO> instructionVideoDTO =
+				 * aggregateQueryService .findInstructionVideoByActivityId(activityId); return
+				 * ResponseUtil.wrapOrNotFound(instructionVideoDTO); }
+				 */
 
 	/**
 	 * GET /incompleted-activity/:registeredUserId : get the "registeredUserId"
@@ -305,7 +305,7 @@ public class AggregateQueryResource {
 		Optional<RegisteredUserDTO> registeredUserDTO = aggregateQueryService.findRegisteredUserByUserId(userId);
 		return ResponseUtil.wrapOrNotFound(registeredUserDTO);
 	}
-	
+
 	/**
 	 * GET /activities : get all medias of registered user.
 	 *
@@ -315,10 +315,11 @@ public class AggregateQueryResource {
 	 */
 	@GetMapping("/query/all-completed-activity-media/{registeredUserId}")
 	@Timed
-	public ResponseEntity<List<MediaDTO>> findAllCompletedActivityMediasByRegisteredUserId(@PathVariable Long registeredUserId,
-			Pageable pageable) throws URISyntaxException {
+	public ResponseEntity<List<MediaDTO>> findAllCompletedActivityMediasByRegisteredUserId(
+			@PathVariable Long registeredUserId, Pageable pageable) throws URISyntaxException {
 
-		Page<MediaDTO> completedActivityMedias = aggregateQueryService.findAllCompletedActivityMediasByRegisteredUserId(registeredUserId, pageable);
+		Page<MediaDTO> completedActivityMedias = aggregateQueryService
+				.findAllCompletedActivityMediasByRegisteredUserId(registeredUserId, pageable);
 
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(completedActivityMedias,
 				"/api/query/completed-activity/{completedActivityId}");

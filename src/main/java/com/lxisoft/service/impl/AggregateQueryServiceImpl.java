@@ -1,19 +1,11 @@
 package com.lxisoft.service.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -64,10 +56,10 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	private final InstructionVideoRepository instructionVideoRepository;
 
 	private final InstructionVideoMapper instructionVideoMapper;
-	
-	@Value("${upload.path}")
-    private String path;
 
+	/*
+	 * @Value("${upload.path}") private String path;
+	 */
 	public AggregateQueryServiceImpl(RegisteredUserRepository registeredUserRepository,
 			RegisteredUserMapper registeredUserMapper, ActivityMapper activityMapper,
 			ActivityRepository activityRepository, CompletedActivityRepository completedActivityRepository,
@@ -183,33 +175,39 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 				.map(completedActivityMapper::toDto);
 
 	}
-
-	/**
-	 * Get one instructionVideo by activityId.
-	 *
-	 * @param activityId the id of the activity of instruction video
-	 * @return the entity
-	 * @throws IOException 
-	 */
-	@Override
-	public Optional<InstructionVideoDTO> findInstructionVideoByActivityId(Long activityId) throws IOException {
-
-		log.debug("Request to get InstructionVideo by activityId: {}", activityId);
-
-		Optional<ActivityDTO> activityDTO = activityRepository.findById(activityId).map(activityMapper::toDto);
-		
-		Optional<InstructionVideoDTO> instructionVideoDto=instructionVideoRepository.findById(activityDTO.get().getInstructionVideoId())
-			.map(instructionVideoMapper::toDto);
-		instructionVideoDto.get().setFileUrl(path+instructionVideoDto.get().getFileName()+"."+instructionVideoDto.get().getFileContentType());
-		
-		FileUtils.cleanDirectory(Paths.get(path).toFile());
-		Files.write(Paths.get(instructionVideoDto.get().getFileUrl()),instructionVideoDto.get().getFile());
-		
-		log.info("****url after storing{}",instructionVideoDto.get().getFileUrl());
-		
-		return instructionVideoDto;
-		
-	}
+	/*
+		*//**
+			 * Get one instructionVideo by activityId.
+			 *
+			 * @param activityId the id of the activity of instruction video
+			 * @return the entity
+			 * @throws IOException
+			 *//*
+				 * @Override public Optional<InstructionVideoDTO>
+				 * findInstructionVideoByActivityId(Long activityId) throws IOException {
+				 * 
+				 * log.debug("Request to get InstructionVideo by activityId: {}", activityId);
+				 * 
+				 * Optional<ActivityDTO> activityDTO =
+				 * activityRepository.findById(activityId).map(activityMapper::toDto);
+				 * 
+				 * Optional<InstructionVideoDTO> instructionVideoDto =
+				 * instructionVideoRepository
+				 * .findById(activityDTO.get().getInstructionVideoId()).map(
+				 * instructionVideoMapper::toDto); instructionVideoDto.get().setFileUrl( path +
+				 * instructionVideoDto.get().getFileName() + "." +
+				 * instructionVideoDto.get().getFileContentType());
+				 * 
+				 * FileUtils.cleanDirectory(Paths.get(path).toFile());
+				 * Files.write(Paths.get(instructionVideoDto.get().getFileUrl()),
+				 * instructionVideoDto.get().getFile());
+				 * 
+				 * log.info("****url after storing{}", instructionVideoDto.get().getFileUrl());
+				 * 
+				 * return instructionVideoDto;
+				 * 
+				 * }
+				 */
 
 	/**
 	 * Get one registeredUser by id.
@@ -306,27 +304,28 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	@Override
 	public Page<MediaDTO> findAllCompletedActivityMediasByRegisteredUserId(Long registeredUserId, Pageable pageable) {
 		log.debug("Request to get completed activity medias by registeredUserId");
-		
-		List<CompletedActivity> completedActivityList=completedActivityRepository.findByRegisteredUserId(registeredUserId, pageable).getContent();
-		List<MediaDTO> mediaDTOList=new ArrayList<MediaDTO>();
-		
-		for(CompletedActivity completedActivity:completedActivityList){
-			
-			log.debug("********completed activity proof size{}",completedActivity.getProofs().size());
-			
-			if(!completedActivity.getProofs().isEmpty()){
-				log.debug("********inside condition",completedActivity.getProofs().isEmpty());
-				
-				
-				for(Media media:completedActivity.getProofs()){	
-					Optional<MediaDTO> completedActivitymedia=mediaRepository.findById(media.getId()).map(mediaMapper::toDto);			
+
+		List<CompletedActivity> completedActivityList = completedActivityRepository
+				.findByRegisteredUserId(registeredUserId, pageable).getContent();
+		List<MediaDTO> mediaDTOList = new ArrayList<MediaDTO>();
+
+		for (CompletedActivity completedActivity : completedActivityList) {
+
+			log.debug("********completed activity proof size{}", completedActivity.getProofs().size());
+
+			if (!completedActivity.getProofs().isEmpty()) {
+				log.debug("********inside condition", completedActivity.getProofs().isEmpty());
+
+				for (Media media : completedActivity.getProofs()) {
+					Optional<MediaDTO> completedActivitymedia = mediaRepository.findById(media.getId())
+							.map(mediaMapper::toDto);
 					mediaDTOList.add(completedActivitymedia.get());
-				}	
+				}
 			}
 		}
 		Page<MediaDTO> mediaDtos = new PageImpl<MediaDTO>(mediaDTOList, pageable, mediaDTOList.size());
-		log.debug("********mediaDTOList size{}",mediaDtos.getSize());
-		
+		log.debug("********mediaDTOList size{}", mediaDtos.getSize());
+
 		return mediaDtos;
 	}
 
