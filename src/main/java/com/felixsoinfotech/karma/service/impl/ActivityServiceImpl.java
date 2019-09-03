@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ActivityServiceImpl implements ActivityService {
-
+	
     private final Logger log = LoggerFactory.getLogger(ActivityServiceImpl.class);
 
     private final ActivityRepository activityRepository;

@@ -25,8 +25,7 @@ import java.util.Optional;
 /**
  * REST controller for managing IntroductionStory.
  */
-@RestController
-@RequestMapping("/api")
+
 public class IntroductionStoryResource {
 
     private final Logger log = LoggerFactory.getLogger(IntroductionStoryResource.class);

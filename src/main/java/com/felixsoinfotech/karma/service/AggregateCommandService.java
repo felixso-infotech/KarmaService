@@ -15,12 +15,35 @@
  */
 
 package com.felixsoinfotech.karma.service;
+
+import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+
 /**
  * TODO Provide a detailed description here 
  * @author Owner
  * sarangibalu, sarangibalu.a@lxisoft.com
  */
 
+/**
+ * Service Interface for managing Command services.
+ */
 public interface AggregateCommandService   {
+	
+	/**
+     * Save a activity.
+     *
+     * @param activityDTO the entity to save
+     * @return the persisted entity
+     */
+    ActivityDTO save(ActivityDTO activityDTO);
+    
+    /**
+     * Delete the "id" activity.
+     *
+     * @param id the id of the entity
+     */
+    void delete(Long id);
+
+	
 
 }

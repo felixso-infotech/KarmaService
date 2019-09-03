@@ -25,8 +25,7 @@ import java.util.Optional;
 /**
  * REST controller for managing RegisteredUser.
  */
-@RestController
-@RequestMapping("/api")
+
 public class RegisteredUserResource {
 
     private final Logger log = LoggerFactory.getLogger(RegisteredUserResource.class);

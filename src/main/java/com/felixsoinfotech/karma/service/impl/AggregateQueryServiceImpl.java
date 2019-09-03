@@ -21,10 +21,87 @@ package com.felixsoinfotech.karma.service.impl;
  * sarangibalu, sarangibalu.a@lxisoft.com
  */
 
-public class AggregateQueryServiceImpl {
+import java.util.Optional;
 
-	public AggregateQueryServiceImpl() {
-		// TODO Auto-generated constructor stub
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.felixsoinfotech.karma.repository.ActivityRepository;
+import com.felixsoinfotech.karma.service.AggregateQueryService;
+import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
+
+/**
+ * Service Implementation for managing Queryservices
+ */
+@Service
+@Transactional
+public class AggregateQueryServiceImpl implements AggregateQueryService {
+
+	private final Logger log = LoggerFactory.getLogger(AggregateQueryServiceImpl.class);
+
+	private ActivityRepository activityRepository;
+
+	private ActivityMapper activityMapper;
+
+	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper) {
+		this.activityRepository = activityRepository;
+		this.activityMapper = activityMapper;
+	}
+	
+	/**
+	 * Get all the activities.
+	 *
+	 * @param pageable the pagination information
+	 * @return the list of entities
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Page<ActivityDTO> findAll(Pageable pageable) {
+		log.debug("Request to get all Activities");
+		return activityRepository.findAll(pageable).map(activityMapper::toDto);
+	}
+	
+	/**
+     * Get all the activities by challengeId.
+     * 
+	 * @param pageable the pagination information
+	 * @param challengeId the challenge information
+	 * @return the list of entities
+	 */
+	@Override
+    @Transactional(readOnly = true) 
+	public Page<ActivityDTO> findAllActivitiesByChallengeId(Pageable pageable,Long challengeId) { 
+		log.debug("Request to get all Activities");		
+		return activityRepository.findAllActivitiesByChallengeId(pageable,challengeId).map(activityMapper::toDto);		
+	
+	}
+		
+
+	/**
+	 * Get all the Activity with eager load of many-to-many relationships.
+	 *
+	 * @return the list of entities
+	 */
+	public Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable) {
+		return activityRepository.findAllWithEagerRelationships(pageable).map(activityMapper::toDto);
 	}
 
+	/**
+	 * Get one activity by id.
+	 *
+	 * @param id the id of the entity
+	 * @return the entity
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<ActivityDTO> findOne(Long id) {
+		log.debug("Request to get Activity : {}", id);
+		return activityRepository.findOneWithEagerRelationships(id).map(activityMapper::toDto);
+	}
+
+	
 }

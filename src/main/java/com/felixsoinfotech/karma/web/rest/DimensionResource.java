@@ -25,8 +25,7 @@ import java.util.Optional;
 /**
  * REST controller for managing Dimension.
  */
-@RestController
-@RequestMapping("/api")
+
 public class DimensionResource {
 
     private final Logger log = LoggerFactory.getLogger(DimensionResource.class);

@@ -25,8 +25,7 @@ import java.util.Optional;
 /**
  * REST controller for managing Activity.
  */
-@RestController
-@RequestMapping("/api")
+
 public class ActivityResource {
 
     private final Logger log = LoggerFactory.getLogger(ActivityResource.class);

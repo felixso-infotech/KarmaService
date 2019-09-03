@@ -25,8 +25,7 @@ import java.util.Optional;
 /**
  * REST controller for managing CommittedActivity.
  */
-@RestController
-@RequestMapping("/api")
+
 public class CommittedActivityResource {
 
     private final Logger log = LoggerFactory.getLogger(CommittedActivityResource.class);

@@ -1,6 +1,8 @@
 package com.felixsoinfotech.karma.repository;
 
 import com.felixsoinfotech.karma.domain.Activity;
+import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -26,5 +28,14 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     @Query("select activity from Activity activity left join fetch activity.dimensions where activity.id =:id")
     Optional<Activity> findOneWithEagerRelationships(@Param("id") Long id);
+
+    /**
+     * Get all the activities by challengeId.
+     * 
+	 * @param pageable the pagination information
+	 * @param challengeId the challenge information
+	 * @return the list of entities
+	 */
+	Page<Activity> findAllActivitiesByChallengeId(Pageable pageable, Long challengeId);
 
 }

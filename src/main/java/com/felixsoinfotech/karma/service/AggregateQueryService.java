@@ -21,6 +21,50 @@ package com.felixsoinfotech.karma.service;
  * sarangibalu, sarangibalu.a@lxisoft.com
  */
 
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+
+/**
+ * Service Interface for managing Query services.
+ */
 public interface AggregateQueryService {
+	
+	/**
+     * Get all the activities.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<ActivityDTO> findAll(Pageable pageable);
+    
+    /**
+     * Get all the activities by challengeId.
+     * 
+	 * @param pageable the pagination information
+	 * @param challengeId the challenge information
+	 * @return the list of entities
+	 */
+	Page<ActivityDTO> findAllActivitiesByChallengeId(Pageable pageable,Long challengeId ); 
+ 
+
+    /**
+     * Get all the Activity with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable);
+    
+    /**
+     * Get the "id" activity.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    Optional<ActivityDTO> findOne(Long id);
+
 
 }
