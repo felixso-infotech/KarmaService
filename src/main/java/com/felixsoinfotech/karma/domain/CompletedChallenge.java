@@ -30,8 +30,8 @@ public class CompletedChallenge implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "created_date_and_time")
-    private ZonedDateTime createdDateAndTime;
+    @Column(name = "created_date")
+    private ZonedDateTime createdDate;
 
     @ManyToOne
     @JsonIgnoreProperties("completedChallenges")
@@ -65,17 +65,17 @@ public class CompletedChallenge implements Serializable {
         this.description = description;
     }
 
-    public ZonedDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public CompletedChallenge createdDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public CompletedChallenge createdDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
         return this;
     }
 
-    public void setCreatedDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Challenge getChallenge() {
@@ -155,7 +155,7 @@ public class CompletedChallenge implements Serializable {
         return "CompletedChallenge{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
-            ", createdDateAndTime='" + getCreatedDateAndTime() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             "}";
     }
 }

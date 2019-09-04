@@ -6,7 +6,7 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "createdDateAndTime",
+            "fieldName": "createdDate",
             "fieldType": "ZonedDateTime"
         }
     ],

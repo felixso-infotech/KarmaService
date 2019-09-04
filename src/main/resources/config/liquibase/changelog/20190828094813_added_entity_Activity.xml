@@ -38,7 +38,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="created_date_and_time" type="datetime">
+            <column name="created_date" type="datetime">
                 <constraints nullable="true" />
             </column>
 
@@ -60,7 +60,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="activity" columnName="created_date_and_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="activity" columnName="created_date" columnDataType="datetime"/>
         
         <createTable tableName="activity_dimension">
             <column name="dimensions_id" type="bigint">

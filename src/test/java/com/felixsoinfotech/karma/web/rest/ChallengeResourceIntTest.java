@@ -53,8 +53,8 @@ public class ChallengeResourceIntTest {
     private static final String DEFAULT_SUCCESS_MESSAGE = "AAAAAAAAAA";
     private static final String UPDATED_SUCCESS_MESSAGE = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_CREATED_DATE_AND_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_DATE_AND_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime DEFAULT_CREATED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private ChallengeRepository challengeRepository;
@@ -102,7 +102,7 @@ public class ChallengeResourceIntTest {
         Challenge challenge = new Challenge()
             .name(DEFAULT_NAME)
             .successMessage(DEFAULT_SUCCESS_MESSAGE)
-            .createdDateAndTime(DEFAULT_CREATED_DATE_AND_TIME);
+            .createdDate(DEFAULT_CREATED_DATE);
         return challenge;
     }
 
@@ -129,7 +129,7 @@ public class ChallengeResourceIntTest {
         Challenge testChallenge = challengeList.get(challengeList.size() - 1);
         assertThat(testChallenge.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testChallenge.getSuccessMessage()).isEqualTo(DEFAULT_SUCCESS_MESSAGE);
-        assertThat(testChallenge.getCreatedDateAndTime()).isEqualTo(DEFAULT_CREATED_DATE_AND_TIME);
+        assertThat(testChallenge.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class ChallengeResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(challenge.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].successMessage").value(hasItem(DEFAULT_SUCCESS_MESSAGE.toString())))
-            .andExpect(jsonPath("$.[*].createdDateAndTime").value(hasItem(sameInstant(DEFAULT_CREATED_DATE_AND_TIME))));
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(sameInstant(DEFAULT_CREATED_DATE))));
     }
     
     @Test
@@ -181,7 +181,7 @@ public class ChallengeResourceIntTest {
             .andExpect(jsonPath("$.id").value(challenge.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.successMessage").value(DEFAULT_SUCCESS_MESSAGE.toString()))
-            .andExpect(jsonPath("$.createdDateAndTime").value(sameInstant(DEFAULT_CREATED_DATE_AND_TIME)));
+            .andExpect(jsonPath("$.createdDate").value(sameInstant(DEFAULT_CREATED_DATE)));
     }
 
     @Test
@@ -207,7 +207,7 @@ public class ChallengeResourceIntTest {
         updatedChallenge
             .name(UPDATED_NAME)
             .successMessage(UPDATED_SUCCESS_MESSAGE)
-            .createdDateAndTime(UPDATED_CREATED_DATE_AND_TIME);
+            .createdDate(UPDATED_CREATED_DATE);
         ChallengeDTO challengeDTO = challengeMapper.toDto(updatedChallenge);
 
         restChallengeMockMvc.perform(put("/api/challenges")
@@ -221,7 +221,7 @@ public class ChallengeResourceIntTest {
         Challenge testChallenge = challengeList.get(challengeList.size() - 1);
         assertThat(testChallenge.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testChallenge.getSuccessMessage()).isEqualTo(UPDATED_SUCCESS_MESSAGE);
-        assertThat(testChallenge.getCreatedDateAndTime()).isEqualTo(UPDATED_CREATED_DATE_AND_TIME);
+        assertThat(testChallenge.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
     }
 
     @Test

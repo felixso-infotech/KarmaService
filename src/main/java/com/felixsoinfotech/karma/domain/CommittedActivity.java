@@ -36,8 +36,8 @@ public class CommittedActivity implements Serializable {
     @Column(name = "status")
     private Status status;
 
-    @Column(name = "created_date_and_time")
-    private ZonedDateTime createdDateAndTime;
+    @Column(name = "created_date")
+    private ZonedDateTime createdDate;
 
     @ManyToOne
     @JsonIgnoreProperties("committededActivities")
@@ -90,17 +90,17 @@ public class CommittedActivity implements Serializable {
         this.status = status;
     }
 
-    public ZonedDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public CommittedActivity createdDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public CommittedActivity createdDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
         return this;
     }
 
-    public void setCreatedDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Activity getActivity() {
@@ -219,7 +219,7 @@ public class CommittedActivity implements Serializable {
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
-            ", createdDateAndTime='" + getCreatedDateAndTime() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             "}";
     }
 }

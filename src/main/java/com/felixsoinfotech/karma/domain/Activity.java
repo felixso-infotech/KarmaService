@@ -44,8 +44,8 @@ public class Activity implements Serializable {
     @Column(name = "jhi_type")
     private Type type;
 
-    @Column(name = "created_date_and_time")
-    private ZonedDateTime createdDateAndTime;
+    @Column(name = "created_date")
+    private ZonedDateTime createdDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "proof_type")
@@ -132,17 +132,17 @@ public class Activity implements Serializable {
         this.type = type;
     }
 
-    public ZonedDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public Activity createdDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public Activity createdDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
         return this;
     }
 
-    public void setCreatedDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public ProofType getProofType() {
@@ -301,7 +301,7 @@ public class Activity implements Serializable {
             ", description='" + getDescription() + "'" +
             ", successMessage='" + getSuccessMessage() + "'" +
             ", type='" + getType() + "'" +
-            ", createdDateAndTime='" + getCreatedDateAndTime() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             ", proofType='" + getProofType() + "'" +
             ", isMultipleProofsRequired='" + isIsMultipleProofsRequired() + "'" +
             ", noOfPages=" + getNoOfPages() +

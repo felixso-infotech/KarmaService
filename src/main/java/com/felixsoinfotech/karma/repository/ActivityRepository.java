@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +38,14 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 	 * @return the list of entities
 	 */
 	Page<Activity> findAllActivitiesByChallengeId(Pageable pageable, Long challengeId);
+
+	/**
+	 * Get all the activities by CreatedDateAndTime.
+	 * 
+	 * @param pageable the pagination information
+	 * @param createdDateAndTime the date information
+	 * @return the list of entities
+	 */
+	Page<Activity> findAllActivitiesByCreatedDate(Pageable pageable, ZonedDateTime createdDate);
 
 }

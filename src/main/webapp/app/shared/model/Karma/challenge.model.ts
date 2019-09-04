@@ -6,7 +6,7 @@ export interface IChallenge {
   id?: number;
   name?: string;
   successMessage?: string;
-  createdDateAndTime?: Moment;
+  createdDate?: Moment;
   completedChallenges?: ICompletedChallenge[];
   activities?: IActivity[];
 }
@@ -16,7 +16,7 @@ export class Challenge implements IChallenge {
     public id?: number,
     public name?: string,
     public successMessage?: string,
-    public createdDateAndTime?: Moment,
+    public createdDate?: Moment,
     public completedChallenges?: ICompletedChallenge[],
     public activities?: IActivity[]
   ) {}

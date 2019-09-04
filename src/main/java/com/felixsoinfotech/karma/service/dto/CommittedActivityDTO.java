@@ -16,7 +16,7 @@ public class CommittedActivityDTO implements Serializable {
 
     private Status status;
 
-    private ZonedDateTime createdDateAndTime;
+    private ZonedDateTime createdDate;
 
     private Long activityId;
 
@@ -48,12 +48,12 @@ public class CommittedActivityDTO implements Serializable {
         this.status = status;
     }
 
-    public ZonedDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreatedDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Long getActivityId() {
@@ -107,7 +107,7 @@ public class CommittedActivityDTO implements Serializable {
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
-            ", createdDateAndTime='" + getCreatedDateAndTime() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             ", activity=" + getActivityId() +
             ", user='" + getUserId() + "'" +
             ", referenceId=" + getReferenceIdId() +

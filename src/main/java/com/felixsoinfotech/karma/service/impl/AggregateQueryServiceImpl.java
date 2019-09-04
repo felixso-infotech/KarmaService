@@ -21,6 +21,7 @@ package com.felixsoinfotech.karma.service.impl;
  * sarangibalu, sarangibalu.a@lxisoft.com
  */
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -75,10 +76,24 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	@Override
     @Transactional(readOnly = true) 
 	public Page<ActivityDTO> findAllActivitiesByChallengeId(Pageable pageable,Long challengeId) { 
-		log.debug("Request to get all Activities");		
+		log.debug("Request to get all Activities by ChallengeId");		
 		return activityRepository.findAllActivitiesByChallengeId(pageable,challengeId).map(activityMapper::toDto);		
 	
 	}
+	
+	/**
+	 * Get all the activities by CreatedDateAndTime.
+	 * 
+	 * @param pageable the pagination information
+	 * @param createdDateAndTime the date information
+	 * @return the list of entities
+	 */ 
+	@Override
+	public Page<ActivityDTO> findAllActivitiesByCreatedDate(Pageable pageable,ZonedDateTime createdDate) {
+		log.debug("Request to get all Activities by createdDateAndTime");		
+		return activityRepository.findAllActivitiesByCreatedDate(pageable,createdDate).map(activityMapper::toDto);
+	}
+
 		
 
 	/**
@@ -103,5 +118,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		return activityRepository.findOneWithEagerRelationships(id).map(activityMapper::toDto);
 	}
 
+	
 	
 }

@@ -19,7 +19,7 @@
             "fieldValues": "SINGLE,TEAM"
         },
         {
-            "fieldName": "createdDateAndTime",
+            "fieldName": "createdDate",
             "fieldType": "ZonedDateTime"
         },
         {

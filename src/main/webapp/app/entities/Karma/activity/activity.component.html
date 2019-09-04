@@ -19,7 +19,7 @@
             <th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="successMessage"><span>Success Message</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="type"><span>Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="createdDateAndTime"><span>Created Date And Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdDate"><span>Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="proofType"><span>Proof Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="isMultipleProofsRequired"><span>Is Multiple Proofs Required</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="noOfPages"><span>No Of Pages</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -34,7 +34,7 @@
                 <td>{{activity.description}}</td>
                 <td>{{activity.successMessage}}</td>
                 <td>{{activity.type}}</td>
-                <td>{{activity.createdDateAndTime | date:'medium'}}</td>
+                <td>{{activity.createdDate | date:'medium'}}</td>
                 <td>{{activity.proofType}}</td>
                 <td>{{activity.isMultipleProofsRequired}}</td>
                 <td>{{activity.noOfPages}}</td>

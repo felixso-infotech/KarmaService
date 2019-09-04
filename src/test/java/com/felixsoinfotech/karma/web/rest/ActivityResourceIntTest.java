@@ -66,8 +66,8 @@ public class ActivityResourceIntTest {
     private static final Type DEFAULT_TYPE = Type.SINGLE;
     private static final Type UPDATED_TYPE = Type.TEAM;
 
-    private static final ZonedDateTime DEFAULT_CREATED_DATE_AND_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_DATE_AND_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime DEFAULT_CREATED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     private static final ProofType DEFAULT_PROOF_TYPE = ProofType.IMAGE;
     private static final ProofType UPDATED_PROOF_TYPE = ProofType.VIDEO;
@@ -132,7 +132,7 @@ public class ActivityResourceIntTest {
             .description(DEFAULT_DESCRIPTION)
             .successMessage(DEFAULT_SUCCESS_MESSAGE)
             .type(DEFAULT_TYPE)
-            .createdDateAndTime(DEFAULT_CREATED_DATE_AND_TIME)
+            .createdDate(DEFAULT_CREATED_DATE)
             .proofType(DEFAULT_PROOF_TYPE)
             .isMultipleProofsRequired(DEFAULT_IS_MULTIPLE_PROOFS_REQUIRED)
             .noOfPages(DEFAULT_NO_OF_PAGES);
@@ -164,7 +164,7 @@ public class ActivityResourceIntTest {
         assertThat(testActivity.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testActivity.getSuccessMessage()).isEqualTo(DEFAULT_SUCCESS_MESSAGE);
         assertThat(testActivity.getType()).isEqualTo(DEFAULT_TYPE);
-        assertThat(testActivity.getCreatedDateAndTime()).isEqualTo(DEFAULT_CREATED_DATE_AND_TIME);
+        assertThat(testActivity.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testActivity.getProofType()).isEqualTo(DEFAULT_PROOF_TYPE);
         assertThat(testActivity.isIsMultipleProofsRequired()).isEqualTo(DEFAULT_IS_MULTIPLE_PROOFS_REQUIRED);
         assertThat(testActivity.getNoOfPages()).isEqualTo(DEFAULT_NO_OF_PAGES);
@@ -205,7 +205,7 @@ public class ActivityResourceIntTest {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].successMessage").value(hasItem(DEFAULT_SUCCESS_MESSAGE.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].createdDateAndTime").value(hasItem(sameInstant(DEFAULT_CREATED_DATE_AND_TIME))))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(sameInstant(DEFAULT_CREATED_DATE))))
             .andExpect(jsonPath("$.[*].proofType").value(hasItem(DEFAULT_PROOF_TYPE.toString())))
             .andExpect(jsonPath("$.[*].isMultipleProofsRequired").value(hasItem(DEFAULT_IS_MULTIPLE_PROOFS_REQUIRED.booleanValue())))
             .andExpect(jsonPath("$.[*].noOfPages").value(hasItem(DEFAULT_NO_OF_PAGES)));
@@ -259,7 +259,7 @@ public class ActivityResourceIntTest {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.successMessage").value(DEFAULT_SUCCESS_MESSAGE.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.createdDateAndTime").value(sameInstant(DEFAULT_CREATED_DATE_AND_TIME)))
+            .andExpect(jsonPath("$.createdDate").value(sameInstant(DEFAULT_CREATED_DATE)))
             .andExpect(jsonPath("$.proofType").value(DEFAULT_PROOF_TYPE.toString()))
             .andExpect(jsonPath("$.isMultipleProofsRequired").value(DEFAULT_IS_MULTIPLE_PROOFS_REQUIRED.booleanValue()))
             .andExpect(jsonPath("$.noOfPages").value(DEFAULT_NO_OF_PAGES));
@@ -290,7 +290,7 @@ public class ActivityResourceIntTest {
             .description(UPDATED_DESCRIPTION)
             .successMessage(UPDATED_SUCCESS_MESSAGE)
             .type(UPDATED_TYPE)
-            .createdDateAndTime(UPDATED_CREATED_DATE_AND_TIME)
+            .createdDate(UPDATED_CREATED_DATE)
             .proofType(UPDATED_PROOF_TYPE)
             .isMultipleProofsRequired(UPDATED_IS_MULTIPLE_PROOFS_REQUIRED)
             .noOfPages(UPDATED_NO_OF_PAGES);
@@ -309,7 +309,7 @@ public class ActivityResourceIntTest {
         assertThat(testActivity.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testActivity.getSuccessMessage()).isEqualTo(UPDATED_SUCCESS_MESSAGE);
         assertThat(testActivity.getType()).isEqualTo(UPDATED_TYPE);
-        assertThat(testActivity.getCreatedDateAndTime()).isEqualTo(UPDATED_CREATED_DATE_AND_TIME);
+        assertThat(testActivity.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
         assertThat(testActivity.getProofType()).isEqualTo(UPDATED_PROOF_TYPE);
         assertThat(testActivity.isIsMultipleProofsRequired()).isEqualTo(UPDATED_IS_MULTIPLE_PROOFS_REQUIRED);
         assertThat(testActivity.getNoOfPages()).isEqualTo(UPDATED_NO_OF_PAGES);

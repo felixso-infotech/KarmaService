@@ -51,17 +51,15 @@ export class CommittedActivityService {
 
   protected convertDateFromClient(committedActivity: ICommittedActivity): ICommittedActivity {
     const copy: ICommittedActivity = Object.assign({}, committedActivity, {
-      createdDateAndTime:
-        committedActivity.createdDateAndTime != null && committedActivity.createdDateAndTime.isValid()
-          ? committedActivity.createdDateAndTime.toJSON()
-          : null
+      createdDate:
+        committedActivity.createdDate != null && committedActivity.createdDate.isValid() ? committedActivity.createdDate.toJSON() : null
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.createdDateAndTime = res.body.createdDateAndTime != null ? moment(res.body.createdDateAndTime) : null;
+      res.body.createdDate = res.body.createdDate != null ? moment(res.body.createdDate) : null;
     }
     return res;
   }
@@ -69,8 +67,7 @@ export class CommittedActivityService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((committedActivity: ICommittedActivity) => {
-        committedActivity.createdDateAndTime =
-          committedActivity.createdDateAndTime != null ? moment(committedActivity.createdDateAndTime) : null;
+        committedActivity.createdDate = committedActivity.createdDate != null ? moment(committedActivity.createdDate) : null;
       });
     }
     return res;

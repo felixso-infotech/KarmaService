@@ -54,8 +54,8 @@ public class CommittedActivityResourceIntTest {
     private static final Status DEFAULT_STATUS = Status.TODO;
     private static final Status UPDATED_STATUS = Status.INPROGRESS;
 
-    private static final ZonedDateTime DEFAULT_CREATED_DATE_AND_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_DATE_AND_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime DEFAULT_CREATED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private CommittedActivityRepository committedActivityRepository;
@@ -103,7 +103,7 @@ public class CommittedActivityResourceIntTest {
         CommittedActivity committedActivity = new CommittedActivity()
             .description(DEFAULT_DESCRIPTION)
             .status(DEFAULT_STATUS)
-            .createdDateAndTime(DEFAULT_CREATED_DATE_AND_TIME);
+            .createdDate(DEFAULT_CREATED_DATE);
         return committedActivity;
     }
 
@@ -130,7 +130,7 @@ public class CommittedActivityResourceIntTest {
         CommittedActivity testCommittedActivity = committedActivityList.get(committedActivityList.size() - 1);
         assertThat(testCommittedActivity.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testCommittedActivity.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testCommittedActivity.getCreatedDateAndTime()).isEqualTo(DEFAULT_CREATED_DATE_AND_TIME);
+        assertThat(testCommittedActivity.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
     }
 
     @Test
@@ -166,7 +166,7 @@ public class CommittedActivityResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(committedActivity.getId().intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].createdDateAndTime").value(hasItem(sameInstant(DEFAULT_CREATED_DATE_AND_TIME))));
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(sameInstant(DEFAULT_CREATED_DATE))));
     }
     
     @Test
@@ -182,7 +182,7 @@ public class CommittedActivityResourceIntTest {
             .andExpect(jsonPath("$.id").value(committedActivity.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
-            .andExpect(jsonPath("$.createdDateAndTime").value(sameInstant(DEFAULT_CREATED_DATE_AND_TIME)));
+            .andExpect(jsonPath("$.createdDate").value(sameInstant(DEFAULT_CREATED_DATE)));
     }
 
     @Test
@@ -208,7 +208,7 @@ public class CommittedActivityResourceIntTest {
         updatedCommittedActivity
             .description(UPDATED_DESCRIPTION)
             .status(UPDATED_STATUS)
-            .createdDateAndTime(UPDATED_CREATED_DATE_AND_TIME);
+            .createdDate(UPDATED_CREATED_DATE);
         CommittedActivityDTO committedActivityDTO = committedActivityMapper.toDto(updatedCommittedActivity);
 
         restCommittedActivityMockMvc.perform(put("/api/committed-activities")
@@ -222,7 +222,7 @@ public class CommittedActivityResourceIntTest {
         CommittedActivity testCommittedActivity = committedActivityList.get(committedActivityList.size() - 1);
         assertThat(testCommittedActivity.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testCommittedActivity.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testCommittedActivity.getCreatedDateAndTime()).isEqualTo(UPDATED_CREATED_DATE_AND_TIME);
+        assertThat(testCommittedActivity.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
     }
 
     @Test

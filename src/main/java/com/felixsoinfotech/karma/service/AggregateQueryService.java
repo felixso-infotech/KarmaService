@@ -21,6 +21,7 @@ package com.felixsoinfotech.karma.service;
  * sarangibalu, sarangibalu.a@lxisoft.com
  */
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -65,6 +66,15 @@ public interface AggregateQueryService {
      * @return the entity
      */
     Optional<ActivityDTO> findOne(Long id);
+
+	/**
+	 * Get all the activities by CreatedDate.
+	 * 
+	 * @param pageable the pagination information
+	 * @param createdDateAndTime the date information
+	 * @return the list of entities
+	 */
+	Page<ActivityDTO> findAllActivitiesByCreatedDate(Pageable pageable, ZonedDateTime createdDate);
 
 
 }

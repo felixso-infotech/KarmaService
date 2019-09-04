@@ -50,8 +50,8 @@ public class CompletedChallengeResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_CREATED_DATE_AND_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_DATE_AND_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime DEFAULT_CREATED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private CompletedChallengeRepository completedChallengeRepository;
@@ -98,7 +98,7 @@ public class CompletedChallengeResourceIntTest {
     public static CompletedChallenge createEntity(EntityManager em) {
         CompletedChallenge completedChallenge = new CompletedChallenge()
             .description(DEFAULT_DESCRIPTION)
-            .createdDateAndTime(DEFAULT_CREATED_DATE_AND_TIME);
+            .createdDate(DEFAULT_CREATED_DATE);
         return completedChallenge;
     }
 
@@ -124,7 +124,7 @@ public class CompletedChallengeResourceIntTest {
         assertThat(completedChallengeList).hasSize(databaseSizeBeforeCreate + 1);
         CompletedChallenge testCompletedChallenge = completedChallengeList.get(completedChallengeList.size() - 1);
         assertThat(testCompletedChallenge.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testCompletedChallenge.getCreatedDateAndTime()).isEqualTo(DEFAULT_CREATED_DATE_AND_TIME);
+        assertThat(testCompletedChallenge.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class CompletedChallengeResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(completedChallenge.getId().intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].createdDateAndTime").value(hasItem(sameInstant(DEFAULT_CREATED_DATE_AND_TIME))));
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(sameInstant(DEFAULT_CREATED_DATE))));
     }
     
     @Test
@@ -174,7 +174,7 @@ public class CompletedChallengeResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(completedChallenge.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.createdDateAndTime").value(sameInstant(DEFAULT_CREATED_DATE_AND_TIME)));
+            .andExpect(jsonPath("$.createdDate").value(sameInstant(DEFAULT_CREATED_DATE)));
     }
 
     @Test
@@ -199,7 +199,7 @@ public class CompletedChallengeResourceIntTest {
         em.detach(updatedCompletedChallenge);
         updatedCompletedChallenge
             .description(UPDATED_DESCRIPTION)
-            .createdDateAndTime(UPDATED_CREATED_DATE_AND_TIME);
+            .createdDate(UPDATED_CREATED_DATE);
         CompletedChallengeDTO completedChallengeDTO = completedChallengeMapper.toDto(updatedCompletedChallenge);
 
         restCompletedChallengeMockMvc.perform(put("/api/completed-challenges")
@@ -212,7 +212,7 @@ public class CompletedChallengeResourceIntTest {
         assertThat(completedChallengeList).hasSize(databaseSizeBeforeUpdate);
         CompletedChallenge testCompletedChallenge = completedChallengeList.get(completedChallengeList.size() - 1);
         assertThat(testCompletedChallenge.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testCompletedChallenge.getCreatedDateAndTime()).isEqualTo(UPDATED_CREATED_DATE_AND_TIME);
+        assertThat(testCompletedChallenge.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
     }
 
     @Test

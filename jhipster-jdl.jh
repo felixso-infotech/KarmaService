@@ -15,7 +15,7 @@ entity Activity{
     description String,
     successMessage String,
     type Type,
-    createdDateAndTime ZonedDateTime,
+    createdDate ZonedDateTime,
     proofType ProofType,
     isMultipleProofsRequired Boolean,
     noOfPages Integer
@@ -42,7 +42,7 @@ IMAGE,VIDEO,TEXT,PDF,PPT,DOC,XLX
 entity CommittedActivity{
      description String,
      status Status,
-     createdDateAndTime ZonedDateTime  
+     createdDate ZonedDateTime  
 }
 /**
  * Type entity.
@@ -65,7 +65,7 @@ enum Status {
 entity Challenge {
 	name String,
     successMessage String,
-    createdDateAndTime ZonedDateTime    
+    createdDate ZonedDateTime    
 }
 /**
  * CompletedChallenge entity.
@@ -73,7 +73,7 @@ entity Challenge {
  */
 entity CompletedChallenge {  
     description String,
-    createdDateAndTime ZonedDateTime    
+    createdDate ZonedDateTime    
 }
 /**
  * Dimension entity.

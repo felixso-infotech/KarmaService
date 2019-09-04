@@ -25,7 +25,8 @@ import java.util.Optional;
 /**
  * REST controller for managing CompletedChallenge.
  */
-
+@RestController
+@RequestMapping("/api")
 public class CompletedChallengeResource {
 
     private final Logger log = LoggerFactory.getLogger(CompletedChallengeResource.class);

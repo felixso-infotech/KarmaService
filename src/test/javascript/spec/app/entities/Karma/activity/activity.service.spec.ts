@@ -32,7 +32,7 @@ describe('Service Tests', () => {
       it('should find an element', async () => {
         const returnedFromService = Object.assign(
           {
-            createdDateAndTime: currentDate.format(DATE_TIME_FORMAT)
+            createdDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
@@ -49,13 +49,13 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            createdDateAndTime: currentDate.format(DATE_TIME_FORMAT)
+            createdDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
         const expected = Object.assign(
           {
-            createdDateAndTime: currentDate
+            createdDate: currentDate
           },
           returnedFromService
         );
@@ -74,7 +74,7 @@ describe('Service Tests', () => {
             description: 'BBBBBB',
             successMessage: 'BBBBBB',
             type: 'BBBBBB',
-            createdDateAndTime: currentDate.format(DATE_TIME_FORMAT),
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
             proofType: 'BBBBBB',
             isMultipleProofsRequired: true,
             noOfPages: 1
@@ -84,7 +84,7 @@ describe('Service Tests', () => {
 
         const expected = Object.assign(
           {
-            createdDateAndTime: currentDate
+            createdDate: currentDate
           },
           returnedFromService
         );
@@ -103,7 +103,7 @@ describe('Service Tests', () => {
             description: 'BBBBBB',
             successMessage: 'BBBBBB',
             type: 'BBBBBB',
-            createdDateAndTime: currentDate.format(DATE_TIME_FORMAT),
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
             proofType: 'BBBBBB',
             isMultipleProofsRequired: true,
             noOfPages: 1
@@ -112,7 +112,7 @@ describe('Service Tests', () => {
         );
         const expected = Object.assign(
           {
-            createdDateAndTime: currentDate
+            createdDate: currentDate
           },
           returnedFromService
         );

@@ -16,12 +16,14 @@
 
 package com.felixsoinfotech.karma.web.rest;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,7 +91,7 @@ public class AggregateQueryResource {
      */
 	  @GetMapping("/activities/{challengeId}")
 	  @Timed 
-	  public ResponseEntity<List<ActivityDTO>> getAllActivitiesByChallengeId(Pageable pageable,Long challengeId) {
+	  public ResponseEntity<List<ActivityDTO>> getAllActivitiesByChallengeId(Pageable pageable,@PathVariable Long challengeId) {
 	  log.debug("REST request to get a page of Activities by challengeId");
 	  
 	  Page<ActivityDTO> page; 
@@ -97,7 +99,28 @@ public class AggregateQueryResource {
 	  HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,"/api/activities");
 	  return ResponseEntity.ok().headers(headers).body(page.getContent()); 
 	  }
+   
+	  
+	    /**
+	     * GET  /activities : get all the activities.
+	     *
+	     * @param pageable the pagination information
+	     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
+	     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
+	     */
+		  @GetMapping("/activities/{createdDate}")
+		  @Timed 
+		  public ResponseEntity<List<ActivityDTO>> getAllActivitiesByCreatedDate(Pageable pageable,@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable ZonedDateTime createdDate) {
+		  log.debug("REST request to get a page of Activities by challengeId");
+		  
+		  Page<ActivityDTO> page; 
+		  page =aggregateQueryService.findAllActivitiesByCreatedDate(pageable,createdDate); 	  
+		  HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,"/api/activities");
+		  return ResponseEntity.ok().headers(headers).body(page.getContent()); 
+		  }  
+	  
 	 
+	  
     /**
      * GET  /activities/:id : get the "id" activity.
      *

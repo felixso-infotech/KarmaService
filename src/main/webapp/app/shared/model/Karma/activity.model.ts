@@ -24,7 +24,7 @@ export interface IActivity {
   description?: string;
   successMessage?: string;
   type?: Type;
-  createdDateAndTime?: Moment;
+  createdDate?: Moment;
   proofType?: ProofType;
   isMultipleProofsRequired?: boolean;
   noOfPages?: number;
@@ -41,7 +41,7 @@ export class Activity implements IActivity {
     public description?: string,
     public successMessage?: string,
     public type?: Type,
-    public createdDateAndTime?: Moment,
+    public createdDate?: Moment,
     public proofType?: ProofType,
     public isMultipleProofsRequired?: boolean,
     public noOfPages?: number,

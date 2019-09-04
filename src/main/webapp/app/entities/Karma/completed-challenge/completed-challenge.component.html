@@ -16,7 +16,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="createdDateAndTime"><span>Created Date And Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdDate"><span>Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="challengeId"><span>Challenge</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="userId"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
@@ -26,7 +26,7 @@
             <tr *ngFor="let completedChallenge of completedChallenges ;trackBy: trackId">
                 <td><a [routerLink]="['/completed-challenge', completedChallenge.id, 'view' ]">{{completedChallenge.id}}</a></td>
                 <td>{{completedChallenge.description}}</td>
-                <td>{{completedChallenge.createdDateAndTime | date:'medium'}}</td>
+                <td>{{completedChallenge.createdDate | date:'medium'}}</td>
                 <td>
                     <div *ngIf="completedChallenge.challengeId">
                         <a [routerLink]="['../challenge', completedChallenge.challengeId , 'view' ]" >{{completedChallenge.challengeId}}</a>

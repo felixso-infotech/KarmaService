@@ -32,8 +32,8 @@ public class Challenge implements Serializable {
     @Column(name = "success_message")
     private String successMessage;
 
-    @Column(name = "created_date_and_time")
-    private ZonedDateTime createdDateAndTime;
+    @Column(name = "created_date")
+    private ZonedDateTime createdDate;
 
     @OneToMany(mappedBy = "challenge")
     private Set<CompletedChallenge> completedChallenges = new HashSet<>();
@@ -74,17 +74,17 @@ public class Challenge implements Serializable {
         this.successMessage = successMessage;
     }
 
-    public ZonedDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public Challenge createdDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public Challenge createdDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
         return this;
     }
 
-    public void setCreatedDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Set<CompletedChallenge> getCompletedChallenges() {
@@ -164,7 +164,7 @@ public class Challenge implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", successMessage='" + getSuccessMessage() + "'" +
-            ", createdDateAndTime='" + getCreatedDateAndTime() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             "}";
     }
 }

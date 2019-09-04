@@ -11,7 +11,7 @@
             "fieldValues": "TODO,INPROGRESS,DONE"
         },
         {
-            "fieldName": "createdDateAndTime",
+            "fieldName": "createdDate",
             "fieldType": "ZonedDateTime"
         }
     ],

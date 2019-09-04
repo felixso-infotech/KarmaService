@@ -51,15 +51,14 @@ export class ChallengeService {
 
   protected convertDateFromClient(challenge: IChallenge): IChallenge {
     const copy: IChallenge = Object.assign({}, challenge, {
-      createdDateAndTime:
-        challenge.createdDateAndTime != null && challenge.createdDateAndTime.isValid() ? challenge.createdDateAndTime.toJSON() : null
+      createdDate: challenge.createdDate != null && challenge.createdDate.isValid() ? challenge.createdDate.toJSON() : null
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.createdDateAndTime = res.body.createdDateAndTime != null ? moment(res.body.createdDateAndTime) : null;
+      res.body.createdDate = res.body.createdDate != null ? moment(res.body.createdDate) : null;
     }
     return res;
   }
@@ -67,7 +66,7 @@ export class ChallengeService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((challenge: IChallenge) => {
-        challenge.createdDateAndTime = challenge.createdDateAndTime != null ? moment(challenge.createdDateAndTime) : null;
+        challenge.createdDate = challenge.createdDate != null ? moment(challenge.createdDate) : null;
       });
     }
     return res;

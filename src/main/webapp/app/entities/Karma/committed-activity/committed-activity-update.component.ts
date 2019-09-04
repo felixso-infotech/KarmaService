@@ -25,7 +25,7 @@ export class CommittedActivityUpdateComponent implements OnInit {
   users: IUser[];
 
   committedactivities: ICommittedActivity[];
-  createdDateAndTime: string;
+  createdDate: string;
 
   constructor(
     private jhiAlertService: JhiAlertService,
@@ -39,8 +39,7 @@ export class CommittedActivityUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ committedActivity }) => {
       this.committedActivity = committedActivity;
-      this.createdDateAndTime =
-        this.committedActivity.createdDateAndTime != null ? this.committedActivity.createdDateAndTime.format(DATE_TIME_FORMAT) : null;
+      this.createdDate = this.committedActivity.createdDate != null ? this.committedActivity.createdDate.format(DATE_TIME_FORMAT) : null;
     });
     this.activityService.query().subscribe(
       (res: HttpResponse<IActivity[]>) => {
@@ -68,7 +67,7 @@ export class CommittedActivityUpdateComponent implements OnInit {
 
   save() {
     this.isSaving = true;
-    this.committedActivity.createdDateAndTime = this.createdDateAndTime != null ? moment(this.createdDateAndTime, DATE_TIME_FORMAT) : null;
+    this.committedActivity.createdDate = this.createdDate != null ? moment(this.createdDate, DATE_TIME_FORMAT) : null;
     if (this.committedActivity.id !== undefined) {
       this.subscribeToSaveResponse(this.committedActivityService.update(this.committedActivity));
     } else {

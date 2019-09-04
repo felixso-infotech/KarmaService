@@ -17,7 +17,7 @@
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="successMessage"><span>Success Message</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="createdDateAndTime"><span>Created Date And Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdDate"><span>Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -26,7 +26,7 @@
                 <td><a [routerLink]="['/challenge', challenge.id, 'view' ]">{{challenge.id}}</a></td>
                 <td>{{challenge.name}}</td>
                 <td>{{challenge.successMessage}}</td>
-                <td>{{challenge.createdDateAndTime | date:'medium'}}</td>
+                <td>{{challenge.createdDate | date:'medium'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

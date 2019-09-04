@@ -23,7 +23,7 @@ public class ActivityDTO implements Serializable {
 
     private Type type;
 
-    private ZonedDateTime createdDateAndTime;
+    private ZonedDateTime createdDate;
 
     private ProofType proofType;
 
@@ -75,12 +75,12 @@ public class ActivityDTO implements Serializable {
         this.type = type;
     }
 
-    public ZonedDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreatedDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public ProofType getProofType() {
@@ -152,7 +152,7 @@ public class ActivityDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", successMessage='" + getSuccessMessage() + "'" +
             ", type='" + getType() + "'" +
-            ", createdDateAndTime='" + getCreatedDateAndTime() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             ", proofType='" + getProofType() + "'" +
             ", isMultipleProofsRequired='" + isIsMultipleProofsRequired() + "'" +
             ", noOfPages=" + getNoOfPages() +

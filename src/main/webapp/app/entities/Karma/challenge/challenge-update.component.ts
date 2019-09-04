@@ -15,7 +15,7 @@ import { ChallengeService } from './challenge.service';
 export class ChallengeUpdateComponent implements OnInit {
   challenge: IChallenge;
   isSaving: boolean;
-  createdDateAndTime: string;
+  createdDate: string;
 
   constructor(private challengeService: ChallengeService, private activatedRoute: ActivatedRoute) {}
 
@@ -23,8 +23,7 @@ export class ChallengeUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ challenge }) => {
       this.challenge = challenge;
-      this.createdDateAndTime =
-        this.challenge.createdDateAndTime != null ? this.challenge.createdDateAndTime.format(DATE_TIME_FORMAT) : null;
+      this.createdDate = this.challenge.createdDate != null ? this.challenge.createdDate.format(DATE_TIME_FORMAT) : null;
     });
   }
 
@@ -34,7 +33,7 @@ export class ChallengeUpdateComponent implements OnInit {
 
   save() {
     this.isSaving = true;
-    this.challenge.createdDateAndTime = this.createdDateAndTime != null ? moment(this.createdDateAndTime, DATE_TIME_FORMAT) : null;
+    this.challenge.createdDate = this.createdDate != null ? moment(this.createdDate, DATE_TIME_FORMAT) : null;
     if (this.challenge.id !== undefined) {
       this.subscribeToSaveResponse(this.challengeService.update(this.challenge));
     } else {

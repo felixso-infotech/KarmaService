@@ -24,7 +24,7 @@ export class ActivityUpdateComponent implements OnInit {
   challenges: IChallenge[];
 
   dimensions: IDimension[];
-  createdDateAndTime: string;
+  createdDate: string;
 
   constructor(
     private jhiAlertService: JhiAlertService,
@@ -38,7 +38,7 @@ export class ActivityUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ activity }) => {
       this.activity = activity;
-      this.createdDateAndTime = this.activity.createdDateAndTime != null ? this.activity.createdDateAndTime.format(DATE_TIME_FORMAT) : null;
+      this.createdDate = this.activity.createdDate != null ? this.activity.createdDate.format(DATE_TIME_FORMAT) : null;
     });
     this.challengeService.query().subscribe(
       (res: HttpResponse<IChallenge[]>) => {
@@ -60,7 +60,7 @@ export class ActivityUpdateComponent implements OnInit {
 
   save() {
     this.isSaving = true;
-    this.activity.createdDateAndTime = this.createdDateAndTime != null ? moment(this.createdDateAndTime, DATE_TIME_FORMAT) : null;
+    this.activity.createdDate = this.createdDate != null ? moment(this.createdDate, DATE_TIME_FORMAT) : null;
     if (this.activity.id !== undefined) {
       this.subscribeToSaveResponse(this.activityService.update(this.activity));
     } else {

@@ -12,7 +12,7 @@ export interface ICommittedActivity {
   id?: number;
   description?: string;
   status?: Status;
-  createdDateAndTime?: Moment;
+  createdDate?: Moment;
   activityId?: number;
   activityProofs?: IMedia[];
   committedActivities?: ICommittedActivity[];
@@ -25,7 +25,7 @@ export class CommittedActivity implements ICommittedActivity {
     public id?: number,
     public description?: string,
     public status?: Status,
-    public createdDateAndTime?: Moment,
+    public createdDate?: Moment,
     public activityId?: number,
     public activityProofs?: IMedia[],
     public committedActivities?: ICommittedActivity[],

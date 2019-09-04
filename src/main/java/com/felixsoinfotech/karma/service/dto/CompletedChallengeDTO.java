@@ -13,7 +13,7 @@ public class CompletedChallengeDTO implements Serializable {
 
     private String description;
 
-    private ZonedDateTime createdDateAndTime;
+    private ZonedDateTime createdDate;
 
     private Long challengeId;
 
@@ -35,12 +35,12 @@ public class CompletedChallengeDTO implements Serializable {
         this.description = description;
     }
 
-    public ZonedDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreatedDateAndTime(ZonedDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Long getChallengeId() {
@@ -85,7 +85,7 @@ public class CompletedChallengeDTO implements Serializable {
         return "CompletedChallengeDTO{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
-            ", createdDateAndTime='" + getCreatedDateAndTime() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             ", challenge=" + getChallengeId() +
             ", user='" + getUserId() + "'" +
             "}";
