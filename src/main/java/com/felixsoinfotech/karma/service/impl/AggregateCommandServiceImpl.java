@@ -17,15 +17,23 @@
 package com.felixsoinfotech.karma.service.impl;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.felixsoinfotech.karma.domain.Activity;
+import com.felixsoinfotech.karma.domain.IntroductionStory;
+import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
+import com.felixsoinfotech.karma.repository.IntroductionStoryRepository;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.IntroductionStoryDTO;
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
+import com.felixsoinfotech.karma.service.mapper.IntroductionStoryMapper;
 
 /**
  * TODO Provide a detailed description here  
@@ -45,10 +53,16 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 	private ActivityRepository activityRepository;
 
 	private ActivityMapper activityMapper;
+	
+	private IntroductionStoryMapper introductionStoryMapper;
+	
+	private IntroductionStoryRepository introductionStoryRepository;
 
-	public AggregateCommandServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper) {
+	public AggregateCommandServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,IntroductionStoryMapper introductionStoryMapper,IntroductionStoryRepository introductionStoryRepository) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
+		this.introductionStoryMapper=introductionStoryMapper; 
+		this.introductionStoryRepository=introductionStoryRepository;
 	}
 
 	/**
@@ -58,12 +72,27 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 	 * @return the persisted entity
 	 */
 	@Override
-	public ActivityDTO save(ActivityDTO activityDTO) {
-		log.debug("Request to save Activity : {}", activityDTO);
+	public ActivityAggregate save(ActivityAggregate activityAggregate) {
+		log.debug("Request to save Activity : {}", activityAggregate);
+		
+		List<IntroductionStoryDTO> introductionStories= new ArrayList<IntroductionStoryDTO>();
 
-		Activity activity = activityMapper.toEntity(activityDTO);
+		Activity activity = activityMapper.toEntity(activityAggregate.getActivityDTO());
 		activity = activityRepository.save(activity);
-		return activityMapper.toDto(activity);
+		ActivityDTO activityDto = activityMapper.toDto(activity);
+		activityAggregate.setActivityDTO(activityDto);
+		
+		for(IntroductionStoryDTO introductionStoryDto:activityAggregate.getIntroductionStories())
+	     {
+			IntroductionStory introductionStory=introductionStoryMapper.toEntity(introductionStoryDto);
+			introductionStory = introductionStoryRepository.save(introductionStory);
+			IntroductionStoryDTO introductionStoryDTo = introductionStoryMapper.toDto(introductionStory);
+			introductionStories.add(introductionStoryDTo);
+			activityAggregate.setIntroductionStories(introductionStories);
+			
+		 }
+	
+		return activityAggregate;
 	}
 
 	

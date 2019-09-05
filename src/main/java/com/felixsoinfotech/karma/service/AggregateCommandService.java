@@ -16,6 +16,7 @@
 
 package com.felixsoinfotech.karma.service;
 
+import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 
 /**
@@ -35,7 +36,7 @@ public interface AggregateCommandService   {
      * @param activityDTO the entity to save
      * @return the persisted entity
      */
-    ActivityDTO save(ActivityDTO activityDTO);
+	ActivityAggregate save(ActivityAggregate activityAggregate);
     
     /**
      * Delete the "id" activity.

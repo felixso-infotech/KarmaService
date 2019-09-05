@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
+import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.web.rest.errors.BadRequestAlertException;
@@ -65,14 +66,15 @@ public class AggregateCommandResource {
      */
     @PostMapping("/activities")
     @Timed
-    public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException {
-        log.debug("REST request to save Activity : {}", activityDTO);
-        if (activityDTO.getId() != null) {
+    public ResponseEntity<ActivityAggregate> createActivity(@RequestBody ActivityAggregate activityAggregate) throws URISyntaxException {
+        log.debug("REST request to save Activity : {}", activityAggregate);
+        if (activityAggregate.getActivityDTO().getId() != null) {
             throw new BadRequestAlertException("A new activity cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ActivityDTO result = aggregateCommandService.save(activityDTO);
-        return ResponseEntity.created(new URI("/api/activities/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+        ActivityAggregate result = aggregateCommandService.save(activityAggregate);
+        
+        return ResponseEntity.created(new URI("/api/activities/" + result.getActivityDTO().getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getActivityDTO().toString()))
             .body(result);
     }
 
@@ -85,18 +87,18 @@ public class AggregateCommandResource {
      * or with status 500 (Internal Server Error) if the activityDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/activities")
-    @Timed
-    public ResponseEntity<ActivityDTO> updateActivity(@RequestBody ActivityDTO activityDTO) throws URISyntaxException {
-        log.debug("REST request to update Activity : {}", activityDTO);
-        if (activityDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        ActivityDTO result = aggregateCommandService.save(activityDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityDTO.getId().toString()))
-            .body(result);
-    }
+	/*
+	 * @PutMapping("/activities")
+	 * 
+	 * @Timed public ResponseEntity<ActivityDTO> updateActivity(@RequestBody
+	 * ActivityDTO activityDTO) throws URISyntaxException {
+	 * log.debug("REST request to update Activity : {}", activityDTO); if
+	 * (activityDTO.getId() == null) { throw new
+	 * BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull"); } ActivityDTO
+	 * result = aggregateCommandService.save(activityDTO); return
+	 * ResponseEntity.ok() .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME,
+	 * activityDTO.getId().toString())) .body(result); }
+	 */
 
      
     /**
