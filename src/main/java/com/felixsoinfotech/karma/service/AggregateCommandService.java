@@ -17,7 +17,7 @@
 package com.felixsoinfotech.karma.service;
 
 import com.felixsoinfotech.karma.model.ActivityAggregate;
-import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+
 
 /**
  * TODO Provide a detailed description here 
@@ -33,18 +33,10 @@ public interface AggregateCommandService   {
 	/**
      * Save a activity.
      *
-     * @param activityDTO the entity to save
+     * @param activityAggregate the entity to save
      * @return the persisted entity
      */
-	ActivityAggregate save(ActivityAggregate activityAggregate);
-    
-    /**
-     * Delete the "id" activity.
-     *
-     * @param id the id of the entity
-     */
-    void delete(Long id);
-
+	ActivityAggregate saveActivity(ActivityAggregate activityAggregate);
 	
-
+	
 }

@@ -21,19 +21,16 @@ import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
-import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.web.rest.errors.BadRequestAlertException;
 import com.felixsoinfotech.karma.web.rest.util.HeaderUtil;
+
 
 /**
  * TODO Provide a detailed description here 
@@ -71,49 +68,15 @@ public class AggregateCommandResource {
         if (activityAggregate.getActivityDTO().getId() != null) {
             throw new BadRequestAlertException("A new activity cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ActivityAggregate result = aggregateCommandService.save(activityAggregate);
+        ActivityAggregate result = aggregateCommandService.saveActivity(activityAggregate);
         
         return ResponseEntity.created(new URI("/api/activities/" + result.getActivityDTO().getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getActivityDTO().toString()))
             .body(result);
     }
 
-    /**
-     * PUT  /activities : Updates an existing activity.
-     *
-     * @param activityDTO the activityDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated activityDTO,
-     * or with status 400 (Bad Request) if the activityDTO is not valid,
-     * or with status 500 (Internal Server Error) if the activityDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-	/*
-	 * @PutMapping("/activities")
-	 * 
-	 * @Timed public ResponseEntity<ActivityDTO> updateActivity(@RequestBody
-	 * ActivityDTO activityDTO) throws URISyntaxException {
-	 * log.debug("REST request to update Activity : {}", activityDTO); if
-	 * (activityDTO.getId() == null) { throw new
-	 * BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull"); } ActivityDTO
-	 * result = aggregateCommandService.save(activityDTO); return
-	 * ResponseEntity.ok() .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME,
-	 * activityDTO.getId().toString())) .body(result); }
-	 */
-
-     
-    /**
-     * DELETE  /activities/:id : delete the "id" activity.
-     *
-     * @param id the id of the activityDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @DeleteMapping("/activities/{id}")
-    @Timed
-    public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
-        log.debug("REST request to delete Activity : {}", id);
-        aggregateCommandService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
+    
+    
+   
 
 }

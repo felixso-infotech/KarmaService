@@ -79,7 +79,7 @@ public class ActivityResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityDTO.getId().toString()))
             .body(result);
-    }
+    }  
 
     /**
      * GET  /activities : get all the activities.

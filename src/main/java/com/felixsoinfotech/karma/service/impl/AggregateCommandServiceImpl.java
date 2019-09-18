@@ -72,7 +72,7 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 	 * @return the persisted entity
 	 */
 	@Override
-	public ActivityAggregate save(ActivityAggregate activityAggregate) {
+	public ActivityAggregate saveActivity(ActivityAggregate activityAggregate) {
 		log.debug("Request to save Activity : {}", activityAggregate);
 		
 		List<IntroductionStoryDTO> introductionStories= new ArrayList<IntroductionStoryDTO>();
@@ -88,24 +88,11 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 			introductionStory = introductionStoryRepository.save(introductionStory);
 			IntroductionStoryDTO introductionStoryDTo = introductionStoryMapper.toDto(introductionStory);
 			introductionStories.add(introductionStoryDTo);
-			activityAggregate.setIntroductionStories(introductionStories);
-			
+			activityAggregate.setIntroductionStories(introductionStories);			
 		 }
 	
 		return activityAggregate;
 	}
-
 	
-	/**
-	 * Delete the activity by id.
-	 *
-	 * @param id the id of the entity
-	 */
-	@Override
-	public void delete(Long id) {
-		log.debug("Request to delete Activity : {}", id);
-		activityRepository.deleteById(id);
-	}
 
-	
 }
