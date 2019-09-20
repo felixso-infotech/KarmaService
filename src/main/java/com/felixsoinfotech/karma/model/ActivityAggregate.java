@@ -25,10 +25,26 @@ import com.felixsoinfotech.karma.service.dto.IntroductionStoryDTO;
  * 
  */
 public class ActivityAggregate {
-
-	private ActivityDTO activityDTO;
-    private List<IntroductionStoryDTO> introductionStories= new ArrayList<IntroductionStoryDTO>();
+	
+    private Long id;
     
+	private ActivityDTO activityDTO;
+	
+	private List<IntroductionStoryDTO> introductionStories= new ArrayList<IntroductionStoryDTO>();
+   
+	 /**
+	  * @return the id
+	  */
+	public Long getId() {
+			return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+	this.id = id;
+	}
+		
     /**
 	 * @return the activityDTO
 	 */

@@ -65,14 +65,14 @@ public class AggregateCommandResource {
     @Timed
     public ResponseEntity<ActivityAggregate> createActivity(@RequestBody ActivityAggregate activityAggregate) throws URISyntaxException {
         log.debug("REST request to save Activity : {}", activityAggregate);
-        if (activityAggregate.getActivityDTO().getId() != null) {
+        if (activityAggregate.getId() != null) {
             throw new BadRequestAlertException("A new activity cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ActivityAggregate result = aggregateCommandService.saveActivity(activityAggregate);
         
-        return ResponseEntity.created(new URI("/api/activities/" + result.getActivityDTO().getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getActivityDTO().toString()))
-            .body(result);
+        return ResponseEntity.created(new URI("/api/contacts/" + activityAggregate.getActivityDTO().getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, activityAggregate.getActivityDTO().getId().toString()))
+                .body(result);
     }
 
     

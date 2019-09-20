@@ -84,6 +84,10 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 		
 		for(IntroductionStoryDTO introductionStoryDto:activityAggregate.getIntroductionStories())
 	     {
+			introductionStoryDto.setActivityId(activityAggregate.getActivityDTO().getId());
+			
+			System.out.println(activityAggregate.getActivityDTO().getId());
+			
 			IntroductionStory introductionStory=introductionStoryMapper.toEntity(introductionStoryDto);
 			introductionStory = introductionStoryRepository.save(introductionStory);
 			IntroductionStoryDTO introductionStoryDTo = introductionStoryMapper.toDto(introductionStory);
