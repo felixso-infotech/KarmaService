@@ -22,11 +22,13 @@ package com.felixsoinfotech.karma.service;
  */
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 
 /**
@@ -75,6 +77,13 @@ public interface AggregateQueryService {
 	 * @return the list of entities
 	 */
 	Page<ActivityDTO> findAllActivitiesByCreatedDate(Pageable pageable, ZonedDateTime createdDate);
+
+	/**
+	 * Get all the enums ProofType.
+	 * 
+	 * @return List of enum prooftypes values
+	 */
+	List<ProofType> findAllEnumProofTypes();
 
 
 }

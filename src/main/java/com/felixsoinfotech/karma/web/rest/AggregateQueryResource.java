@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
+import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.web.rest.util.PaginationUtil;
@@ -80,6 +82,24 @@ public class AggregateQueryResource {
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/activities?eagerload=%b", eagerload));
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+    
+    /**
+     * GET  /activities : get all the ProofTypes.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
+     */
+    @GetMapping("/enums/ProofType")
+    @Timed
+    public ResponseEntity<List<ProofType>> getAllEnumProofTypes(Pageable pageable) {
+    	
+        log.debug("REST request to get a enum ProofType");
+                       
+        List<ProofType> proofTypes = aggregateQueryService.findAllEnumProofTypes();       
+      
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<ProofType>(proofTypes, pageable, proofTypes.size()),"/enums/ProofType");
+        
+        return ResponseEntity.ok().headers(headers).body(proofTypes);
     }
     
     /**

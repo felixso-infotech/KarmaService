@@ -22,6 +22,8 @@ package com.felixsoinfotech.karma.service.impl;
  */
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -30,6 +32,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
@@ -65,6 +69,24 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		log.debug("Request to get all Activities");
 		return activityRepository.findAll(pageable).map(activityMapper::toDto);
 	}
+	
+	/**
+	 * Get all the enums ProofType.
+	 *
+	 * @return the list of enums
+	 */
+	@Override
+	public List<ProofType> findAllEnumProofTypes(){
+		
+		log.debug("Request to get all Enum ProofTypes");
+		
+		ProofType[] ProofTypes=ProofType.values();
+						
+		return Arrays.asList(ProofTypes);
+		
+	}
+
+	
 	
 	/**
      * Get all the activities by challengeId.
@@ -118,6 +140,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		return activityRepository.findOneWithEagerRelationships(id).map(activityMapper::toDto);
 	}
 
+	
 	
 	
 }
