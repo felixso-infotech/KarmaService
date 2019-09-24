@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
+import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.web.rest.errors.BadRequestAlertException;
 import com.felixsoinfotech.karma.web.rest.util.HeaderUtil;
 
@@ -75,7 +76,25 @@ public class AggregateCommandResource {
                 .body(result);
     }
 
-    
+    /**
+     * POST  /committed-activities : Create a new committedActivity.
+     *
+     * @param committedActivityDTO the committedActivityDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new committedActivityDTO, or with status 400 (Bad Request) if the committedActivity has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/committed-activities")
+    @Timed
+    public ResponseEntity<CommittedActivityDTO> createCommittedActivity(@RequestBody CommittedActivityDTO committedActivityDTO) throws URISyntaxException {
+        log.debug("REST request to save CommittedActivity : {}", committedActivityDTO);
+        if (committedActivityDTO.getId() != null) {
+            throw new BadRequestAlertException("A new committedActivity cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        CommittedActivityDTO result = aggregateCommandService.saveCommittedActivity(committedActivityDTO);
+        return ResponseEntity.created(new URI("/api/committed-activities/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
     
    
 

@@ -17,6 +17,7 @@
 package com.felixsoinfotech.karma.service;
 
 import com.felixsoinfotech.karma.model.ActivityAggregate;
+import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 
 
 /**
@@ -37,6 +38,14 @@ public interface AggregateCommandService   {
      * @return the persisted entity
      */
 	ActivityAggregate saveActivity(ActivityAggregate activityAggregate);
+
+	/**
+     * Save a committedActivity.
+     *
+     * @param committedActivityDTO the entity to save
+     * @return the persisted entity
+     */
+	CommittedActivityDTO saveCommittedActivity(CommittedActivityDTO committedActivityDTO);
 	
 	
 }
