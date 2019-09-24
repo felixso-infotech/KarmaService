@@ -24,12 +24,12 @@ package com.felixsoinfotech.karma.service;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
 /**
  * Service Interface for managing Query services.
@@ -84,6 +84,20 @@ public interface AggregateQueryService {
 	 * @return List of enum prooftypes values
 	 */
 	List<ProofType> findAllEnumProofTypes();
+
+	/**
+	 * Get all the enums Type.
+	 * 
+	 * @return List of enum Types values
+	 */
+	List<Type> findAllEnumTypes();
+
+	/**
+	 * Get all the dimensions.
+	 * 
+	 * @return List of Dimensions
+	 */
+	Page<DimensionDTO> findAllDimensions(Pageable pageable);
 
 
 }

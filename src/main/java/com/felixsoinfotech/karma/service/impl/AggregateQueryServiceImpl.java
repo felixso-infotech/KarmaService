@@ -34,10 +34,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
+import com.felixsoinfotech.karma.repository.DimensionRepository;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
+import com.felixsoinfotech.karma.service.mapper.DimensionMapper;
 
 /**
  * Service Implementation for managing Queryservices
@@ -51,10 +55,16 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	private ActivityRepository activityRepository;
 
 	private ActivityMapper activityMapper;
+	
+	private DimensionRepository dimensionRepository;
+	
+	private DimensionMapper dimensionMapper;
 
-	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper) {
+	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,DimensionRepository dimensionRepository,DimensionMapper dimensionMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
+		this.dimensionRepository=dimensionRepository;
+		this.dimensionMapper=dimensionMapper;
 	}
 	
 	/**
@@ -86,7 +96,38 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		
 	}
 
+	/**
+	 * Get all the enums ProofType.
+	 *
+	 * @return the list of enums
+	 */
+	@Override
+	public List<Type> findAllEnumTypes(){
+		
+		log.debug("Request to get all Enum ProofTypes");
+		
+		Type[] Types=Type.values();
+						
+		return Arrays.asList(Types);
+		
+	}
 	
+	/**
+     * Get all the dimensions.
+     *
+     * @param pageable the pagination information
+     * 
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<DimensionDTO> findAllDimensions(Pageable pageable) {
+        log.debug("Request to get all Dimensions");
+        return dimensionRepository.findAll(pageable)
+            .map(dimensionMapper::toDto);
+    }
+
+
 	
 	/**
      * Get all the activities by challengeId.

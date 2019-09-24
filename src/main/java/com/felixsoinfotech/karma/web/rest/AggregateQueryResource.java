@@ -34,8 +34,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 import com.felixsoinfotech.karma.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -85,13 +87,14 @@ public class AggregateQueryResource {
     }
     
     /**
-     * GET  /activities : get all the ProofTypes.
+     * GET  /activities : get all the enum Types.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of activities in body
      */
     @GetMapping("/enums/ProofType")
     @Timed
     public ResponseEntity<List<ProofType>> getAllEnumProofTypes(Pageable pageable) {
+    	
     	
         log.debug("REST request to get a enum ProofType");
                        
@@ -101,6 +104,41 @@ public class AggregateQueryResource {
         
         return ResponseEntity.ok().headers(headers).body(proofTypes);
     }
+    
+    /**
+     * GET  /activities : get all the ProofTypes.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
+     */
+    @GetMapping("/enums/Type")
+    @Timed
+    public ResponseEntity<List<Type>> getAllEnumTypes(Pageable pageable) {
+    	
+        log.debug("REST request to get a enum Types");
+                       
+        List<Type> Types = aggregateQueryService.findAllEnumTypes();       
+      
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<Type>(Types, pageable, Types.size()),"/enums/Type");
+        
+        return ResponseEntity.ok().headers(headers).body(Types);
+    }
+    
+    /**
+     * GET  /dimensions : get all the dimensions.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of dimensions in body
+     */
+    @GetMapping("/dimensions")
+    @Timed
+    public ResponseEntity<List<DimensionDTO>> getAllDimensions(Pageable pageable) {
+        log.debug("REST request to get a page of Dimensions");
+        Page<DimensionDTO> page = aggregateQueryService.findAllDimensions(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/dimensions");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+    
+    
     
     /**
      * GET  /activities : get all the activities.
