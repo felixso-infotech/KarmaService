@@ -27,57 +27,17 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
 /**
  * Service Interface for managing Query services.
  */
 public interface AggregateQueryService {
-	
-	/**
-     * Get all the activities.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    Page<ActivityDTO> findAll(Pageable pageable);
-    
-    /**
-     * Get all the activities by challengeId.
-     * 
-	 * @param pageable the pagination information
-	 * @param challengeId the challenge information
-	 * @return the list of entities
-	 */
-	Page<ActivityDTO> findAllActivitiesByChallengeId(Pageable pageable,Long challengeId ); 
- 
-
-    /**
-     * Get all the Activity with eager load of many-to-many relationships.
-     *
-     * @return the list of entities
-     */
-    Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable);
-    
-    /**
-     * Get the "id" activity.
-     *
-     * @param id the id of the entity
-     * @return the entity
-     */
-    Optional<ActivityDTO> findOne(Long id);
-
-	/**
-	 * Get all the activities by CreatedDate.
-	 * 
-	 * @param pageable the pagination information
-	 * @param createdDateAndTime the date information
-	 * @return the list of entities
-	 */
-	Page<ActivityDTO> findAllActivitiesByCreatedDate(Pageable pageable, ZonedDateTime createdDate);
-
+	   
 	/**
 	 * Get all the enums ProofType.
 	 * 
@@ -91,6 +51,13 @@ public interface AggregateQueryService {
 	 * @return List of enum Types values
 	 */
 	List<Type> findAllEnumTypes();
+	
+	/**
+	 * Get all the enums Status.
+	 * 
+	 * @return List of enum Status values
+	 */
+	List<Status> findAllEnumStatus();
 
 	/**
 	 * Get all the dimensions.
@@ -99,5 +66,24 @@ public interface AggregateQueryService {
 	 */
 	Page<DimensionDTO> findAllDimensions(Pageable pageable);
 
+	/**
+     * Get the "status" committedActivity.
+     *
+     * @param status the status of the entity
+     * @return the entity
+     */
+	Page<CommittedActivityDTO> findAllCommittedActivitiesByStatus(Pageable pageable,Status status);
+
+
+    /**
+     * Get all the committedActivities.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<CommittedActivityDTO> findAllCommittedActivities(Pageable pageable);
+
+
+    
 
 }

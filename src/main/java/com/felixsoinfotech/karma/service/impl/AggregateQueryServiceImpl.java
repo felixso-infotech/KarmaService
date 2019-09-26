@@ -34,13 +34,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
+import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.DimensionRepository;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
+import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.DimensionMapper;
 
 /**
@@ -59,26 +63,21 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	private DimensionRepository dimensionRepository;
 	
 	private DimensionMapper dimensionMapper;
+	
+	private CommittedActivityRepository committedActivityRepository;
+	
+	private CommittedActivityMapper committedActivityMapper;
 
-	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,DimensionRepository dimensionRepository,DimensionMapper dimensionMapper) {
+	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
+			                         DimensionRepository dimensionRepository,DimensionMapper dimensionMapper,
+			                         CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
 		this.dimensionRepository=dimensionRepository;
 		this.dimensionMapper=dimensionMapper;
-	}
-	
-	/**
-	 * Get all the activities.
-	 *
-	 * @param pageable the pagination information
-	 * @return the list of entities
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public Page<ActivityDTO> findAll(Pageable pageable) {
-		log.debug("Request to get all Activities");
-		return activityRepository.findAll(pageable).map(activityMapper::toDto);
-	}
+		this.committedActivityRepository=committedActivityRepository;
+		this.committedActivityMapper=committedActivityMapper;
+	}	
 	
 	/**
 	 * Get all the enums ProofType.
@@ -90,9 +89,9 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		
 		log.debug("Request to get all Enum ProofTypes");
 		
-		ProofType[] ProofTypes=ProofType.values();
+		ProofType[] proofTypes=ProofType.values();
 						
-		return Arrays.asList(ProofTypes);
+		return Arrays.asList(proofTypes);
 		
 	}
 
@@ -104,12 +103,26 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	@Override
 	public List<Type> findAllEnumTypes(){
 		
-		log.debug("Request to get all Enum ProofTypes");
+		log.debug("Request to get all Enum Types");
 		
-		Type[] Types=Type.values();
+		Type[] types=Type.values();
 						
-		return Arrays.asList(Types);
+		return Arrays.asList(types);		
+	}
+	
+	/**
+	 * Get all the enums Status.
+	 *
+	 * @return the list of Status
+	 */
+	@Override
+	public List<Status> findAllEnumStatus(){
 		
+		log.debug("Request to get all Enum Status");
+		
+		Status[] statuses=Status.values();
+						
+		return Arrays.asList(statuses);		
 	}
 	
 	/**
@@ -127,60 +140,34 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
             .map(dimensionMapper::toDto);
     }
 
+    /**
+     * Get all the committedActivities.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CommittedActivityDTO> findAllCommittedActivities(Pageable pageable) {
+        log.debug("Request to get all CommittedActivities");
+        return committedActivityRepository.findAll(pageable)
+            .map(committedActivityMapper::toDto);
+    }
 
-	
-	/**
-     * Get all the activities by challengeId.
-     * 
-	 * @param pageable the pagination information
-	 * @param challengeId the challenge information
-	 * @return the list of entities
-	 */
-	@Override
-    @Transactional(readOnly = true) 
-	public Page<ActivityDTO> findAllActivitiesByChallengeId(Pageable pageable,Long challengeId) { 
-		log.debug("Request to get all Activities by ChallengeId");		
-		return activityRepository.findAllActivitiesByChallengeId(pageable,challengeId).map(activityMapper::toDto);		
-	
-	}
-	
-	/**
-	 * Get all the activities by CreatedDateAndTime.
-	 * 
-	 * @param pageable the pagination information
-	 * @param createdDateAndTime the date information
-	 * @return the list of entities
-	 */ 
-	@Override
-	public Page<ActivityDTO> findAllActivitiesByCreatedDate(Pageable pageable,ZonedDateTime createdDate) {
-		log.debug("Request to get all Activities by createdDateAndTime");		
-		return activityRepository.findAllActivitiesByCreatedDate(pageable,createdDate).map(activityMapper::toDto);
-	}
 
-		
-
-	/**
-	 * Get all the Activity with eager load of many-to-many relationships.
-	 *
-	 * @return the list of entities
-	 */
-	public Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable) {
-		return activityRepository.findAllWithEagerRelationships(pageable).map(activityMapper::toDto);
-	}
-
-	/**
-	 * Get one activity by id.
-	 *
-	 * @param id the id of the entity
-	 * @return the entity
-	 */
-	@Override
-	@Transactional(readOnly = true)
-	public Optional<ActivityDTO> findOne(Long id) {
-		log.debug("Request to get Activity : {}", id);
-		return activityRepository.findOneWithEagerRelationships(id).map(activityMapper::toDto);
-	}
-
+    /**
+     * Get one committedActivity by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CommittedActivityDTO> findAllCommittedActivitiesByStatus(Pageable pageable,Status status) {
+        log.debug("Request to get all CommittedActivities");
+        return committedActivityRepository.findAll(pageable)
+                .map(committedActivityMapper::toDto);
+    }
 	
 	
 	
