@@ -22,6 +22,7 @@ package com.felixsoinfotech.karma.service.impl;
  */
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +30,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.felixsoinfotech.karma.domain.CommittedActivity;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
@@ -140,6 +143,37 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
             .map(dimensionMapper::toDto);
     }
 
+
+    /**
+     * Get the "status" committedActivity.
+     *
+     * @param status the status of the entity
+     * @param pageable the pagination information
+     * 
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CommittedActivityDTO> findAllCommittedActivitiesByStatus(Pageable pageable,Status status) {
+        log.debug("Request to get all CommittedActivities by status");
+        
+        List<CommittedActivityDTO> committedActivityDtoDoneList=new ArrayList<CommittedActivityDTO>();
+        
+        Page<CommittedActivityDTO> page=committedActivityRepository.findAll(pageable).map(committedActivityMapper::toDto);
+                
+        for(CommittedActivityDTO committedActivityDTO : page.getContent())
+        {
+        	if(committedActivityDTO.getStatus()==status)
+        		committedActivityDtoDoneList.add(committedActivityDTO);        		
+        }
+        
+        Page<CommittedActivityDTO> pagee = new PageImpl<CommittedActivityDTO>(committedActivityDtoDoneList, pageable, committedActivityDtoDoneList.size());
+
+		return pagee;
+        
+    }
+    
+    
     /**
      * Get all the committedActivities.
      *
@@ -154,20 +188,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
             .map(committedActivityMapper::toDto);
     }
 
-
-    /**
-     * Get one committedActivity by id.
-     *
-     * @param id the id of the entity
-     * @return the entity
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Page<CommittedActivityDTO> findAllCommittedActivitiesByStatus(Pageable pageable,Status status) {
-        log.debug("Request to get all CommittedActivities");
-        return committedActivityRepository.findAll(pageable)
-                .map(committedActivityMapper::toDto);
-    }
 	
 	
 	
