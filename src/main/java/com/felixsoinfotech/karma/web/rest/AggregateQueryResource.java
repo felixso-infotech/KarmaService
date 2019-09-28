@@ -16,32 +16,34 @@
 
 package com.felixsoinfotech.karma.web.rest;
 
-import java.time.ZonedDateTime;
+
 import java.util.List;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
-import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
+import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 import com.felixsoinfotech.karma.web.rest.util.PaginationUtil;
+
 import io.github.jhipster.web.util.ResponseUtil;
+
 
 /**
  * TODO Provide a detailed description here 
@@ -152,7 +154,20 @@ public class AggregateQueryResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
     
-    
+    /**
+     * GET  /registered-users/:id : get the "id" registeredUser.
+     *
+     * @param id the id of the registeredUserDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the registeredUserDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/registered-users/{id}")
+    @Timed
+    public ResponseEntity<RegisteredUserAggregate> getRegisteredUserByUserId(@PathVariable String userId) {
+        log.debug("REST request to get RegisteredUser : {}", userId);
+        Optional<RegisteredUserAggregate> registeredUserAggregate = aggregateQueryService.findOneRegisteredUserByUserId(userId);
+        return ResponseUtil.wrapOrNotFound(registeredUserAggregate);
+    }
+
     
   
     

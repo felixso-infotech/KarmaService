@@ -21,11 +21,12 @@ package com.felixsoinfotech.karma.service.impl;
  * sarangibalu, sarangibalu.a@lxisoft.com
  */
 
-import java.time.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,20 +36,30 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.felixsoinfotech.karma.domain.CommittedActivity;
+import com.felixsoinfotech.karma.domain.User;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
 import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.DimensionRepository;
+import com.felixsoinfotech.karma.repository.RegisteredUserRepository;
+import com.felixsoinfotech.karma.repository.UserRepository;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
-import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
+import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
+import com.felixsoinfotech.karma.service.dto.UserDTO;
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.DimensionMapper;
+import com.felixsoinfotech.karma.service.mapper.RegisteredUserMapper;
+import com.felixsoinfotech.karma.service.mapper.UserMapper;
+import com.thoughtworks.xstream.core.util.Base64Encoder;
+
+//import org.bouncycastle.util.encoders.Base64Encoder;
 
 /**
  * Service Implementation for managing Queryservices
@@ -70,16 +81,33 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	private CommittedActivityRepository committedActivityRepository;
 	
 	private CommittedActivityMapper committedActivityMapper;
+	
+	private RegisteredUserRepository registeredUserRepository;
+
+    private RegisteredUserMapper registeredUserMapper;
+    
+    private UserRepository userRepository;
+    
+    private UserMapper userMapper;
+    
 
 	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
 			                         DimensionRepository dimensionRepository,DimensionMapper dimensionMapper,
-			                         CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper) {
+			                         CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper,
+			                         RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper,
+			                         UserRepository userRepository,UserMapper userMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
 		this.dimensionRepository=dimensionRepository;
 		this.dimensionMapper=dimensionMapper;
 		this.committedActivityRepository=committedActivityRepository;
 		this.committedActivityMapper=committedActivityMapper;
+		this.registeredUserRepository = registeredUserRepository;
+        this.registeredUserMapper = registeredUserMapper;
+        this.userMapper=userMapper;
+        this.userRepository=userRepository;
+        
+        
 	}	
 	
 	/**
@@ -189,6 +217,53 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
     }
 
 	
+    /**
+     * Get one registeredUser by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<RegisteredUserAggregate> findOneRegisteredUserByUserId(String userId) {
+        log.debug("Request to get RegisteredUser : {}", userId);
+        
+        RegisteredUserAggregate registeredUserAggregate =new RegisteredUserAggregate();
+        
+        Base64Encoder encoder = new Base64Encoder();
+        
+        Optional<RegisteredUserDTO> registeredUserDTO=registeredUserRepository.findById(userId).map(registeredUserMapper::toDto);
+        
+        Optional<UserDTO> userDTO = userRepository.findById(userId).map(userMapper::userToUserDTO);
+        
+        RegisteredUserDTO registeredUserDto = registeredUserDTO.get();
+        
+        UserDTO userDto=userDTO.get();
+       
+        if((userDto!=null) && (registeredUserDto!=null))
+        {	
+        registeredUserAggregate.setFirstName(userDto.getFirstName());
+        registeredUserAggregate.setLastName(userDto.getLastName());
+        registeredUserAggregate.setEmail(userDto.getEmail());
+        registeredUserAggregate.setUserId(userDto.getId());
+        registeredUserAggregate.setCoverPhotoContentType(registeredUserDto.getCoverPhotoContentType());
+        registeredUserAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
+        
+          if(registeredUserDto.getCoverPhotoContentType().contains("image")) 
+        	{
+      		   String coverPhoto= encoder.encode(registeredUserDto.getCoverPhoto());
+			   registeredUserAggregate.setCoverPhoto(coverPhoto);
+        	}
+		  if(registeredUserDto.getProfilePictureContentType().contains("image"))
+		   {
+			String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
+			registeredUserAggregate.setProfilePicture(profilePic);				
+		   }
+                          
+        }
+        return Optional.of(registeredUserAggregate);
+        
+    }
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.felixsoinfotech.karma.repository;
 
+import com.felixsoinfotech.karma.domain.RegisteredUser;
 import com.felixsoinfotech.karma.domain.User;
 
 import org.springframework.data.domain.Page;
@@ -33,4 +34,12 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findOneWithAuthoritiesByEmail(String email);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
+    
+
+	/**
+	 * @param userId
+	 * @return
+	 */
+	Optional<User> findById(String id);
+
 }

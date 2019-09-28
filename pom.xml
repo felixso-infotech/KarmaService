@@ -354,6 +354,13 @@
 		</dependency>
 		<!-- jhipster-needle-maven-add-dependency -->
 		
+		<dependency>
+        <groupId>com.thoughtworks.xstream</groupId>
+        <artifactId>xstream</artifactId>
+        <version>1.2.2</version>
+        </dependency>
+		
+		
 	</dependencies>
 
 	<build>
