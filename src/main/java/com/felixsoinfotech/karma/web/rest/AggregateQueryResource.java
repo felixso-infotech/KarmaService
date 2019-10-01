@@ -35,6 +35,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
@@ -147,9 +148,9 @@ public class AggregateQueryResource {
      */
     @GetMapping("/committed-activities/{status}")
     @Timed
-    public ResponseEntity<List<CommittedActivityDTO>> getAllCommittedActivitiesByStatus(Pageable pageable,@PathVariable Status status) {
+    public ResponseEntity<List<CommittedActivityAggregate>> getAllCommittedActivitiesByStatus(Pageable pageable,@PathVariable Status status) {
         log.debug("REST request to get CommittedActivity : {}", status);
-        Page<CommittedActivityDTO> page = aggregateQueryService.findAllCommittedActivitiesByStatus(pageable,status);
+        Page<CommittedActivityAggregate> page = aggregateQueryService.findAllCommittedActivitiesByStatus(pageable,status);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/committed-activities/{status}");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -160,7 +161,7 @@ public class AggregateQueryResource {
      * @param id the id of the registeredUserDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the registeredUserDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/registered-users/{id}")
+    @GetMapping("/registered-users/{userId}")
     @Timed
     public ResponseEntity<RegisteredUserAggregate> getRegisteredUserByUserId(@PathVariable String userId) {
         log.debug("REST request to get RegisteredUser : {}", userId);

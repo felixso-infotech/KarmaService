@@ -27,6 +27,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,27 +40,37 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.felixsoinfotech.karma.domain.Media;
+import com.felixsoinfotech.karma.domain.RegisteredUser;
 import com.felixsoinfotech.karma.domain.User;
+
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
 import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.DimensionRepository;
+import com.felixsoinfotech.karma.repository.MediaRepository;
 import com.felixsoinfotech.karma.repository.RegisteredUserRepository;
 import com.felixsoinfotech.karma.repository.UserRepository;
+
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
+import com.felixsoinfotech.karma.service.dto.MediaDTO;
 import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 import com.felixsoinfotech.karma.service.dto.UserDTO;
+
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.DimensionMapper;
+import com.felixsoinfotech.karma.service.mapper.MediaMapper;
 import com.felixsoinfotech.karma.service.mapper.RegisteredUserMapper;
 import com.felixsoinfotech.karma.service.mapper.UserMapper;
+
 import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 //import org.bouncycastle.util.encoders.Base64Encoder;
@@ -90,12 +104,17 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
     
     private UserMapper userMapper;
     
+    private MediaRepository mediaRepository;
+
+    private MediaMapper mediaMapper;
+    
 
 	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
 			                         DimensionRepository dimensionRepository,DimensionMapper dimensionMapper,
 			                         CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper,
 			                         RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper,
-			                         UserRepository userRepository,UserMapper userMapper) {
+			                         UserRepository userRepository,UserMapper userMapper,
+			                         MediaRepository mediaRepository, MediaMapper mediaMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
 		this.dimensionRepository=dimensionRepository;
@@ -106,6 +125,9 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         this.registeredUserMapper = registeredUserMapper;
         this.userMapper=userMapper;
         this.userRepository=userRepository;
+        this.mediaRepository = mediaRepository;
+        this.mediaMapper = mediaMapper;
+        
         
         
 	}	
@@ -182,10 +204,16 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<CommittedActivityDTO> findAllCommittedActivitiesByStatus(Pageable pageable,Status status) {
+    public Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatus(Pageable pageable,Status status) {
         log.debug("Request to get all CommittedActivities by status");
         
+        List<CommittedActivityAggregate> committedActivityAggregateList=new ArrayList<CommittedActivityAggregate>();
+        
+        CommittedActivityAggregate committedActivityAggregate= new CommittedActivityAggregate();
+        
         List<CommittedActivityDTO> committedActivityDtoDoneList=new ArrayList<CommittedActivityDTO>();
+        
+        Base64Encoder encoder = new Base64Encoder();
         
         Page<CommittedActivityDTO> page=committedActivityRepository.findAll(pageable).map(committedActivityMapper::toDto);
                 
@@ -195,11 +223,104 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         		committedActivityDtoDoneList.add(committedActivityDTO);        		
         }
         
-        Page<CommittedActivityDTO> pagee = new PageImpl<CommittedActivityDTO>(committedActivityDtoDoneList, pageable, committedActivityDtoDoneList.size());
+        for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
+        {
+        	committedActivityAggregate.setId(committedActivityDto.getId());
+        	committedActivityAggregate.setDescription(committedActivityDto.getDescription());
+        	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId());        	
+        	
+        	Optional<User> userob = userRepository.findById(committedActivityDto.getUserId());
+        	UserDTO userDto=userMapper.userToUserDTO(userob.get());	
+        	
+        	committedActivityAggregate.setFirstName(userDto.getFirstName());
+        	committedActivityAggregate.setLastName(userDto.getLastName());
+        	
+        	Optional<RegisteredUser> registeredUserOp=registeredUserRepository.findByUserId(committedActivityDto.getUserId());
+        	RegisteredUserDTO registeredUserDto = registeredUserMapper.toDto(registeredUserOp.get());
+        	
+        	committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
+        	
+        	if(registeredUserDto != null)
+        	{
+        	   if(registeredUserDto.getProfilePictureContentType().contains("image"))
+ 		       {
+ 			    String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
+ 			    committedActivityAggregate.setProfilePicture(profilePic);				
+ 		       }
+        	}
+        	       	
+        	Optional<Media> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
+        	MediaDTO mediaDto=mediaMapper.toDto(media.get());
+        	
+            if(mediaDto != null)    
+            {
+            	if(mediaDto.getFileContentType().contains("image"))
+  		        {
+  			    String image= encoder.encode(mediaDto.getFile());
+  			    committedActivityAggregate.setImageString(image);
+  					
+  		        }       	        	
+            }
+            
+            //committedActivityAggregate.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(committedActivityDto.getCreatedDate()));
+            
+        	committedActivityAggregateList.add(committedActivityAggregate);
+        	
+        	
+        }
+        
+        Page<CommittedActivityAggregate> pagee = new PageImpl<CommittedActivityAggregate>(committedActivityAggregateList, pageable, committedActivityAggregateList.size());
 
 		return pagee;
         
     }
+    
+  
+ 	/**
+ 	 * Find time difference between current date and posted date.
+ 	 *
+ 	 * @param postedDate
+ 	 *            to find the time
+ 	 * 
+ 	 * @return the time
+ 	 */
+
+ 	@Override
+ 	public String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate) {
+ 				
+ 		Instant instant = Instant.now();
+ 		long hours = 5;
+ 		long minutes = 30;
+ 		Instant instant1 = instant.plus(hours, ChronoUnit.HOURS).plus(minutes, ChronoUnit.MINUTES);
+
+ 		Date current = Date.from(instant1);
+ 		long diffInSecond = 0l;
+ 		String diffInString = null;
+ 		if (postedDate != null) {
+ 			diffInSecond = (current.getTime() - postedDate.getTime()) / 1000l;
+ 		}
+ 		long postedBefore = 0l;
+ 		if (diffInSecond < 60l) {
+ 			diffInString = "just now";
+ 		} else if (diffInSecond < 3600l) {
+ 			postedBefore = diffInSecond / 60l;
+ 			diffInString = postedBefore + " minutes ago";
+ 		} else if (diffInSecond < 86400l) {
+ 			postedBefore = diffInSecond / 3600l;
+ 			diffInString = postedBefore + " hours ago";
+ 		} else if (diffInSecond < 2592000l) {
+ 			postedBefore = diffInSecond / 86400l;
+ 			diffInString = postedBefore + " days ago";
+ 		} else if (diffInSecond < 31104000l) {
+ 			postedBefore = diffInSecond / 2592000l;
+ 			diffInString = postedBefore + " months ago";
+ 		} else {
+ 			postedBefore = diffInSecond / 31104000l;
+ 			diffInString = postedBefore + " years ago";
+ 		}
+
+ 		return diffInString;
+ 	}
     
     
     /**
@@ -232,20 +353,38 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
         Base64Encoder encoder = new Base64Encoder();
         
-        Optional<RegisteredUserDTO> registeredUserDTO=registeredUserRepository.findById(userId).map(registeredUserMapper::toDto);
+        //Optional<User> userob = userRepository.findById(userId);
         
-        Optional<UserDTO> userDTO = userRepository.findById(userId).map(userMapper::userToUserDTO);
+       // Optional<User> userob = userRepository.findOneByLogin(userId);
         
-        RegisteredUserDTO registeredUserDto = registeredUserDTO.get();
+        //Optional<User> userob = userRepository.findOneWithAuthoritiesByLogin(userId);
         
-        UserDTO userDto=userDTO.get();
-       
-        if((userDto!=null) && (registeredUserDto!=null))
+        
+       // System.out.println("\n*****************************************************\n"+userob+"\n*************************\n");
+        
+       // UserDTO userDto=userMapper.userToUserDTO(userob.get());	
+        
+        //System.out.println("\n*****************************************************\n"+userDto+"\n*************************\n");
+        		
+        		//.map(userMapper::userToUserDTO);
+        
+        System.out.println("\n*****************************************************\n"+registeredUserRepository.findById(1L)+"\n*************************\n");
+        
+        Optional<RegisteredUser> registeredUser=registeredUserRepository.findById(1L);
+        
+        RegisteredUserDTO registeredUserDto=registeredUserMapper.toDto(registeredUser.get());
+        
+       System.out.println("\n*****************************************************\n"+registeredUserDto+"\n*************************\n");
+        
+                
+        //if((userDto!=null) && (registeredUserDto!=null))
+        	
+        if(registeredUserDto!=null)	
         {	
-        registeredUserAggregate.setFirstName(userDto.getFirstName());
-        registeredUserAggregate.setLastName(userDto.getLastName());
-        registeredUserAggregate.setEmail(userDto.getEmail());
-        registeredUserAggregate.setUserId(userDto.getId());
+       // registeredUserAggregate.setFirstName(userDto.getFirstName());
+        //registeredUserAggregate.setLastName(userDto.getLastName());
+        //registeredUserAggregate.setEmail(userDto.getEmail());
+        registeredUserAggregate.setUserId(registeredUserDto.getUserId());
         registeredUserAggregate.setCoverPhotoContentType(registeredUserDto.getCoverPhotoContentType());
         registeredUserAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
         

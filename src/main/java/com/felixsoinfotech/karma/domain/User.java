@@ -22,7 +22,6 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "jhi_user")
-
 public class User extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

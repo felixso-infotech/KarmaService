@@ -22,6 +22,7 @@ package com.felixsoinfotech.karma.service;
  */
 
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
@@ -74,9 +76,8 @@ public interface AggregateQueryService {
      * @param status the status of the entity
      * @return the entity
      */
-	Page<CommittedActivityDTO> findAllCommittedActivitiesByStatus(Pageable pageable,Status status);
-
-
+	Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatus(Pageable pageable,Status status);
+	
     /**
      * Get all the committedActivities.
      *
@@ -84,6 +85,17 @@ public interface AggregateQueryService {
      * @return the list of entities
      */
     Page<CommittedActivityDTO> findAllCommittedActivities(Pageable pageable);
+    
+    /**
+ 	 * Find time difference between current date and posted date.
+ 	 *
+ 	 * @param postedDate
+ 	 *            to find the time
+ 	 * 
+ 	 * @return the time
+ 	 */
+    
+    public String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate);
 
     /**
      * Get the "id" registeredUser.
