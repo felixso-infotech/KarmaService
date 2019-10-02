@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -40,9 +41,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.felixsoinfotech.karma.domain.Media;
-import com.felixsoinfotech.karma.domain.RegisteredUser;
-import com.felixsoinfotech.karma.domain.User;
 
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
@@ -215,6 +213,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
         Base64Encoder encoder = new Base64Encoder();
         
+        
         Page<CommittedActivityDTO> page=committedActivityRepository.findAll(pageable).map(committedActivityMapper::toDto);
                 
         for(CommittedActivityDTO committedActivityDTO : page.getContent())
@@ -229,19 +228,22 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	committedActivityAggregate.setDescription(committedActivityDto.getDescription());
         	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId());        	
         	
-        	Optional<User> userob = userRepository.findById(committedActivityDto.getUserId());
-        	UserDTO userDto=userMapper.userToUserDTO(userob.get());	
+        	Optional<UserDTO> userDTo = userRepository.findById(committedActivityDto.getUserId()).map(userMapper::userToUserDTO);
+        	UserDTO userDto=userDTo.get();	
         	
-        	committedActivityAggregate.setFirstName(userDto.getFirstName());
+        	if(userDto != null)
+        	{
+           	committedActivityAggregate.setFirstName(userDto.getFirstName());
         	committedActivityAggregate.setLastName(userDto.getLastName());
+        	}
         	
-        	Optional<RegisteredUser> registeredUserOp=registeredUserRepository.findByUserId(committedActivityDto.getUserId());
-        	RegisteredUserDTO registeredUserDto = registeredUserMapper.toDto(registeredUserOp.get());
-        	
-        	committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
-        	
+        	Optional<RegisteredUserDTO> registeredUserdto=registeredUserRepository.findByUserId(committedActivityDto.getUserId()).map(registeredUserMapper::toDto);
+        	RegisteredUserDTO registeredUserDto =  registeredUserdto.get();
+        	       	
         	if(registeredUserDto != null)
         	{
+        	   committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
+        	   
         	   if(registeredUserDto.getProfilePictureContentType().contains("image"))
  		       {
  			    String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
@@ -249,8 +251,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
  		       }
         	}
         	       	
-        	Optional<Media> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
-        	MediaDTO mediaDto=mediaMapper.toDto(media.get());
+        	Optional<MediaDTO> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto);
+        	MediaDTO mediaDto=media.get();
         	
             if(mediaDto != null)    
             {
@@ -262,7 +264,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
   		        }       	        	
             }
             
-            //committedActivityAggregate.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(committedActivityDto.getCreatedDate()));
+            committedActivityAggregate.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(committedActivityDto.getCreatedDate()));
+            committedActivityAggregate.setNoOfReferences(committedActivityRepository.findNumberOfCommittedActivityByReferenceId(committedActivityDto.getId()));
             
         	committedActivityAggregateList.add(committedActivityAggregate);
         	
@@ -279,14 +282,18 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
  	/**
  	 * Find time difference between current date and posted date.
  	 *
- 	 * @param postedDate
+ 	 * @param postedDateTime
  	 *            to find the time
  	 * 
  	 * @return the time
  	 */
 
  	@Override
- 	public String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate) {
+ 	public String calculateTimeDifferenceBetweenCurrentAndPostedTime(ZonedDateTime postedDateTime) {
+ 		
+ 		long offsetMillis = ZoneOffset.from(postedDateTime).getTotalSeconds() * 1000;
+ 		long isoMillis = postedDateTime.toInstant().toEpochMilli();
+ 		Date date = new Date(isoMillis + offsetMillis);
  				
  		Instant instant = Instant.now();
  		long hours = 5;
@@ -296,8 +303,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
  		Date current = Date.from(instant1);
  		long diffInSecond = 0l;
  		String diffInString = null;
- 		if (postedDate != null) {
- 			diffInSecond = (current.getTime() - postedDate.getTime()) / 1000l;
+ 		if (date != null) {
+ 			diffInSecond = (current.getTime() - date.getTime()) / 1000l;
  		}
  		long postedBefore = 0l;
  		if (diffInSecond < 60l) {
@@ -348,42 +355,28 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
     @Transactional(readOnly = true)
     public Optional<RegisteredUserAggregate> findOneRegisteredUserByUserId(String userId) {
         log.debug("Request to get RegisteredUser : {}", userId);
-        
+       
         RegisteredUserAggregate registeredUserAggregate =new RegisteredUserAggregate();
         
         Base64Encoder encoder = new Base64Encoder();
         
-        //Optional<User> userob = userRepository.findById(userId);
-        
-       // Optional<User> userob = userRepository.findOneByLogin(userId);
-        
-        //Optional<User> userob = userRepository.findOneWithAuthoritiesByLogin(userId);
-        
-        
-       // System.out.println("\n*****************************************************\n"+userob+"\n*************************\n");
-        
-       // UserDTO userDto=userMapper.userToUserDTO(userob.get());	
-        
-        //System.out.println("\n*****************************************************\n"+userDto+"\n*************************\n");
+        Optional<UserDTO> userDto= userRepository.findById(userId).map(userMapper::userToUserDTO);
         		
-        		//.map(userMapper::userToUserDTO);
+        UserDTO userDTO=userDto.get();	
         
-        System.out.println("\n*****************************************************\n"+registeredUserRepository.findById(1L)+"\n*************************\n");
+        if(userDTO!=null)	
+        {	
+        	registeredUserAggregate.setFirstName(userDTO.getFirstName());
+            registeredUserAggregate.setLastName(userDTO.getLastName());
+            registeredUserAggregate.setEmail(userDTO.getEmail());       	
+        }
+       
+        Optional<RegisteredUserDTO> registeredUserDTO=registeredUserRepository.findByUserId(userId).map(registeredUserMapper::toDto);
         
-        Optional<RegisteredUser> registeredUser=registeredUserRepository.findById(1L);
-        
-        RegisteredUserDTO registeredUserDto=registeredUserMapper.toDto(registeredUser.get());
-        
-       System.out.println("\n*****************************************************\n"+registeredUserDto+"\n*************************\n");
-        
-                
-        //if((userDto!=null) && (registeredUserDto!=null))
+        RegisteredUserDTO registeredUserDto=registeredUserDTO.get();
         	
         if(registeredUserDto!=null)	
         {	
-       // registeredUserAggregate.setFirstName(userDto.getFirstName());
-        //registeredUserAggregate.setLastName(userDto.getLastName());
-        //registeredUserAggregate.setEmail(userDto.getEmail());
         registeredUserAggregate.setUserId(registeredUserDto.getUserId());
         registeredUserAggregate.setCoverPhotoContentType(registeredUserDto.getCoverPhotoContentType());
         registeredUserAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
@@ -400,6 +393,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		   }
                           
         }
+                
         return Optional.of(registeredUserAggregate);
         
     }

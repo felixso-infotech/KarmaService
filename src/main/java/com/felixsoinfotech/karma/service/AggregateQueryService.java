@@ -32,10 +32,9 @@ import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
-import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
-import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
+
 
 /**
  * Service Interface for managing Query services.
@@ -95,7 +94,7 @@ public interface AggregateQueryService {
  	 * @return the time
  	 */
     
-    public String calculateTimeDifferenceBetweenCurrentAndPostedTime(Date postedDate);
+    public String calculateTimeDifferenceBetweenCurrentAndPostedTime(ZonedDateTime postedDateTime);
 
     /**
      * Get the "id" registeredUser.
