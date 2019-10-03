@@ -7,4 +7,7 @@ pipeline {
       }
     }
   }
+  environment {
+    M2_HOME = '/home/sanilkumar_onlinework/servers/apache-maven-3.6.2'
+  }
 }
