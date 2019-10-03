@@ -7,7 +7,7 @@ pipeline {
         M2_HOME = '/home/sanilkumar_onlinework/servers/apache-maven-3.6.2'
       }
       steps {
-        sh 'mvn spring-boot:run'
+        sh '/home/sanilkumar_onlinework/servers/apache-maven-3.6.2/bin/mvn.sh spring-boot:run'
       }
     }
   }
