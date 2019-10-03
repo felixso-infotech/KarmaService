@@ -1,6 +1,11 @@
 package com.felixsoinfotech.karma.repository;
 
 import com.felixsoinfotech.karma.domain.RegisteredUser;
+import com.felixsoinfotech.karma.service.dto.DimensionDTO;
+
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +16,17 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, Long> {
+
+	/**
+	 * @param userId
+	 * @return
+	 */
+	Optional<RegisteredUser> findById(Long id);
+	
+	/**
+	 * @param userId
+	 * @return
+	 */
+	Optional<RegisteredUser> findByUserId(String userId);
 
 }

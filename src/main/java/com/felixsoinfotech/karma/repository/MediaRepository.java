@@ -1,6 +1,10 @@
 package com.felixsoinfotech.karma.repository;
 
 import com.felixsoinfotech.karma.domain.Media;
+
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +15,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
+	
+	Optional<Media> findByCommittedActivityId(Long committedActivityId);
 
 }
