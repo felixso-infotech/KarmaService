@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { JhiDataUtils } from 'ng-jhipster';
 
 import { IRegisteredUser } from 'app/shared/model/Karma/registered-user.model';
 import { RegisteredUserService } from './registered-user.service';
-import { IUser, UserService } from 'app/core';
 
 @Component({
   selector: 'jhi-registered-user-update',
@@ -15,14 +16,11 @@ import { IUser, UserService } from 'app/core';
 export class RegisteredUserUpdateComponent implements OnInit {
   registeredUser: IRegisteredUser;
   isSaving: boolean;
-
-  users: IUser[];
+  createdDate: string;
 
   constructor(
     private dataUtils: JhiDataUtils,
-    private jhiAlertService: JhiAlertService,
     private registeredUserService: RegisteredUserService,
-    private userService: UserService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -30,13 +28,8 @@ export class RegisteredUserUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ registeredUser }) => {
       this.registeredUser = registeredUser;
+      this.createdDate = this.registeredUser.createdDate != null ? this.registeredUser.createdDate.format(DATE_TIME_FORMAT) : null;
     });
-    this.userService.query().subscribe(
-      (res: HttpResponse<IUser[]>) => {
-        this.users = res.body;
-      },
-      (res: HttpErrorResponse) => this.onError(res.message)
-    );
   }
 
   byteSize(field) {
@@ -57,6 +50,7 @@ export class RegisteredUserUpdateComponent implements OnInit {
 
   save() {
     this.isSaving = true;
+    this.registeredUser.createdDate = this.createdDate != null ? moment(this.createdDate, DATE_TIME_FORMAT) : null;
     if (this.registeredUser.id !== undefined) {
       this.subscribeToSaveResponse(this.registeredUserService.update(this.registeredUser));
     } else {
@@ -75,13 +69,5 @@ export class RegisteredUserUpdateComponent implements OnInit {
 
   private onSaveError() {
     this.isSaving = false;
-  }
-
-  private onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
-
-  trackUserById(index: number, item: IUser) {
-    return item.id;
   }
 }

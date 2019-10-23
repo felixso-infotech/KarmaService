@@ -17,7 +17,7 @@ public class CompletedChallengeDTO implements Serializable {
 
     private Long challengeId;
 
-    private String userId;
+    private Long registeredUserId;
 
     public Long getId() {
         return id;
@@ -51,12 +51,12 @@ public class CompletedChallengeDTO implements Serializable {
         this.challengeId = challengeId;
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getRegisteredUserId() {
+        return registeredUserId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRegisteredUserId(Long registeredUserId) {
+        this.registeredUserId = registeredUserId;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class CompletedChallengeDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", challenge=" + getChallengeId() +
-            ", user='" + getUserId() + "'" +
+            ", registeredUser=" + getRegisteredUserId() +
             "}";
     }
 }

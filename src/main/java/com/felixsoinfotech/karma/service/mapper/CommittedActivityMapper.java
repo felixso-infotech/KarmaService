@@ -8,19 +8,19 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity CommittedActivity and its DTO CommittedActivityDTO.
  */
-@Mapper(componentModel = "spring", uses = {ActivityMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = {ActivityMapper.class, RegisteredUserMapper.class})
 public interface CommittedActivityMapper extends EntityMapper<CommittedActivityDTO, CommittedActivity> {
 
     @Mapping(source = "activity.id", target = "activityId")
-    @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "referenceId.id", target = "referenceIdId")
+    @Mapping(source = "registeredUser.id", target = "registeredUserId")
+    @Mapping(source = "reference.id", target = "referenceId")
     CommittedActivityDTO toDto(CommittedActivity committedActivity);
 
     @Mapping(source = "activityId", target = "activity")
     @Mapping(target = "activityProofs", ignore = true)
     @Mapping(target = "committedActivities", ignore = true)
-    @Mapping(source = "userId", target = "user")
-    @Mapping(source = "referenceIdId", target = "referenceId")
+    @Mapping(source = "registeredUserId", target = "registeredUser")
+    @Mapping(source = "referenceId", target = "reference")
     CommittedActivity toEntity(CommittedActivityDTO committedActivityDTO);
 
     default CommittedActivity fromId(Long id) {

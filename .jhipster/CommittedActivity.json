@@ -32,17 +32,17 @@
             "relationshipType": "one-to-many",
             "relationshipName": "committedActivity",
             "otherEntityName": "committedActivity",
-            "otherEntityRelationshipName": "referenceId"
+            "otherEntityRelationshipName": "reference"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "user",
-            "otherEntityName": "user",
+            "relationshipName": "registeredUser",
+            "otherEntityName": "registeredUser",
             "otherEntityField": "id"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "referenceId",
+            "relationshipName": "reference",
             "otherEntityName": "committedActivity",
             "otherEntityField": "id"
         }

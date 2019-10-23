@@ -23,14 +23,16 @@
                         <a [routerLink]="['/activity', committedActivity.activityId, 'view']">{{committedActivity.activityId}}</a>
                     </div>
                 </dd>
-                <dt><span>User</span></dt>
+                <dt><span>Registered User</span></dt>
                 <dd>
-                    {{committedActivity.userId}}
+                    <div *ngIf="committedActivity.registeredUserId">
+                        <a [routerLink]="['/registered-user', committedActivity.registeredUserId, 'view']">{{committedActivity.registeredUserId}}</a>
+                    </div>
                 </dd>
-                <dt><span>Reference Id</span></dt>
+                <dt><span>Reference</span></dt>
                 <dd>
-                    <div *ngIf="committedActivity.referenceIdId">
-                        <a [routerLink]="['/committed-activity', committedActivity.referenceIdId, 'view']">{{committedActivity.referenceIdId}}</a>
+                    <div *ngIf="committedActivity.referenceId">
+                        <a [routerLink]="['/committed-activity', committedActivity.referenceId, 'view']">{{committedActivity.referenceId}}</a>
                     </div>
                 </dd>
             </dl>

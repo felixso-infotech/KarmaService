@@ -27,18 +27,22 @@ import org.springframework.transaction.annotation.Transactional;
 import com.felixsoinfotech.karma.domain.Activity;
 import com.felixsoinfotech.karma.domain.CommittedActivity;
 import com.felixsoinfotech.karma.domain.IntroductionStory;
+import com.felixsoinfotech.karma.domain.RegisteredUser;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
 import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.IntroductionStoryRepository;
+import com.felixsoinfotech.karma.repository.RegisteredUserRepository;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.IntroductionStoryDTO;
+import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.IntroductionStoryMapper;
+import com.felixsoinfotech.karma.service.mapper.RegisteredUserMapper;
 
 /**
  * TODO Provide a detailed description here  
@@ -66,17 +70,23 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 	private CommittedActivityMapper committedActivityMapper;
 	
 	private CommittedActivityRepository committedActivityRepository;
+	
+	private RegisteredUserRepository registeredUserRepository;
+
+    private RegisteredUserMapper registeredUserMapper;
 
 	public AggregateCommandServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
 			                           IntroductionStoryMapper introductionStoryMapper,IntroductionStoryRepository introductionStoryRepository,
-			                           CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper) {
+			                           CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper,
+			                           RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
 		this.introductionStoryMapper=introductionStoryMapper; 
 		this.introductionStoryRepository=introductionStoryRepository;
 		this.committedActivityMapper=committedActivityMapper;
 		this.committedActivityRepository=committedActivityRepository;
-		
+		this.registeredUserRepository = registeredUserRepository;
+        this.registeredUserMapper = registeredUserMapper;
 	}
 
 	/**
@@ -130,5 +140,31 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
         return committedActivityMapper.toDto(committedActivity);
     }
 	
+    /**
+     * Save a registeredUser.
+     *
+     * @param registeredUserDTO the entity to save
+     * @return the persisted entity
+     */
+    @Override
+    public RegisteredUserDTO saveRegisteredUser(RegisteredUserDTO registeredUserDTO) {
+        log.debug("Request to save RegisteredUser : {}", registeredUserDTO);
+
+        RegisteredUser registeredUser = registeredUserMapper.toEntity(registeredUserDTO);
+        registeredUser = registeredUserRepository.save(registeredUser);
+        return registeredUserMapper.toDto(registeredUser);
+    }
+    
+
+    /**
+     * Delete the registeredUser by id.
+     *
+     * @param id the id of the entity
+     */
+    @Override
+    public void deleteRegisteredUser(Long id) {
+        log.debug("Request to delete RegisteredUser : {}", id);
+        registeredUserRepository.deleteById(id);
+    }
 
 }

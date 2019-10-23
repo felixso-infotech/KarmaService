@@ -8,13 +8,12 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity RegisteredUser and its DTO RegisteredUserDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {})
 public interface RegisteredUserMapper extends EntityMapper<RegisteredUserDTO, RegisteredUser> {
 
-    @Mapping(source = "user.id", target = "userId")
-    RegisteredUserDTO toDto(RegisteredUser registeredUser);
 
-    @Mapping(source = "userId", target = "user")
+    @Mapping(target = "committedActivities", ignore = true)
+    @Mapping(target = "completedChallenges", ignore = true)
     RegisteredUser toEntity(RegisteredUserDTO registeredUserDTO);
 
     default RegisteredUser fromId(Long id) {

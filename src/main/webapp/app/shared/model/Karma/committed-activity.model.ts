@@ -16,8 +16,8 @@ export interface ICommittedActivity {
   activityId?: number;
   activityProofs?: IMedia[];
   committedActivities?: ICommittedActivity[];
-  userId?: number;
-  referenceIdId?: number;
+  registeredUserId?: number;
+  referenceId?: number;
 }
 
 export class CommittedActivity implements ICommittedActivity {
@@ -29,7 +29,7 @@ export class CommittedActivity implements ICommittedActivity {
     public activityId?: number,
     public activityProofs?: IMedia[],
     public committedActivities?: ICommittedActivity[],
-    public userId?: number,
-    public referenceIdId?: number
+    public registeredUserId?: number,
+    public referenceId?: number
   ) {}
 }

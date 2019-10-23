@@ -7,7 +7,7 @@ export interface ICompletedChallenge {
   createdDate?: Moment;
   challengeId?: number;
   proofs?: IMedia[];
-  userId?: number;
+  registeredUserId?: number;
 }
 
 export class CompletedChallenge implements ICompletedChallenge {
@@ -17,6 +17,6 @@ export class CompletedChallenge implements ICompletedChallenge {
     public createdDate?: Moment,
     public challengeId?: number,
     public proofs?: IMedia[],
-    public userId?: number
+    public registeredUserId?: number
   ) {}
 }

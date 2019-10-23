@@ -14,15 +14,15 @@
                                  referencedColumnNames="id"
                                  referencedTableName="activity"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
+        <addForeignKeyConstraint baseColumnNames="registered_user_id"
                                  baseTableName="committed_activity"
-                                 constraintName="fk_committed_activity_user_id"
+                                 constraintName="fk_committed_activity_registered_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="registered_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="reference_id_id"
+        <addForeignKeyConstraint baseColumnNames="reference_id"
                                  baseTableName="committed_activity"
-                                 constraintName="fk_committed_activity_reference_id_id"
+                                 constraintName="fk_committed_activity_reference_id"
                                  referencedColumnNames="id"
                                  referencedTableName="committed_activity"/>
 

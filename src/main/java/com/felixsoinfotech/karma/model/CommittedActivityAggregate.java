@@ -1,4 +1,5 @@
 /*
+
  * Copyright 2002-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,17 +17,40 @@
 
 package com.felixsoinfotech.karma.model;
 
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
 /**
  * 
  */
 public class CommittedActivityAggregate {
 
-	private Long id;
+	private Long CommittedActivityId;
 
-    private String description;
+    private String committedActivityDescription;
 
     private Long activityId;
+    
+    private String title;
+
+    private String activityDescription;
+
+    private String successMessage;
+
+    private Type type;
+
+    private ZonedDateTime activityCreatedDate;
+
+    private ProofType proofType;
+
+    private Long challengeId;
+
+    private Set<DimensionDTO> dimensions = new HashSet<>();
 
     private String userId;
     
@@ -46,35 +70,150 @@ public class CommittedActivityAggregate {
     
     private String timeElapsed;
 
+    
+	
 	/**
-	 * @return the id
+	 * @return the committedActivityId
 	 */
-	public Long getId() {
-		return id;
+	public Long getCommittedActivityId() {
+		return CommittedActivityId;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param committedActivityId the committedActivityId to set
 	 */
-	public void setId(Long id) {
-		this.id = id;
+	public void setCommittedActivityId(Long committedActivityId) {
+		CommittedActivityId = committedActivityId;
 	}
 
 	/**
-	 * @return the description
+	 * @return the title
 	 */
-	public String getDescription() {
-		return description;
+	public String getTitle() {
+		return title;
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param title the title to set
 	 */
-	public void setDescription(String description) {
-		this.description = description;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * @return the activityDescription
+	 */
+	public String getActivityDescription() {
+		return activityDescription;
+	}
+
+	/**
+	 * @param activityDescription the activityDescription to set
+	 */
+	public void setActivityDescription(String activityDescription) {
+		this.activityDescription = activityDescription;
+	}
+
+	/**
+	 * @return the successMessage
+	 */
+	public String getSuccessMessage() {
+		return successMessage;
+	}
+
+	/**
+	 * @param successMessage the successMessage to set
+	 */
+	public void setSuccessMessage(String successMessage) {
+		this.successMessage = successMessage;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public Type getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the activityCreatedDate
+	 */
+	public ZonedDateTime getActivityCreatedDate() {
+		return activityCreatedDate;
+	}
+
+	/**
+	 * @param activityCreatedDate the activityCreatedDate to set
+	 */
+	public void setActivityCreatedDate(ZonedDateTime activityCreatedDate) {
+		this.activityCreatedDate = activityCreatedDate;
+	}
+
+	/**
+	 * @return the proofType
+	 */
+	public ProofType getProofType() {
+		return proofType;
+	}
+
+	/**
+	 * @param proofType the proofType to set
+	 */
+	public void setProofType(ProofType proofType) {
+		this.proofType = proofType;
+	}
+
+	/**
+	 * @return the challengeId
+	 */
+	public Long getChallengeId() {
+		return challengeId;
+	}
+
+	/**
+	 * @param challengeId the challengeId to set
+	 */
+	public void setChallengeId(Long challengeId) {
+		this.challengeId = challengeId;
+	}
+
+	/**
+	 * @return the dimensions
+	 */
+	public Set<DimensionDTO> getDimensions() {
+		return dimensions;
+	}
+
+	/**
+	 * @param dimensions the dimensions to set
+	 */
+	public void setDimensions(Set<DimensionDTO> dimensions) {
+		this.dimensions = dimensions;
 	}
 
 	
+	
+	/**
+	 * @return the committedActivityDescription
+	 */
+	public String getCommittedActivityDescription() {
+		return committedActivityDescription;
+	}
+
+	/**
+	 * @param committedActivityDescription the committedActivityDescription to set
+	 */
+	public void setCommittedActivityDescription(String committedActivityDescription) {
+		this.committedActivityDescription = committedActivityDescription;
+	}
+
 	/**
 	 * @return the activityId
 	 */

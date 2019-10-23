@@ -20,9 +20,9 @@ public class CommittedActivityDTO implements Serializable {
 
     private Long activityId;
 
-    private String userId;
+    private Long registeredUserId;
 
-    private Long referenceIdId;
+    private Long referenceId;
 
     public Long getId() {
         return id;
@@ -64,20 +64,20 @@ public class CommittedActivityDTO implements Serializable {
         this.activityId = activityId;
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getRegisteredUserId() {
+        return registeredUserId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRegisteredUserId(Long registeredUserId) {
+        this.registeredUserId = registeredUserId;
     }
 
-    public Long getReferenceIdId() {
-        return referenceIdId;
+    public Long getReferenceId() {
+        return referenceId;
     }
 
-    public void setReferenceIdId(Long committedActivityId) {
-        this.referenceIdId = committedActivityId;
+    public void setReferenceId(Long committedActivityId) {
+        this.referenceId = committedActivityId;
     }
 
     @Override
@@ -109,8 +109,8 @@ public class CommittedActivityDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", activity=" + getActivityId() +
-            ", user='" + getUserId() + "'" +
-            ", referenceId=" + getReferenceIdId() +
+            ", registeredUser=" + getRegisteredUserId() +
+            ", reference=" + getReferenceId() +
             "}";
     }
 }

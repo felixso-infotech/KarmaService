@@ -4,6 +4,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { RegisteredUserService } from 'app/entities/Karma/registered-user/registered-user.service';
 import { IRegisteredUser, RegisteredUser } from 'app/shared/model/Karma/registered-user.model';
 
@@ -13,6 +15,7 @@ describe('Service Tests', () => {
     let service: RegisteredUserService;
     let httpMock: HttpTestingController;
     let elemDefault: IRegisteredUser;
+    let currentDate: moment.Moment;
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
@@ -20,13 +23,31 @@ describe('Service Tests', () => {
       injector = getTestBed();
       service = injector.get(RegisteredUserService);
       httpMock = injector.get(HttpTestingController);
+      currentDate = moment();
 
-      elemDefault = new RegisteredUser(0, 'image/png', 'AAAAAAA', 'image/png', 'AAAAAAA');
+      elemDefault = new RegisteredUser(
+        0,
+        'AAAAAAA',
+        'AAAAAAA',
+        'AAAAAAA',
+        currentDate,
+        'AAAAAAA',
+        'AAAAAAA',
+        'image/png',
+        'AAAAAAA',
+        'image/png',
+        'AAAAAAA'
+      );
     });
 
     describe('Service methods', async () => {
       it('should find an element', async () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            createdDate: currentDate.format(DATE_TIME_FORMAT)
+          },
+          elemDefault
+        );
         service
           .find(123)
           .pipe(take(1))
@@ -39,11 +60,17 @@ describe('Service Tests', () => {
       it('should create a RegisteredUser', async () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
+            createdDate: currentDate.format(DATE_TIME_FORMAT)
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate
+          },
+          returnedFromService
+        );
         service
           .create(new RegisteredUser(null))
           .pipe(take(1))
@@ -55,13 +82,24 @@ describe('Service Tests', () => {
       it('should update a RegisteredUser', async () => {
         const returnedFromService = Object.assign(
           {
+            firstName: 'BBBBBB',
+            lastName: 'BBBBBB',
+            email: 'BBBBBB',
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            phoneNumber: 'BBBBBB',
+            userId: 'BBBBBB',
             profilePicture: 'BBBBBB',
             coverPhoto: 'BBBBBB'
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate
+          },
+          returnedFromService
+        );
         service
           .update(expected)
           .pipe(take(1))
@@ -73,12 +111,23 @@ describe('Service Tests', () => {
       it('should return a list of RegisteredUser', async () => {
         const returnedFromService = Object.assign(
           {
+            firstName: 'BBBBBB',
+            lastName: 'BBBBBB',
+            email: 'BBBBBB',
+            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            phoneNumber: 'BBBBBB',
+            userId: 'BBBBBB',
             profilePicture: 'BBBBBB',
             coverPhoto: 'BBBBBB'
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            createdDate: currentDate
+          },
+          returnedFromService
+        );
         service
           .query(expected)
           .pipe(

@@ -21,12 +21,6 @@ public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, 
 	 * @param userId
 	 * @return
 	 */
-	Optional<RegisteredUser> findById(Long id);
-	
-	/**
-	 * @param userId
-	 * @return
-	 */
 	Optional<RegisteredUser> findByUserId(String userId);
 
 }

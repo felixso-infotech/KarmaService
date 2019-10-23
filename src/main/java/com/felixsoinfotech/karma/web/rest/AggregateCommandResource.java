@@ -21,6 +21,8 @@ import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
+import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 import com.felixsoinfotech.karma.web.rest.errors.BadRequestAlertException;
 import com.felixsoinfotech.karma.web.rest.util.HeaderUtil;
 
@@ -67,15 +70,40 @@ public class AggregateCommandResource {
     @Timed
     public ResponseEntity<ActivityAggregate> createActivity(@RequestBody ActivityAggregate activityAggregate) throws URISyntaxException {
         log.debug("REST request to save Activity : {}", activityAggregate);
-        if (activityAggregate.getId() != null) {
+        if (activityAggregate.getActivityDTO().getId() != null) {
             throw new BadRequestAlertException("A new activity cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ActivityAggregate result = aggregateCommandService.saveActivity(activityAggregate);
         
-        return ResponseEntity.created(new URI("/api/contacts/" + activityAggregate.getActivityDTO().getId()))
+        return ResponseEntity.created(new URI("/api/activities/" + activityAggregate.getActivityDTO().getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, activityAggregate.getActivityDTO().getId().toString()))
                 .body(result);
     }
+    
+    /**
+     * PUT  /activities : Updates an existing activity.
+     *
+     * @param activityDTO the activityDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated activityDTO,
+     * or with status 400 (Bad Request) if the activityDTO is not valid,
+     * or with status 500 (Internal Server Error) if the activityDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/activities")
+    @Timed
+    public ResponseEntity<ActivityAggregate> updateActivity(@RequestBody ActivityAggregate activityAggregate) throws URISyntaxException {
+        log.debug("REST request to update Activity : {}", activityAggregate);
+        if (activityAggregate.getActivityDTO().getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        
+        ActivityAggregate result = aggregateCommandService.saveActivity(activityAggregate);
+        
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityAggregate.getActivityDTO().getId().toString()))
+            .body(result);
+    }  
+
 
     /**
      * POST  /committed-activities : Create a new committedActivity.
@@ -118,6 +146,63 @@ public class AggregateCommandResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, committedActivityDTO.getId().toString()))
             .body(result);
     }
+    
+    /**
+     * POST  /registered-users : Create a new registeredUser.
+     *
+     * @param registeredUserDTO the registeredUserDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new registeredUserDTO, or with status 400 (Bad Request) if the registeredUser has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/registered-users")
+    @Timed
+    public ResponseEntity<RegisteredUserDTO> createRegisteredUser(@RequestBody RegisteredUserDTO registeredUserDTO) throws URISyntaxException {
+        log.debug("REST request to save RegisteredUser : {}", registeredUserDTO);
+        if (registeredUserDTO.getId() != null) {
+            throw new BadRequestAlertException("A new registeredUser cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        RegisteredUserDTO result = aggregateCommandService.saveRegisteredUser(registeredUserDTO);
+        return ResponseEntity.created(new URI("/api/registered-users/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+    
+    /**
+     * PUT  /registered-users : Updates an existing registeredUser.
+     *
+     * @param registeredUserDTO the registeredUserDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated registeredUserDTO,
+     * or with status 400 (Bad Request) if the registeredUserDTO is not valid,
+     * or with status 500 (Internal Server Error) if the registeredUserDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/registered-users")
+    @Timed
+    public ResponseEntity<RegisteredUserDTO> updateRegisteredUser(@RequestBody RegisteredUserDTO registeredUserDTO) throws URISyntaxException {
+        log.debug("REST request to update RegisteredUser : {}", registeredUserDTO);
+        if (registeredUserDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        RegisteredUserDTO result = aggregateCommandService.saveRegisteredUser(registeredUserDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, registeredUserDTO.getId().toString()))
+            .body(result);
+    }
+    
+    /**
+     * DELETE  /registered-users/:id : delete the "id" registeredUser.
+     *
+     * @param id the id of the registeredUserDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping("/registered-users/{id}")
+    @Timed
+    public ResponseEntity<Void> deleteRegisteredUser(@PathVariable Long id) {
+        log.debug("REST request to delete RegisteredUser : {}", id);
+        aggregateCommandService.deleteRegisteredUser(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
    
 
 }

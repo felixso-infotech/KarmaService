@@ -1,4 +1,5 @@
  /*
+
  * Copyright 2002-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,17 +31,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
-import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
+import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
-import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 import com.felixsoinfotech.karma.web.rest.util.PaginationUtil;
 
 import io.github.jhipster.web.util.ResponseUtil;
@@ -62,7 +64,7 @@ public class AggregateQueryResource {
 
 	private final Logger log = LoggerFactory.getLogger(AggregateQueryResource.class);
 
-    private static final String ENTITY_NAME = "karmaAggregateQueryResource";
+   // private static final String ENTITY_NAME = "karmaAggregateQueryResource";
 
     private AggregateQueryService aggregateQueryService;
     
@@ -169,6 +171,21 @@ public class AggregateQueryResource {
         return ResponseUtil.wrapOrNotFound(registeredUserAggregate);
     }
 
+    /**
+     * GET  /activities : get all the activities.
+     *
+     * @param pageable the pagination information
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
+     * @return the ResponseEntity with status 200 (OK) and the list of activities in body
+     */
+    @GetMapping("/activities")
+    @Timed
+    public ResponseEntity<List<ActivityAggregate>> getAllActivities(Pageable pageable) {
+        log.debug("REST request to get CommittedActivity : {}");
+        Page<ActivityAggregate> page = aggregateQueryService.findAllActivities(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/committed-activities/{status}");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
     
   
     

@@ -45,15 +45,15 @@ public class CommittedActivity implements Serializable {
 
     @OneToMany(mappedBy = "committedActivity")
     private Set<Media> activityProofs = new HashSet<>();
-    @OneToMany(mappedBy = "referenceId")
+    @OneToMany(mappedBy = "reference")
     private Set<CommittedActivity> committedActivities = new HashSet<>();
     @ManyToOne
-    @JsonIgnoreProperties("")
-    private User user;
+    @JsonIgnoreProperties("committedActivities")
+    private RegisteredUser registeredUser;
 
     @ManyToOne
     @JsonIgnoreProperties("committedActivities")
-    private CommittedActivity referenceId;
+    private CommittedActivity reference;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -152,13 +152,13 @@ public class CommittedActivity implements Serializable {
 
     public CommittedActivity addCommittedActivity(CommittedActivity committedActivity) {
         this.committedActivities.add(committedActivity);
-        committedActivity.setReferenceId(this);
+        committedActivity.setReference(this);
         return this;
     }
 
     public CommittedActivity removeCommittedActivity(CommittedActivity committedActivity) {
         this.committedActivities.remove(committedActivity);
-        committedActivity.setReferenceId(null);
+        committedActivity.setReference(null);
         return this;
     }
 
@@ -166,30 +166,30 @@ public class CommittedActivity implements Serializable {
         this.committedActivities = committedActivities;
     }
 
-    public User getUser() {
-        return user;
+    public RegisteredUser getRegisteredUser() {
+        return registeredUser;
     }
 
-    public CommittedActivity user(User user) {
-        this.user = user;
+    public CommittedActivity registeredUser(RegisteredUser registeredUser) {
+        this.registeredUser = registeredUser;
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRegisteredUser(RegisteredUser registeredUser) {
+        this.registeredUser = registeredUser;
     }
 
-    public CommittedActivity getReferenceId() {
-        return referenceId;
+    public CommittedActivity getReference() {
+        return reference;
     }
 
-    public CommittedActivity referenceId(CommittedActivity committedActivity) {
-        this.referenceId = committedActivity;
+    public CommittedActivity reference(CommittedActivity committedActivity) {
+        this.reference = committedActivity;
         return this;
     }
 
-    public void setReferenceId(CommittedActivity committedActivity) {
-        this.referenceId = committedActivity;
+    public void setReference(CommittedActivity committedActivity) {
+        this.reference = committedActivity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

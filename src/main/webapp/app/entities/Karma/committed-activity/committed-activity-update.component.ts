@@ -10,7 +10,8 @@ import { ICommittedActivity } from 'app/shared/model/Karma/committed-activity.mo
 import { CommittedActivityService } from './committed-activity.service';
 import { IActivity } from 'app/shared/model/Karma/activity.model';
 import { ActivityService } from 'app/entities/Karma/activity';
-import { IUser, UserService } from 'app/core';
+import { IRegisteredUser } from 'app/shared/model/Karma/registered-user.model';
+import { RegisteredUserService } from 'app/entities/Karma/registered-user';
 
 @Component({
   selector: 'jhi-committed-activity-update',
@@ -22,7 +23,7 @@ export class CommittedActivityUpdateComponent implements OnInit {
 
   activities: IActivity[];
 
-  users: IUser[];
+  registeredusers: IRegisteredUser[];
 
   committedactivities: ICommittedActivity[];
   createdDate: string;
@@ -31,7 +32,7 @@ export class CommittedActivityUpdateComponent implements OnInit {
     private jhiAlertService: JhiAlertService,
     private committedActivityService: CommittedActivityService,
     private activityService: ActivityService,
-    private userService: UserService,
+    private registeredUserService: RegisteredUserService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -47,9 +48,9 @@ export class CommittedActivityUpdateComponent implements OnInit {
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
-    this.userService.query().subscribe(
-      (res: HttpResponse<IUser[]>) => {
-        this.users = res.body;
+    this.registeredUserService.query().subscribe(
+      (res: HttpResponse<IRegisteredUser[]>) => {
+        this.registeredusers = res.body;
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
@@ -96,7 +97,7 @@ export class CommittedActivityUpdateComponent implements OnInit {
     return item.id;
   }
 
-  trackUserById(index: number, item: IUser) {
+  trackRegisteredUserById(index: number, item: IRegisteredUser) {
     return item.id;
   }
 

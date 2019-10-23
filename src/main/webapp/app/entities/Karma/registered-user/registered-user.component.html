@@ -15,15 +15,26 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="firstName"><span>First Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastName"><span>Last Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="email"><span>Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdDate"><span>Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="phoneNumber"><span>Phone Number</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userId"><span>User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="profilePicture"><span>Profile Picture</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="coverPhoto"><span>Cover Photo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="userId"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let registeredUser of registeredUsers ;trackBy: trackId">
                 <td><a [routerLink]="['/registered-user', registeredUser.id, 'view' ]">{{registeredUser.id}}</a></td>
+                <td>{{registeredUser.firstName}}</td>
+                <td>{{registeredUser.lastName}}</td>
+                <td>{{registeredUser.email}}</td>
+                <td>{{registeredUser.createdDate | date:'medium'}}</td>
+                <td>{{registeredUser.phoneNumber}}</td>
+                <td>{{registeredUser.userId}}</td>
                 <td>
                     <a *ngIf="registeredUser.profilePicture" (click)="openFile(registeredUser.profilePictureContentType, registeredUser.profilePicture)">open</a>
                     <span *ngIf="registeredUser.profilePicture">{{registeredUser.profilePictureContentType}}, {{byteSize(registeredUser.profilePicture)}}</span>
@@ -31,9 +42,6 @@
                 <td>
                     <a *ngIf="registeredUser.coverPhoto" (click)="openFile(registeredUser.coverPhotoContentType, registeredUser.coverPhoto)">open</a>
                     <span *ngIf="registeredUser.coverPhoto">{{registeredUser.coverPhotoContentType}}, {{byteSize(registeredUser.coverPhoto)}}</span>
-                </td>
-                <td>
-                    {{registeredUser.userId}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

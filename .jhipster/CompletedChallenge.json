@@ -25,8 +25,8 @@
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "user",
-            "otherEntityName": "user",
+            "relationshipName": "registeredUser",
+            "otherEntityName": "registeredUser",
             "otherEntityField": "id"
         }
     ],

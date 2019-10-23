@@ -2,6 +2,30 @@
     "name": "RegisteredUser",
     "fields": [
         {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "phoneNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userId",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "profilePicture",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "any"
@@ -14,11 +38,15 @@
     ],
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "user",
-            "otherEntityName": "user",
-            "otherEntityField": "id",
-            "ownerSide": true,
+            "relationshipType": "one-to-many",
+            "relationshipName": "committedActivity",
+            "otherEntityName": "committedActivity",
+            "otherEntityRelationshipName": "registeredUser"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "completedChallenge",
+            "otherEntityName": "completedChallenge",
             "otherEntityRelationshipName": "registeredUser"
         }
     ],

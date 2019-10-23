@@ -25,7 +25,8 @@ import java.util.Optional;
 /**
  * REST controller for managing RegisteredUser.
  */
-
+@RestController
+@RequestMapping("/api")
 public class RegisteredUserResource {
 
     private final Logger log = LoggerFactory.getLogger(RegisteredUserResource.class);
@@ -53,6 +54,7 @@ public class RegisteredUserResource {
             throw new BadRequestAlertException("A new registeredUser cannot already have an ID", ENTITY_NAME, "idexists");
         }
         RegisteredUserDTO result = registeredUserService.save(registeredUserDTO);
+        
         return ResponseEntity.created(new URI("/api/registered-users/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

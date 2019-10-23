@@ -40,8 +40,8 @@ public class CompletedChallenge implements Serializable {
     @OneToMany(mappedBy = "completedChallenge")
     private Set<Media> proofs = new HashSet<>();
     @ManyToOne
-    @JsonIgnoreProperties("")
-    private User user;
+    @JsonIgnoreProperties("completedChallenges")
+    private RegisteredUser registeredUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -116,17 +116,17 @@ public class CompletedChallenge implements Serializable {
         this.proofs = media;
     }
 
-    public User getUser() {
-        return user;
+    public RegisteredUser getRegisteredUser() {
+        return registeredUser;
     }
 
-    public CompletedChallenge user(User user) {
-        this.user = user;
+    public CompletedChallenge registeredUser(RegisteredUser registeredUser) {
+        this.registeredUser = registeredUser;
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRegisteredUser(RegisteredUser registeredUser) {
+        this.registeredUser = registeredUser;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

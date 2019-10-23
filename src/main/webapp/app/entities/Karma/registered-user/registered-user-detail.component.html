@@ -5,6 +5,30 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
+                <dt><span>First Name</span></dt>
+                <dd>
+                    <span>{{registeredUser.firstName}}</span>
+                </dd>
+                <dt><span>Last Name</span></dt>
+                <dd>
+                    <span>{{registeredUser.lastName}}</span>
+                </dd>
+                <dt><span>Email</span></dt>
+                <dd>
+                    <span>{{registeredUser.email}}</span>
+                </dd>
+                <dt><span>Created Date</span></dt>
+                <dd>
+                    <span>{{registeredUser.createdDate}}</span>
+                </dd>
+                <dt><span>Phone Number</span></dt>
+                <dd>
+                    <span>{{registeredUser.phoneNumber}}</span>
+                </dd>
+                <dt><span>User Id</span></dt>
+                <dd>
+                    <span>{{registeredUser.userId}}</span>
+                </dd>
                 <dt><span>Profile Picture</span></dt>
                 <dd>
                     <div *ngIf="registeredUser.profilePicture">
@@ -18,10 +42,6 @@
                         <a (click)="openFile(registeredUser.coverPhotoContentType, registeredUser.coverPhoto)">open</a>
                         {{registeredUser.coverPhotoContentType}}, {{byteSize(registeredUser.coverPhoto)}}
                     </div>
-                </dd>
-                <dt><span>User</span></dt>
-                <dd>
-                    {{registeredUser.userId}}
                 </dd>
             </dl>
 

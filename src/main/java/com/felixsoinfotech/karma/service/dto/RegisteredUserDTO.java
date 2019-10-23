@@ -1,5 +1,6 @@
 package com.felixsoinfotech.karma.service.dto;
 
+import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
@@ -11,6 +12,18 @@ public class RegisteredUserDTO implements Serializable {
 
     private Long id;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
+
+    private ZonedDateTime createdDate;
+
+    private String phoneNumber;
+
+    private String userId;
+
     @Lob
     private byte[] profilePicture;
     private String profilePictureContentType;
@@ -19,14 +32,60 @@ public class RegisteredUserDTO implements Serializable {
     private byte[] coverPhoto;
     private String coverPhotoContentType;
 
-    private String userId;
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public byte[] getProfilePicture() {
@@ -61,14 +120,6 @@ public class RegisteredUserDTO implements Serializable {
         this.coverPhotoContentType = coverPhotoContentType;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -94,9 +145,14 @@ public class RegisteredUserDTO implements Serializable {
     public String toString() {
         return "RegisteredUserDTO{" +
             "id=" + getId() +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
+            ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", userId='" + getUserId() + "'" +
             ", profilePicture='" + getProfilePicture() + "'" +
             ", coverPhoto='" + getCoverPhoto() + "'" +
-            ", user='" + getUserId() + "'" +
             "}";
     }
 }

@@ -38,15 +38,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" for="field_user">User</label>
-                    <select class="form-control" id="field_user" name="user" [(ngModel)]="committedActivity.userId" >
+                    <label class="form-control-label" for="field_registeredUser">Registered User</label>
+                    <select class="form-control" id="field_registeredUser" name="registeredUser" [(ngModel)]="committedActivity.registeredUserId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                        <option [ngValue]="registeredUserOption.id" *ngFor="let registeredUserOption of registeredusers; trackBy: trackRegisteredUserById">{{registeredUserOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" for="field_referenceId">Reference Id</label>
-                    <select class="form-control" id="field_referenceId" name="referenceId" [(ngModel)]="committedActivity.referenceIdId" >
+                    <label class="form-control-label" for="field_reference">Reference</label>
+                    <select class="form-control" id="field_reference" name="reference" [(ngModel)]="committedActivity.referenceId" >
                         <option [ngValue]="null"></option>
                         <option [ngValue]="committedActivityOption.id" *ngFor="let committedActivityOption of committedactivities; trackBy: trackCommittedActivityById">{{committedActivityOption.id}}</option>
                     </select>

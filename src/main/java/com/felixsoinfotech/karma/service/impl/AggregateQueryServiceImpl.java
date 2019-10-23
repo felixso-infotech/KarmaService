@@ -45,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
@@ -52,22 +53,22 @@ import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.DimensionRepository;
 import com.felixsoinfotech.karma.repository.MediaRepository;
 import com.felixsoinfotech.karma.repository.RegisteredUserRepository;
-import com.felixsoinfotech.karma.repository.UserRepository;
+
 
 import com.felixsoinfotech.karma.service.AggregateQueryService;
-
+import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 import com.felixsoinfotech.karma.service.dto.MediaDTO;
 import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
-import com.felixsoinfotech.karma.service.dto.UserDTO;
+
 
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.DimensionMapper;
 import com.felixsoinfotech.karma.service.mapper.MediaMapper;
 import com.felixsoinfotech.karma.service.mapper.RegisteredUserMapper;
-import com.felixsoinfotech.karma.service.mapper.UserMapper;
+
 
 import com.thoughtworks.xstream.core.util.Base64Encoder;
 
@@ -98,10 +99,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 
     private RegisteredUserMapper registeredUserMapper;
     
-    private UserRepository userRepository;
-    
-    private UserMapper userMapper;
-    
     private MediaRepository mediaRepository;
 
     private MediaMapper mediaMapper;
@@ -111,7 +108,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 			                         DimensionRepository dimensionRepository,DimensionMapper dimensionMapper,
 			                         CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper,
 			                         RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper,
-			                         UserRepository userRepository,UserMapper userMapper,
 			                         MediaRepository mediaRepository, MediaMapper mediaMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
@@ -121,8 +117,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		this.committedActivityMapper=committedActivityMapper;
 		this.registeredUserRepository = registeredUserRepository;
         this.registeredUserMapper = registeredUserMapper;
-        this.userMapper=userMapper;
-        this.userRepository=userRepository;
         this.mediaRepository = mediaRepository;
         this.mediaMapper = mediaMapper;
         
@@ -212,8 +206,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         List<CommittedActivityDTO> committedActivityDtoDoneList=new ArrayList<CommittedActivityDTO>();
         
         Base64Encoder encoder = new Base64Encoder();
-        
-        
+                
         Page<CommittedActivityDTO> page=committedActivityRepository.findAll(pageable).map(committedActivityMapper::toDto);
                 
         for(CommittedActivityDTO committedActivityDTO : page.getContent())
@@ -224,20 +217,28 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
         {
-        	committedActivityAggregate.setId(committedActivityDto.getId());
-        	committedActivityAggregate.setDescription(committedActivityDto.getDescription());
-        	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId());        	
+        	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
+        	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
+        	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
+        	          	
+        	Optional<ActivityDTO> activitydto=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto);
+        	ActivityDTO activityDTO=activitydto.get();
         	
-        	Optional<UserDTO> userDTo = userRepository.findById(committedActivityDto.getUserId()).map(userMapper::userToUserDTO);
-        	UserDTO userDto=userDTo.get();	
-        	
-        	if(userDto != null)
+        	if(activityDTO != null)
         	{
-           	committedActivityAggregate.setFirstName(userDto.getFirstName());
-        	committedActivityAggregate.setLastName(userDto.getLastName());
+        		
+        		committedActivityAggregate.setActivityCreatedDate(activityDTO.getCreatedDate());
+        		committedActivityAggregate.setTitle(activityDTO.getTitle());
+        		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
+        		committedActivityAggregate.setType(activityDTO.getType());
+        		committedActivityAggregate.setChallengeId(activityDTO.getChallengeId());
+        		committedActivityAggregate.setDimensions(activityDTO.getDimensions());
+        		committedActivityAggregate.setProofType(activityDTO.getProofType());  
+        		committedActivityAggregate.setSuccessMessage(activityDTO.getSuccessMessage());
+        		
         	}
         	
-        	Optional<RegisteredUserDTO> registeredUserdto=registeredUserRepository.findByUserId(committedActivityDto.getUserId()).map(registeredUserMapper::toDto);
+        	Optional<RegisteredUserDTO> registeredUserdto=registeredUserRepository.findById(committedActivityDto.getRegisteredUserId()).map(registeredUserMapper::toDto);
         	RegisteredUserDTO registeredUserDto =  registeredUserdto.get();
         	       	
         	if(registeredUserDto != null)
@@ -249,6 +250,9 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
  			    String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
  			    committedActivityAggregate.setProfilePicture(profilePic);				
  		       }
+        	   
+        	   committedActivityAggregate.setFirstName(registeredUserDto.getFirstName());
+        	   
         	}
         	       	
         	Optional<MediaDTO> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto);
@@ -329,21 +333,6 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
  		return diffInString;
  	}
     
-    
-    /**
-     * Get all the committedActivities.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Page<CommittedActivityDTO> findAllCommittedActivities(Pageable pageable) {
-        log.debug("Request to get all CommittedActivities");
-        return committedActivityRepository.findAll(pageable)
-            .map(committedActivityMapper::toDto);
-    }
-
 	
     /**
      * Get one registeredUser by id.
@@ -359,25 +348,18 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         RegisteredUserAggregate registeredUserAggregate =new RegisteredUserAggregate();
         
         Base64Encoder encoder = new Base64Encoder();
-        
-        Optional<UserDTO> userDto= userRepository.findById(userId).map(userMapper::userToUserDTO);
-        		
-        UserDTO userDTO=userDto.get();	
-        
-        if(userDTO!=null)	
-        {	
-        	registeredUserAggregate.setFirstName(userDTO.getFirstName());
-            registeredUserAggregate.setLastName(userDTO.getLastName());
-            registeredUserAggregate.setEmail(userDTO.getEmail());       	
-        }
-       
+                   
         Optional<RegisteredUserDTO> registeredUserDTO=registeredUserRepository.findByUserId(userId).map(registeredUserMapper::toDto);
         
         RegisteredUserDTO registeredUserDto=registeredUserDTO.get();
         	
         if(registeredUserDto!=null)	
-        {	
+        {
+        registeredUserAggregate.setId(registeredUserDto.getId());	
+        registeredUserAggregate.setFirstName(registeredUserDto.getFirstName());
+        registeredUserAggregate.setLastName(registeredUserDto.getLastName());
         registeredUserAggregate.setUserId(registeredUserDto.getUserId());
+        registeredUserAggregate.setEmail(registeredUserDto.getEmail());
         registeredUserAggregate.setCoverPhotoContentType(registeredUserDto.getCoverPhotoContentType());
         registeredUserAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
         
@@ -396,6 +378,24 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                 
         return Optional.of(registeredUserAggregate);
         
+    }
+    
+    /**
+     * Get all the activities.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ActivityAggregate> findAllActivities(Pageable pageable) {
+        log.debug("Request to get all Activities");
+        
+        
+         activityRepository.findAll(pageable)
+            .map(activityMapper::toDto);
+         
+         return null;
     }
 	
 	

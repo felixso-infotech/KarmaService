@@ -18,7 +18,7 @@
             <th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createdDate"><span>Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="challengeId"><span>Challenge</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="userId"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="registeredUserId"><span>Registered User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -33,7 +33,9 @@
                     </div>
                 </td>
                 <td>
-                    {{completedChallenge.userId}}
+                    <div *ngIf="completedChallenge.registeredUserId">
+                        <a [routerLink]="['../registered-user', completedChallenge.registeredUserId , 'view' ]" >{{completedChallenge.registeredUserId}}</a>
+                    </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

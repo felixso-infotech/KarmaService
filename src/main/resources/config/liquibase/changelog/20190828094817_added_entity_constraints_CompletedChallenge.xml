@@ -14,11 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="challenge"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
+        <addForeignKeyConstraint baseColumnNames="registered_user_id"
                                  baseTableName="completed_challenge"
-                                 constraintName="fk_completed_challenge_user_id"
+                                 constraintName="fk_completed_challenge_registered_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="registered_user"/>
 
     </changeSet>
 </databaseChangeLog>

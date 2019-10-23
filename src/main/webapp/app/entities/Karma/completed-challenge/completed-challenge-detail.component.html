@@ -19,9 +19,11 @@
                         <a [routerLink]="['/challenge', completedChallenge.challengeId, 'view']">{{completedChallenge.challengeId}}</a>
                     </div>
                 </dd>
-                <dt><span>User</span></dt>
+                <dt><span>Registered User</span></dt>
                 <dd>
-                    {{completedChallenge.userId}}
+                    <div *ngIf="completedChallenge.registeredUserId">
+                        <a [routerLink]="['/registered-user', completedChallenge.registeredUserId, 'view']">{{completedChallenge.registeredUserId}}</a>
+                    </div>
                 </dd>
             </dl>
 

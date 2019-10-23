@@ -25,9 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
 
 
+import static com.felixsoinfotech.karma.web.rest.TestUtil.sameInstant;
 import static com.felixsoinfotech.karma.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -42,6 +47,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KarmaApp.class)
 public class RegisteredUserResourceIntTest {
+
+    private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_CREATED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_USER_ID = "AAAAAAAAAA";
+    private static final String UPDATED_USER_ID = "BBBBBBBBBB";
 
     private static final byte[] DEFAULT_PROFILE_PICTURE = TestUtil.createByteArray(1, "0");
     private static final byte[] UPDATED_PROFILE_PICTURE = TestUtil.createByteArray(1, "1");
@@ -97,6 +120,12 @@ public class RegisteredUserResourceIntTest {
      */
     public static RegisteredUser createEntity(EntityManager em) {
         RegisteredUser registeredUser = new RegisteredUser()
+            .firstName(DEFAULT_FIRST_NAME)
+            .lastName(DEFAULT_LAST_NAME)
+            .email(DEFAULT_EMAIL)
+            .createdDate(DEFAULT_CREATED_DATE)
+            .phoneNumber(DEFAULT_PHONE_NUMBER)
+            .userId(DEFAULT_USER_ID)
             .profilePicture(DEFAULT_PROFILE_PICTURE)
             .profilePictureContentType(DEFAULT_PROFILE_PICTURE_CONTENT_TYPE)
             .coverPhoto(DEFAULT_COVER_PHOTO)
@@ -125,6 +154,12 @@ public class RegisteredUserResourceIntTest {
         List<RegisteredUser> registeredUserList = registeredUserRepository.findAll();
         assertThat(registeredUserList).hasSize(databaseSizeBeforeCreate + 1);
         RegisteredUser testRegisteredUser = registeredUserList.get(registeredUserList.size() - 1);
+        assertThat(testRegisteredUser.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
+        assertThat(testRegisteredUser.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
+        assertThat(testRegisteredUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testRegisteredUser.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
+        assertThat(testRegisteredUser.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
+        assertThat(testRegisteredUser.getUserId()).isEqualTo(DEFAULT_USER_ID);
         assertThat(testRegisteredUser.getProfilePicture()).isEqualTo(DEFAULT_PROFILE_PICTURE);
         assertThat(testRegisteredUser.getProfilePictureContentType()).isEqualTo(DEFAULT_PROFILE_PICTURE_CONTENT_TYPE);
         assertThat(testRegisteredUser.getCoverPhoto()).isEqualTo(DEFAULT_COVER_PHOTO);
@@ -162,6 +197,12 @@ public class RegisteredUserResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(registeredUser.getId().intValue())))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(sameInstant(DEFAULT_CREATED_DATE))))
+            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.toString())))
             .andExpect(jsonPath("$.[*].profilePictureContentType").value(hasItem(DEFAULT_PROFILE_PICTURE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].profilePicture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PROFILE_PICTURE))))
             .andExpect(jsonPath("$.[*].coverPhotoContentType").value(hasItem(DEFAULT_COVER_PHOTO_CONTENT_TYPE)))
@@ -179,6 +220,12 @@ public class RegisteredUserResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(registeredUser.getId().intValue()))
+            .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
+            .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+            .andExpect(jsonPath("$.createdDate").value(sameInstant(DEFAULT_CREATED_DATE)))
+            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.toString()))
+            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.toString()))
             .andExpect(jsonPath("$.profilePictureContentType").value(DEFAULT_PROFILE_PICTURE_CONTENT_TYPE))
             .andExpect(jsonPath("$.profilePicture").value(Base64Utils.encodeToString(DEFAULT_PROFILE_PICTURE)))
             .andExpect(jsonPath("$.coverPhotoContentType").value(DEFAULT_COVER_PHOTO_CONTENT_TYPE))
@@ -206,6 +253,12 @@ public class RegisteredUserResourceIntTest {
         // Disconnect from session so that the updates on updatedRegisteredUser are not directly saved in db
         em.detach(updatedRegisteredUser);
         updatedRegisteredUser
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
+            .email(UPDATED_EMAIL)
+            .createdDate(UPDATED_CREATED_DATE)
+            .phoneNumber(UPDATED_PHONE_NUMBER)
+            .userId(UPDATED_USER_ID)
             .profilePicture(UPDATED_PROFILE_PICTURE)
             .profilePictureContentType(UPDATED_PROFILE_PICTURE_CONTENT_TYPE)
             .coverPhoto(UPDATED_COVER_PHOTO)
@@ -221,6 +274,12 @@ public class RegisteredUserResourceIntTest {
         List<RegisteredUser> registeredUserList = registeredUserRepository.findAll();
         assertThat(registeredUserList).hasSize(databaseSizeBeforeUpdate);
         RegisteredUser testRegisteredUser = registeredUserList.get(registeredUserList.size() - 1);
+        assertThat(testRegisteredUser.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testRegisteredUser.getLastName()).isEqualTo(UPDATED_LAST_NAME);
+        assertThat(testRegisteredUser.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testRegisteredUser.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testRegisteredUser.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
+        assertThat(testRegisteredUser.getUserId()).isEqualTo(UPDATED_USER_ID);
         assertThat(testRegisteredUser.getProfilePicture()).isEqualTo(UPDATED_PROFILE_PICTURE);
         assertThat(testRegisteredUser.getProfilePictureContentType()).isEqualTo(UPDATED_PROFILE_PICTURE_CONTENT_TYPE);
         assertThat(testRegisteredUser.getCoverPhoto()).isEqualTo(UPDATED_COVER_PHOTO);

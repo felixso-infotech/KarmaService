@@ -10,7 +10,8 @@ import { ICompletedChallenge } from 'app/shared/model/Karma/completed-challenge.
 import { CompletedChallengeService } from './completed-challenge.service';
 import { IChallenge } from 'app/shared/model/Karma/challenge.model';
 import { ChallengeService } from 'app/entities/Karma/challenge';
-import { IUser, UserService } from 'app/core';
+import { IRegisteredUser } from 'app/shared/model/Karma/registered-user.model';
+import { RegisteredUserService } from 'app/entities/Karma/registered-user';
 
 @Component({
   selector: 'jhi-completed-challenge-update',
@@ -22,14 +23,14 @@ export class CompletedChallengeUpdateComponent implements OnInit {
 
   challenges: IChallenge[];
 
-  users: IUser[];
+  registeredusers: IRegisteredUser[];
   createdDate: string;
 
   constructor(
     private jhiAlertService: JhiAlertService,
     private completedChallengeService: CompletedChallengeService,
     private challengeService: ChallengeService,
-    private userService: UserService,
+    private registeredUserService: RegisteredUserService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -45,9 +46,9 @@ export class CompletedChallengeUpdateComponent implements OnInit {
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
-    this.userService.query().subscribe(
-      (res: HttpResponse<IUser[]>) => {
-        this.users = res.body;
+    this.registeredUserService.query().subscribe(
+      (res: HttpResponse<IRegisteredUser[]>) => {
+        this.registeredusers = res.body;
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
@@ -88,7 +89,7 @@ export class CompletedChallengeUpdateComponent implements OnInit {
     return item.id;
   }
 
-  trackUserById(index: number, item: IUser) {
+  trackRegisteredUserById(index: number, item: IRegisteredUser) {
     return item.id;
   }
 }

@@ -3,8 +3,14 @@
  * @author Sanil Kumar p
  */
 entity RegisteredUser{
+  firstName String,
+  lastName String,
+  email String,
+  createdDate ZonedDateTime,
+  phoneNumber String,
+  userId String,
   profilePicture Blob,
-  coverPhoto Blob	 
+  coverPhoto Blob,	 
 }
 /**
  * Activity entity.
@@ -91,13 +97,11 @@ entity Media{
 	file Blob
 }
 
-relationship OneToOne{
-	RegisteredUser to User    
-}
+
 relationship ManyToOne {
 	Activity to Challenge,
-    CommittedActivity to User,
-    CompletedChallenge to User,
+    CommittedActivity to RegisteredUser,
+    CompletedChallenge to RegisteredUser,
     
 }
 relationship OneToMany{
@@ -106,7 +110,7 @@ relationship OneToMany{
     CompletedChallenge{proofs} to Media,
     Activity{committededActivities} to CommittedActivity,  
     Challenge{completedChallenges} to CompletedChallenge
-    CommittedActivity to CommittedActivity{referenceId}
+    CommittedActivity to CommittedActivity{reference}
 }   
 relationship ManyToMany {
 	Activity to Dimension

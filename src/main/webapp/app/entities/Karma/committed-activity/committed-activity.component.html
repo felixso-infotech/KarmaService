@@ -19,8 +19,8 @@
             <th jhiSortBy="status"><span>Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="createdDate"><span>Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="activityId"><span>Activity</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="userId"><span>User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="referenceIdId"><span>Reference Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="registeredUserId"><span>Registered User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="referenceId"><span>Reference</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -36,11 +36,13 @@
                     </div>
                 </td>
                 <td>
-                    {{committedActivity.userId}}
+                    <div *ngIf="committedActivity.registeredUserId">
+                        <a [routerLink]="['../registered-user', committedActivity.registeredUserId , 'view' ]" >{{committedActivity.registeredUserId}}</a>
+                    </div>
                 </td>
                 <td>
-                    <div *ngIf="committedActivity.referenceIdId">
-                        <a [routerLink]="['../committed-activity', committedActivity.referenceIdId , 'view' ]" >{{committedActivity.referenceIdId}}</a>
+                    <div *ngIf="committedActivity.referenceId">
+                        <a [routerLink]="['../committed-activity', committedActivity.referenceId , 'view' ]" >{{committedActivity.referenceId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

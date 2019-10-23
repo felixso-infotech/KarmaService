@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { KarmaSharedModule } from 'app/shared';
-import { KarmaAdminModule } from 'app/admin/admin.module';
 import {
   RegisteredUserComponent,
   RegisteredUserDetailComponent,
@@ -16,7 +15,7 @@ import {
 const ENTITY_STATES = [...registeredUserRoute, ...registeredUserPopupRoute];
 
 @NgModule({
-  imports: [KarmaSharedModule, KarmaAdminModule, RouterModule.forChild(ENTITY_STATES)],
+  imports: [KarmaSharedModule, RouterModule.forChild(ENTITY_STATES)],
   declarations: [
     RegisteredUserComponent,
     RegisteredUserDetailComponent,
