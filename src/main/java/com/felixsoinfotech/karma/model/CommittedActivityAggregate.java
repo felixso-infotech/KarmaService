@@ -18,7 +18,9 @@
 package com.felixsoinfotech.karma.model;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
@@ -69,9 +71,55 @@ public class CommittedActivityAggregate {
     private String videoString;
     
     private String timeElapsed;
-
     
+    private Long noOfLoves;
+    
+	private Long noOfComments;
 	
+	private List<String> likedUserPhotos=new ArrayList<String>();  
+	
+	/**
+	 * @return the noOfLoves
+	 */
+	public Long getNoOfLoves() {
+		return noOfLoves;
+	}
+
+	/**
+	 * @param noOfLoves the noOfLoves to set
+	 */
+	public void setNoOfLoves(Long noOfLoves) {
+		this.noOfLoves = noOfLoves;
+	}
+
+	/**
+	 * @return the noOfComments
+	 */
+	public Long getNoOfComments() {
+		return noOfComments;
+	}
+
+	/**
+	 * @param noOfComments the noOfComments to set
+	 */
+	public void setNoOfComments(Long noOfComments) {
+		this.noOfComments = noOfComments;
+	}
+
+	/**
+	 * @return the likedUserPhotos
+	 */
+	public List<String> getLikedUserPhotos() {
+		return likedUserPhotos;
+	}
+
+	/**
+	 * @param likedUserPhotos the likedUserPhotos to set
+	 */
+	public void setLikedUserPhotos(List<String> likedUserPhotos) {
+		this.likedUserPhotos = likedUserPhotos;
+	}
+
 	/**
 	 * @return the committedActivityId
 	 */
