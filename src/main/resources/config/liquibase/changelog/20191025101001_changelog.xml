@@ -1,0 +1,147 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="Owner (generated)" id="1571998230856-1">
+        <createTable tableName="activity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="activityPK"/>
+            </column>
+            <column name="created_date" type="TINYBLOB"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="is_multiple_proofs_required" type="BIT"/>
+            <column name="no_of_pages" type="INT"/>
+            <column name="proof_type" type="VARCHAR(255)"/>
+            <column name="success_message" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="jhi_type" type="VARCHAR(255)"/>
+            <column name="challenge_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-2">
+        <createTable tableName="activity_dimension">
+            <column name="activities_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dimensions_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-3">
+        <createTable tableName="challenge">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="challengePK"/>
+            </column>
+            <column name="created_date" type="TINYBLOB"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="success_message" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-4">
+        <createTable tableName="committed_activity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="committed_activityPK"/>
+            </column>
+            <column name="created_date" type="TINYBLOB"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="activity_id" type="BIGINT"/>
+            <column name="reference_id" type="BIGINT"/>
+            <column name="registered_user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-5">
+        <createTable tableName="completed_challenge">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="completed_challengePK"/>
+            </column>
+            <column name="created_date" type="TINYBLOB"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="challenge_id" type="BIGINT"/>
+            <column name="registered_user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-6">
+        <createTable tableName="dimension">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="dimensionPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-7">
+        <createTable tableName="introduction_story">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="introduction_storyPK"/>
+            </column>
+            <column name="image" type="LONGBLOB"/>
+            <column name="image_content_type" type="VARCHAR(255)"/>
+            <column name="story" type="VARCHAR(255)"/>
+            <column name="activity_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-8">
+        <createTable tableName="media">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="mediaPK"/>
+            </column>
+            <column name="jhi_file" type="LONGBLOB"/>
+            <column name="jhi_file_content_type" type="VARCHAR(255)"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="committed_activity_id" type="BIGINT"/>
+            <column name="completed_challenge_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-9">
+        <createTable tableName="registered_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="registered_userPK"/>
+            </column>
+            <column name="cover_photo" type="LONGBLOB"/>
+            <column name="cover_photo_content_type" type="VARCHAR(255)"/>
+            <column name="created_date" type="TINYBLOB"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="phone_number" type="VARCHAR(255)"/>
+            <column name="profile_picture" type="LONGBLOB"/>
+            <column name="profile_picture_content_type" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-10">
+        <addPrimaryKey columnNames="activities_id, dimensions_id" tableName="activity_dimension"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-11">
+        <addForeignKeyConstraint baseColumnNames="dimensions_id" baseTableName="activity_dimension" constraintName="FK16u4r5kh4mj3313wuiwsp8nhg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="dimension"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-12">
+        <addForeignKeyConstraint baseColumnNames="registered_user_id" baseTableName="committed_activity" constraintName="FK1sqdqlgm5ig8qca87ar75ppw7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="registered_user"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-13">
+        <addForeignKeyConstraint baseColumnNames="reference_id" baseTableName="committed_activity" constraintName="FK3iyj6s4219vf05khaqgwvrogw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="committed_activity"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-14">
+        <addForeignKeyConstraint baseColumnNames="committed_activity_id" baseTableName="media" constraintName="FK3k8yllsylfhr6tqgxusj2o2w7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="committed_activity"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-15">
+        <addForeignKeyConstraint baseColumnNames="challenge_id" baseTableName="activity" constraintName="FK7fb1ammt5cp45y2ifkxmlgtkm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="challenge"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-16">
+        <addForeignKeyConstraint baseColumnNames="activity_id" baseTableName="introduction_story" constraintName="FK7wcvtunhte4chhrrox5y57vid" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="activity"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-17">
+        <addForeignKeyConstraint baseColumnNames="challenge_id" baseTableName="completed_challenge" constraintName="FKf0im6cpdsoqujw60nfesq80w2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="challenge"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-18">
+        <addForeignKeyConstraint baseColumnNames="activities_id" baseTableName="activity_dimension" constraintName="FKohfp2bhf4ynhkt84da27pxc4g" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="activity"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-19">
+        <addForeignKeyConstraint baseColumnNames="registered_user_id" baseTableName="completed_challenge" constraintName="FKp4mjt2ua8gnlx7mfsjcw2xs4l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="registered_user"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-20">
+        <addForeignKeyConstraint baseColumnNames="completed_challenge_id" baseTableName="media" constraintName="FKpvxodfj22n4imx9kl1a2md1ll" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="completed_challenge"/>
+    </changeSet>
+    <changeSet author="Owner (generated)" id="1571998230856-21">
+        <addForeignKeyConstraint baseColumnNames="activity_id" baseTableName="committed_activity" constraintName="FKs5udyo1qk23ycn37r3xd61om1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="activity"/>
+    </changeSet>
+</databaseChangeLog>
