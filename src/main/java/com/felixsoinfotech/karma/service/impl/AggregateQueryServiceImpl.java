@@ -201,7 +201,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
         List<CommittedActivityAggregate> committedActivityAggregateList=new ArrayList<CommittedActivityAggregate>();
         
-        CommittedActivityAggregate committedActivityAggregate= new CommittedActivityAggregate();
+        CommittedActivityAggregate committedActivityAggregate;
         
         List<CommittedActivityDTO> committedActivityDtoDoneList=new ArrayList<CommittedActivityDTO>();
         
@@ -212,11 +212,17 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         for(CommittedActivityDTO committedActivityDTO : page.getContent())
         {
         	if(committedActivityDTO.getStatus()==status)
-        		committedActivityDtoDoneList.add(committedActivityDTO);        		
+        		committedActivityDtoDoneList.add(committedActivityDTO);   
+        	
+        	System.out.println("*************************************************"+committedActivityDtoDoneList);
         }
+        
+        System.out.println("*************************************************"+committedActivityDtoDoneList);
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
         {
+        	committedActivityAggregate= new CommittedActivityAggregate();
+        	
         	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
         	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
         	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
