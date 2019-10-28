@@ -150,7 +150,7 @@ public class AggregateQueryResource {
      */
     @GetMapping("/committed-activities/{status}")
     @Timed
-    public ResponseEntity<List<CommittedActivityAggregate>> getAllCommittedActivitiesByStatus(Pageable pageable,@PathVariable Status status) {
+    public ResponseEntity<List<CommittedActivityAggregate>> getAllCommittedActivitiesByStatus(Pageable pageable,@PathVariable String status) {
         log.debug("REST request to get CommittedActivity : {}", status);
         Page<CommittedActivityAggregate> page = aggregateQueryService.findAllCommittedActivitiesByStatus(pageable,status);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/committed-activities/{status}");

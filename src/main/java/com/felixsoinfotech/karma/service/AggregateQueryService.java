@@ -74,7 +74,7 @@ public interface AggregateQueryService {
      * @param status the status of the entity
      * @return the entity
      */
-	Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatus(Pageable pageable,Status status);
+	Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatus(Pageable pageable,String status);
 	
    
     /**

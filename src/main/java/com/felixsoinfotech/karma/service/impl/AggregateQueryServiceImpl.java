@@ -196,7 +196,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatus(Pageable pageable,Status status) {
+    public Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatus(Pageable pageable,String status) {
         log.debug("Request to get all CommittedActivities by status");
         
         List<CommittedActivityAggregate> committedActivityAggregateList=new ArrayList<CommittedActivityAggregate>();
@@ -211,7 +211,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                 
         for(CommittedActivityDTO committedActivityDTO : page.getContent())
         {
-        	if(committedActivityDTO.getStatus()==status)
+        	if(committedActivityDTO.getStatus().equals(Status.valueOf(status)))
         		committedActivityDtoDoneList.add(committedActivityDTO);   
         	
         	System.out.println("*************************************************"+committedActivityDtoDoneList);
