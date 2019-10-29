@@ -68,7 +68,11 @@ public class CommittedActivityAggregate {
     
     private String imageString;
     
+    private String imageStringContentType;
+    
     private String videoString;
+    
+    private String videoStringContentType;
     
     private String timeElapsed;
     
@@ -78,6 +82,35 @@ public class CommittedActivityAggregate {
 	
 	private List<String> likedUserPhotos=new ArrayList<String>();  
 	
+	
+	/**
+	 * @return the imageStringContentType
+	 */
+	public String getImageStringContentType() {
+		return imageStringContentType;
+	}
+
+	/**
+	 * @param imageStringContentType the imageStringContentType to set
+	 */
+	public void setImageStringContentType(String imageStringContentType) {
+		this.imageStringContentType = imageStringContentType;
+	}
+
+	/**
+	 * @return the videoStringContentType
+	 */
+	public String getVideoStringContentType() {
+		return videoStringContentType;
+	}
+
+	/**
+	 * @param videoStringContentType the videoStringContentType to set
+	 */
+	public void setVideoStringContentType(String videoStringContentType) {
+		this.videoStringContentType = videoStringContentType;
+	}
+
 	/**
 	 * @return the noOfLoves
 	 */

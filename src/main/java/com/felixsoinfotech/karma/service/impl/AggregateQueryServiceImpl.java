@@ -214,10 +214,10 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	if(committedActivityDTO.getStatus().equals(Status.valueOf(status)))
         		committedActivityDtoDoneList.add(committedActivityDTO);   
         	
-        	System.out.println("*************************************************"+committedActivityDtoDoneList);
+        	//System.out.println("*************************************************"+committedActivityDtoDoneList);
         }
         
-        System.out.println("*************************************************"+committedActivityDtoDoneList);
+        //System.out.println("*************************************************"+committedActivityDtoDoneList);
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
         {
@@ -266,6 +266,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	
             if(mediaDto != null)    
             {
+            	committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
+            	
             	if(mediaDto.getFileContentType().contains("image"))
   		        {
   			    String image= encoder.encode(mediaDto.getFile());
