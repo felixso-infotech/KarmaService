@@ -102,11 +102,11 @@ public class AggregateQueryResource {
     	
         log.debug("REST request to get a enum Types");
                        
-        List<Type> Types = aggregateQueryService.findAllEnumTypes();       
+        List<Type> types = aggregateQueryService.findAllEnumTypes();       
       
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<Type>(Types, pageable, Types.size()),"/enums/Type");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<Type>(types, pageable, types.size()),"/enums/Type");
         
-        return ResponseEntity.ok().headers(headers).body(Types);
+        return ResponseEntity.ok().headers(headers).body(types);
     }
     
     /**
@@ -120,11 +120,11 @@ public class AggregateQueryResource {
     	
         log.debug("REST request to get a enum Types");
                        
-        List<Status> Types = aggregateQueryService.findAllEnumStatus();       
+        List<Status> status = aggregateQueryService.findAllEnumStatus();       
       
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<Status>(Types, pageable, Types.size()),"/enums/status");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(new PageImpl<Status>(status, pageable, status.size()),"/enums/status");
         
-        return ResponseEntity.ok().headers(headers).body(Types);
+        return ResponseEntity.ok().headers(headers).body(status);
     }
     
     /**
