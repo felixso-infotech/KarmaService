@@ -37,7 +37,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
-import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
@@ -180,13 +179,18 @@ public class AggregateQueryResource {
      */
     @GetMapping("/activities")
     @Timed
-    public ResponseEntity<List<ActivityAggregate>> getAllActivities(Pageable pageable) {
-        log.debug("REST request to get CommittedActivity : {}");
-        Page<ActivityAggregate> page = aggregateQueryService.findAllActivities(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/committed-activities/{status}");
+    public ResponseEntity<List<ActivityDTO>> getAllActivities(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get a page of Activities");
+        Page<ActivityDTO> page;
+        if (eagerload) {
+            page = aggregateQueryService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = aggregateQueryService.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/activities?eagerload=%b", eagerload));
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-    
+
   
     
    

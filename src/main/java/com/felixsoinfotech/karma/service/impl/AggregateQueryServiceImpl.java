@@ -45,7 +45,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
-import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
@@ -396,14 +395,19 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<ActivityAggregate> findAllActivities(Pageable pageable) {
+    public Page<ActivityDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Activities");
-        
-        
-         activityRepository.findAll(pageable)
+        return activityRepository.findAll(pageable)
             .map(activityMapper::toDto);
-         
-         return null;
+    }
+    
+    /**
+     * Get all the Activity with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return activityRepository.findAllWithEagerRelationships(pageable).map(activityMapper::toDto);
     }
 	
 	
