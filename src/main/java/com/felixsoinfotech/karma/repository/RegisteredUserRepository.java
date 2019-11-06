@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -23,4 +24,5 @@ public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, 
 	 */
 	Optional<RegisteredUser> findByUserId(String userId);
 
+	
 }

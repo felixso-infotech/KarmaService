@@ -39,6 +39,23 @@ public class RegisteredUserAggregate {
      private String lastName;
 
      private String email;
+     
+     private Long noOfCompletedTasks;
+     
+     
+	/**
+	 * @return the noOfCompletedTasks
+	 */
+	public Long getNoOfCompletedTasks() {
+		return noOfCompletedTasks;
+	}
+
+	/**
+	 * @param noOfCompletedTasks the noOfCompletedTasks to set
+	 */
+	public void setNoOfCompletedTasks(Long noOfCompletedTasks) {
+		this.noOfCompletedTasks = noOfCompletedTasks;
+	}
 
 	/**
 	 * @return the id

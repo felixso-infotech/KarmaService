@@ -370,6 +370,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         registeredUserAggregate.setCoverPhotoContentType(registeredUserDto.getCoverPhotoContentType());
         registeredUserAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
         
+        
           if(registeredUserDto.getCoverPhotoContentType().contains("image")) 
         	{
       		   String coverPhoto= encoder.encode(registeredUserDto.getCoverPhoto());
@@ -380,6 +381,10 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 			String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
 			registeredUserAggregate.setProfilePicture(profilePic);				
 		   }
+		  
+		  registeredUserAggregate.setNoOfCompletedTasks(committedActivityRepository.findNumberOfCompletedCommittedActivitiesByRegisteredUserId(registeredUserDto.getUserId(),Status.DONE));
+		  
+		  //System.out.println(committedActivityRepository.findNumberOfCompletedCommittedActivitiesByRegisteredUserId(registeredUserDto.getUserId(),Status.DONE));
                           
         }
                 
