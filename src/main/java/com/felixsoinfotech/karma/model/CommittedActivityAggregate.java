@@ -82,7 +82,22 @@ public class CommittedActivityAggregate {
 	
 	private List<String> likedUserPhotos=new ArrayList<String>();  
 	
-	
+	private boolean isLiked;
+		
+	/**
+	 * @return the isLiked
+	 */
+	public boolean isLiked() {
+		return isLiked;
+	}
+
+	/**
+	 * @param isLiked the isLiked to set
+	 */
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
+	}
+
 	/**
 	 * @return the imageStringContentType
 	 */
