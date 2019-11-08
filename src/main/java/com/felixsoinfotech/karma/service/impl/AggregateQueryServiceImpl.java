@@ -48,6 +48,7 @@ import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
+import com.felixsoinfotech.karma.repository.ChallengeRepository;
 import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.DimensionRepository;
 import com.felixsoinfotech.karma.repository.MediaRepository;
@@ -56,6 +57,7 @@ import com.felixsoinfotech.karma.repository.RegisteredUserRepository;
 
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.ChallengeDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 import com.felixsoinfotech.karma.service.dto.MediaDTO;
@@ -63,6 +65,7 @@ import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 
 
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
+import com.felixsoinfotech.karma.service.mapper.ChallengeMapper;
 import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.DimensionMapper;
 import com.felixsoinfotech.karma.service.mapper.MediaMapper;
@@ -102,12 +105,17 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 
     private MediaMapper mediaMapper;
     
+    private ChallengeRepository challengeRepository;
+    
+    private ChallengeMapper challengeMapper;
+    
 
 	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
 			                         DimensionRepository dimensionRepository,DimensionMapper dimensionMapper,
 			                         CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper,
 			                         RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper,
-			                         MediaRepository mediaRepository, MediaMapper mediaMapper) {
+			                         MediaRepository mediaRepository, MediaMapper mediaMapper,
+			                         ChallengeRepository challengeRepository,ChallengeMapper challengeMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
 		this.dimensionRepository=dimensionRepository;
@@ -118,7 +126,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         this.registeredUserMapper = registeredUserMapper;
         this.mediaRepository = mediaRepository;
         this.mediaMapper = mediaMapper;
-        
+        this.challengeRepository=challengeRepository;
+        this.challengeMapper =challengeMapper;
         
         
 	}	
@@ -413,6 +422,20 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
      */
     public Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable) {
         return activityRepository.findAllWithEagerRelationships(pageable).map(activityMapper::toDto);
+    }
+    
+    /**
+     * Get all the challenges.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ChallengeDTO> findAllChallenges(Pageable pageable) {
+        log.debug("Request to get all Challenges");
+        return challengeRepository.findAll(pageable)
+            .map(challengeMapper::toDto);
     }
 	
 	

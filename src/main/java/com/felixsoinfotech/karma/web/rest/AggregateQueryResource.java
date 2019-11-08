@@ -41,6 +41,7 @@ import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.ChallengeDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 import com.felixsoinfotech.karma.web.rest.util.PaginationUtil;
 
@@ -191,7 +192,22 @@ public class AggregateQueryResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-  
+    /**
+     * GET  /challenges : get all the challenges.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of challenges in body
+     */
+    @GetMapping("/challenges")
+    @Timed
+    public ResponseEntity<List<ChallengeDTO>> getAllChallenges(Pageable pageable) {
+        log.debug("REST request to get a page of Challenges");
+        
+        Page<ChallengeDTO> page = aggregateQueryService.findAllChallenges(pageable);
+        
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/challenges");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
     
    
 }

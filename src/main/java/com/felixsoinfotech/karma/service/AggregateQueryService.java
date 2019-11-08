@@ -32,6 +32,7 @@ import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
+import com.felixsoinfotech.karma.service.dto.ChallengeDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
 
@@ -111,7 +112,13 @@ public interface AggregateQueryService {
      */
     Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable);
 	
-	
+    /**
+     * Get all the challenges.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    Page<ChallengeDTO> findAllChallenges(Pageable pageable);
 
 
 
