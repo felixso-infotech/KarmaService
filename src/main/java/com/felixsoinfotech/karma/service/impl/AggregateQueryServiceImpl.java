@@ -211,21 +211,17 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
         CommittedActivityAggregate committedActivityAggregate;
         
-        List<CommittedActivityDTO> committedActivityDtoDoneList=new ArrayList<CommittedActivityDTO>();
+        List<CommittedActivityDTO> committedActivityDtoDoneList = null;;
         
         Base64Encoder encoder = new Base64Encoder();
                 
-        Page<CommittedActivityDTO> page=committedActivityRepository.findAll(pageable).map(committedActivityMapper::toDto);
+        committedActivityDtoDoneList=committedActivityRepository.findAllCommittedActivitiesByStatus(pageable,Status.valueOf(status)).map(committedActivityMapper::toDto).getContent();
                 
-        for(CommittedActivityDTO committedActivityDTO : page.getContent())
-        {
-        	if(committedActivityDTO.getStatus().equals(Status.valueOf(status)))
-        		committedActivityDtoDoneList.add(committedActivityDTO);   
-        	
-        	//System.out.println("*************************************************"+committedActivityDtoDoneList);
-        }
-        
-        //System.out.println("*************************************************"+committedActivityDtoDoneList);
+		/*
+		 * for(CommittedActivityDTO committedActivityDTO : page.getContent()) {
+		 * if(committedActivityDTO.getStatus().equals(Status.valueOf(status)))
+		 * committedActivityDtoDoneList.add(committedActivityDTO); }
+		 */    
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
         {
@@ -297,6 +293,83 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 		return pagee;
         
     }
+    
+    /**
+     * Get the "status" committedActivity.
+     *
+     * @param status the status of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+	public Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId)
+	{
+        
+		List<CommittedActivityAggregate> committedActivityAggregateList=new ArrayList<CommittedActivityAggregate>();
+        
+        CommittedActivityAggregate committedActivityAggregate;
+        
+        List<CommittedActivityDTO> registerUserCommittedActivityList = null;;
+        
+        Base64Encoder encoder = new Base64Encoder();
+                
+        registerUserCommittedActivityList=committedActivityRepository.findAllCommittedActivitiesByStatusAndRegisteredUserId(pageable,Status.valueOf(status),registeredUserId).map(committedActivityMapper::toDto).getContent();
+           
+        for(CommittedActivityDTO committedActivityDto : registerUserCommittedActivityList)
+        {
+        	committedActivityAggregate= new CommittedActivityAggregate();
+        	
+        	if(committedActivityDto != null)
+        	{
+        	
+        	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
+        	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
+        	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
+        	          	
+        	Optional<ActivityDTO> activitydto=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto);
+        	ActivityDTO activityDTO=activitydto.get();
+        	
+        	if(activityDTO != null)
+        	{
+        		
+        		committedActivityAggregate.setActivityCreatedDate(activityDTO.getCreatedDate());
+        		committedActivityAggregate.setTitle(activityDTO.getTitle());
+        		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
+        		committedActivityAggregate.setType(activityDTO.getType());
+        		committedActivityAggregate.setChallengeId(activityDTO.getChallengeId());
+        		committedActivityAggregate.setDimensions(activityDTO.getDimensions());
+        		committedActivityAggregate.setProofType(activityDTO.getProofType());  
+        		committedActivityAggregate.setSuccessMessage(activityDTO.getSuccessMessage());
+        		
+        	}
+        	
+        	
+        	       	
+        	Optional<MediaDTO> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto);
+        	MediaDTO mediaDto=media.get();
+        	
+            if(mediaDto != null)    
+            {
+            	committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
+            	
+            	if(mediaDto.getFileContentType().contains("image"))
+  		        {
+  			    String image= encoder.encode(mediaDto.getFile());
+  			    committedActivityAggregate.setImageString(image);
+  					
+  		        }       	        	
+            }
+            
+                    	committedActivityAggregateList.add(committedActivityAggregate);
+        	
+        	}
+        }
+        
+        Page<CommittedActivityAggregate> pagee = new PageImpl<CommittedActivityAggregate>(committedActivityAggregateList, pageable, committedActivityAggregateList.size());
+
+		return pagee;
+
+	}
     
   
  	/**

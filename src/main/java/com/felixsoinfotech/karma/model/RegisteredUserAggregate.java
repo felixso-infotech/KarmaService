@@ -42,7 +42,22 @@ public class RegisteredUserAggregate {
      
      private Long noOfCompletedTasks;
      
-     
+     private Long noOfLoves;
+        
+	/**
+	 * @return the noOfLoves
+	 */
+	public Long getNoOfLoves() {
+		return noOfLoves;
+	}
+
+	/**
+	 * @param noOfLoves the noOfLoves to set
+	 */
+	public void setNoOfLoves(Long noOfLoves) {
+		this.noOfLoves = noOfLoves;
+	}
+
 	/**
 	 * @return the noOfCompletedTasks
 	 */

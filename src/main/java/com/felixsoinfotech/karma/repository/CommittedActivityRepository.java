@@ -3,9 +3,11 @@ package com.felixsoinfotech.karma.repository;
 import com.felixsoinfotech.karma.domain.CommittedActivity;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Pageable;
 
 
 /**
@@ -28,6 +30,10 @@ public interface CommittedActivityRepository extends JpaRepository<CommittedActi
 	 */
 	@Query(value = "select count(c) from CommittedActivity c where c.registeredUser.userId=:userId and c.status=:status")
 	Long findNumberOfCompletedCommittedActivitiesByRegisteredUserId(@Param("userId") String userId,@Param("status") Status status);
+	
+	Page<CommittedActivity> findAllCommittedActivitiesByStatus(Pageable pageable ,Status status);
+	
+	Page<CommittedActivity> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,Status status,Long registeredUserId);
 	
 	
 

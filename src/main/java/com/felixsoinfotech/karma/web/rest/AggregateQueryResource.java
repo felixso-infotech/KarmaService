@@ -158,6 +158,23 @@ public class AggregateQueryResource {
     }
     
     /**
+     * GET  /committed-activities/:status : get the "status" committedActivity.
+     *
+     * @param status the status of the committedActivityDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the committedActivityDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/committed-activities/{status}/{registeredUserId}")
+    @Timed
+    public ResponseEntity<List<CommittedActivityAggregate>> getAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,@PathVariable String status,@PathVariable Long registeredUserId) {
+        log.debug("REST request to get CommittedActivity : {}", status, registeredUserId);
+        
+        Page<CommittedActivityAggregate> page = aggregateQueryService.findAllCommittedActivitiesByStatusAndRegisteredUserId(pageable,status,registeredUserId);
+        
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/committed-activities/{status}/{registeredUserId}");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+          
+    /**
      * GET  /registered-users/:id : get the "id" registeredUser.
      *
      * @param id the id of the registeredUserDTO to retrieve

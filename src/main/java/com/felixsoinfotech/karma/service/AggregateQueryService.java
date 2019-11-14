@@ -1,4 +1,5 @@
  /*
+
  * Copyright 2002-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,6 +77,15 @@ public interface AggregateQueryService {
      * @return the entity
      */
 	Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatus(Pageable pageable,String status);
+	
+	
+	/**
+     * Get the "status" committedActivity.
+     *
+     * @param status the status of the entity
+     * @return the entity
+     */
+	Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);
 	
    
     /**
