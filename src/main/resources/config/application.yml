@@ -100,10 +100,10 @@ spring:
 security:
     oauth2:
         client:
-            client-id: internal
-            client-secret: internal
+            client-id: karma-app
+            client-secret: 0191a626-bd11-4eca-a8d4-694ecd0a7018
         resource:
-            user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+            user-info-uri: http://35.196.65.11:8099/auth/realms/karma/protocol/openid-connect/userinfo
 
 server:
     servlet:
