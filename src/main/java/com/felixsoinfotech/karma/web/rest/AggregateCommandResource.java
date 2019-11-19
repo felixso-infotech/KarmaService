@@ -125,6 +125,7 @@ public class AggregateCommandResource {
             .body(result);
     }
     
+    
     /**
      * PUT  /committed-activities : Updates an existing committedActivity.
      *

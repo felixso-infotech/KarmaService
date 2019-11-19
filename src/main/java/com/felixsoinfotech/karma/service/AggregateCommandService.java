@@ -17,6 +17,7 @@
 package com.felixsoinfotech.karma.service;
 
 import com.felixsoinfotech.karma.model.ActivityAggregate;
+import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 
