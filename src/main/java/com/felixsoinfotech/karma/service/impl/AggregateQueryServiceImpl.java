@@ -46,11 +46,13 @@ import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
+import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
 import com.felixsoinfotech.karma.repository.ChallengeRepository;
 import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.DimensionRepository;
+import com.felixsoinfotech.karma.repository.IntroductionStoryRepository;
 import com.felixsoinfotech.karma.repository.MediaRepository;
 import com.felixsoinfotech.karma.repository.RegisteredUserRepository;
 
@@ -60,6 +62,7 @@ import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.ChallengeDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
+import com.felixsoinfotech.karma.service.dto.IntroductionStoryDTO;
 import com.felixsoinfotech.karma.service.dto.MediaDTO;
 import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 
@@ -68,6 +71,7 @@ import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.ChallengeMapper;
 import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.DimensionMapper;
+import com.felixsoinfotech.karma.service.mapper.IntroductionStoryMapper;
 import com.felixsoinfotech.karma.service.mapper.MediaMapper;
 import com.felixsoinfotech.karma.service.mapper.RegisteredUserMapper;
 
@@ -109,13 +113,18 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
     
     private ChallengeMapper challengeMapper;
     
+    private IntroductionStoryRepository introductionStoryRepository;
+    
+    private IntroductionStoryMapper introductionStoryMapper;
+    
 
 	public AggregateQueryServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
 			                         DimensionRepository dimensionRepository,DimensionMapper dimensionMapper,
 			                         CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper,
 			                         RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper,
 			                         MediaRepository mediaRepository, MediaMapper mediaMapper,
-			                         ChallengeRepository challengeRepository,ChallengeMapper challengeMapper) {
+			                         ChallengeRepository challengeRepository,ChallengeMapper challengeMapper,
+			                         IntroductionStoryRepository introductionStoryRepository,IntroductionStoryMapper introductionStoryMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
 		this.dimensionRepository=dimensionRepository;
@@ -128,6 +137,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         this.mediaMapper = mediaMapper;
         this.challengeRepository=challengeRepository;
         this.challengeMapper =challengeMapper;
+        this.introductionStoryRepository=introductionStoryRepository;
+        this.introductionStoryMapper=introductionStoryMapper;
         
         
 	}	
@@ -302,12 +313,12 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
      */
     @Override
     @Transactional(readOnly = true)
-	public Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId)
+	public Page<CommittedActivityProfileAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId)
 	{
         
-		List<CommittedActivityAggregate> committedActivityAggregateList=new ArrayList<CommittedActivityAggregate>();
+		List<CommittedActivityProfileAggregate> committedActivityProfileAggregateList=new ArrayList<CommittedActivityProfileAggregate>();
         
-        CommittedActivityAggregate committedActivityAggregate;
+		CommittedActivityProfileAggregate committedActivityProfileAggregate;
         
         List<CommittedActivityDTO> registerUserCommittedActivityList = null;;
         
@@ -317,55 +328,60 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
            
         for(CommittedActivityDTO committedActivityDto : registerUserCommittedActivityList)
         {
-        	committedActivityAggregate= new CommittedActivityAggregate();
+        	committedActivityProfileAggregate= new CommittedActivityProfileAggregate();
         	
         	if(committedActivityDto != null)
+        	{       	
+        	    if(committedActivityDto.getActivityId() != null)
+        	    {
+        	    	ActivityDTO activityDto = activityRepository.findOneWithEagerRelationships(committedActivityDto.getActivityId()).map(activityMapper::toDto).get();
+        	    	  
+        	    	  if(activityDto != null)
+        	    	  {
+        	    		  committedActivityProfileAggregate.setActivityId(activityDto.getId());
+        	    		  committedActivityProfileAggregate.setActivityTitle(activityDto.getTitle());
+        	    	  }
+        	    	  
+        	    	  List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,committedActivityDto.getActivityId())
+        	    			                                            .map(introductionStoryMapper::toDto).getContent();
+        	    	  for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
+        	    	  {
+        	    		  if(introductionStoryDTO != null)
+        	    		  {
+        	    			  committedActivityProfileAggregate.setActivityImageContentType(introductionStoryDTO.getImageContentType()); 
+        	    			   if(introductionStoryDTO.getImageContentType().contains("image"))
+        	    			   {
+        	    				   committedActivityProfileAggregate.setActivityImageString(encoder.encode(introductionStoryDTO.getImage()));  
+        	    			   }
+        	    		  }
+        	    	  }
+        	    	        	    	  
+        	    }       	
+        	       
+        	    
+        	if(committedActivityDto.getId() != null) 
         	{
         	
-        	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
-        	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
-        	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
-        	          	
-        	Optional<ActivityDTO> activitydto=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto);
-        	ActivityDTO activityDTO=activitydto.get();
-        	
-        	if(activityDTO != null)
-        	{
+            committedActivityProfileAggregate.setCommittedActivityId(committedActivityDto.getId());
         		
-        		committedActivityAggregate.setActivityCreatedDate(activityDTO.getCreatedDate());
-        		committedActivityAggregate.setTitle(activityDTO.getTitle());
-        		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
-        		committedActivityAggregate.setType(activityDTO.getType());
-        		committedActivityAggregate.setChallengeId(activityDTO.getChallengeId());
-        		committedActivityAggregate.setDimensions(activityDTO.getDimensions());
-        		committedActivityAggregate.setProofType(activityDTO.getProofType());  
-        		committedActivityAggregate.setSuccessMessage(activityDTO.getSuccessMessage());
-        		
-        	}
+        	  MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
         	
-        	
-        	       	
-        	Optional<MediaDTO> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto);
-        	MediaDTO mediaDto=media.get();
-        	
-            if(mediaDto != null)    
-            {
-            	committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
+                if(mediaDto != null)    
+                {
+                	committedActivityProfileAggregate.setProofImageContentType(mediaDto.getFileContentType());
             	
-            	if(mediaDto.getFileContentType().contains("image"))
-  		        {
-  			    String image= encoder.encode(mediaDto.getFile());
-  			    committedActivityAggregate.setImageString(image);
-  					
-  		        }       	        	
-            }
+            	        if(mediaDto.getFileContentType().contains("image"))
+            	        	committedActivityProfileAggregate.setProofImageString(encoder.encode(mediaDto.getFile())); 		              	        	
+                 }
+        	}    
             
-                    	committedActivityAggregateList.add(committedActivityAggregate);
+            committedActivityProfileAggregateList.add(committedActivityProfileAggregate);
         	
-        	}
+         }
+        	
         }
         
-        Page<CommittedActivityAggregate> pagee = new PageImpl<CommittedActivityAggregate>(committedActivityAggregateList, pageable, committedActivityAggregateList.size());
+        Page<CommittedActivityProfileAggregate> pagee = new PageImpl<CommittedActivityProfileAggregate>(committedActivityProfileAggregateList, pageable, committedActivityProfileAggregateList.size());
 
 		return pagee;
 

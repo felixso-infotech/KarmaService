@@ -38,6 +38,7 @@ import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
+import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.AggregateQueryService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
@@ -165,10 +166,10 @@ public class AggregateQueryResource {
      */
     @GetMapping("/committed-activities/{status}/{registeredUserId}")
     @Timed
-    public ResponseEntity<List<CommittedActivityAggregate>> getAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,@PathVariable String status,@PathVariable Long registeredUserId) {
+    public ResponseEntity<List<CommittedActivityProfileAggregate>> getAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,@PathVariable String status,@PathVariable Long registeredUserId) {
         log.debug("REST request to get CommittedActivity : {}", status, registeredUserId);
         
-        Page<CommittedActivityAggregate> page = aggregateQueryService.findAllCommittedActivitiesByStatusAndRegisteredUserId(pageable,status,registeredUserId);
+        Page<CommittedActivityProfileAggregate> page = aggregateQueryService.findAllCommittedActivitiesByStatusAndRegisteredUserId(pageable,status,registeredUserId);
         
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/committed-activities/{status}/{registeredUserId}");
         return ResponseEntity.ok().headers(headers).body(page.getContent());

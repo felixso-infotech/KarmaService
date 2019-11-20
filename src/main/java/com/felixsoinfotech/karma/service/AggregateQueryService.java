@@ -31,6 +31,7 @@ import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
+import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.ChallengeDTO;
@@ -85,7 +86,7 @@ public interface AggregateQueryService {
      * @param status the status of the entity
      * @return the entity
      */
-	Page<CommittedActivityAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);
+	Page<CommittedActivityProfileAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);
 	
    
     /**

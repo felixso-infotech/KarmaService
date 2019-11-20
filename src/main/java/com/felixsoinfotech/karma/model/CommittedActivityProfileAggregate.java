@@ -25,6 +25,8 @@ import com.felixsoinfotech.karma.domain.enumeration.Type;
  * 
  */
 public class CommittedActivityProfileAggregate {
+	
+	 private Long CommittedActivityId;
 
 	 private Long activityId;
 	 
@@ -47,7 +49,22 @@ public class CommittedActivityProfileAggregate {
 	 private Type type;
 	 
 	 private Long noOfLoves;
-	 	
+	 
+		 	
+
+	/**
+	 * @return the committedActivityId
+	 */
+	public Long getCommittedActivityId() {
+		return CommittedActivityId;
+	}
+
+	/**
+	 * @param committedActivityId the committedActivityId to set
+	 */
+	public void setCommittedActivityId(Long committedActivityId) {
+		CommittedActivityId = committedActivityId;
+	}
 
 	/**
 	 * @return the status
