@@ -27,21 +27,26 @@ import org.springframework.transaction.annotation.Transactional;
 import com.felixsoinfotech.karma.domain.Activity;
 import com.felixsoinfotech.karma.domain.CommittedActivity;
 import com.felixsoinfotech.karma.domain.IntroductionStory;
+import com.felixsoinfotech.karma.domain.Media;
 import com.felixsoinfotech.karma.domain.RegisteredUser;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.model.ActivityAggregate;
+import com.felixsoinfotech.karma.model.CommittedActivityStatusAggregate;
 import com.felixsoinfotech.karma.repository.ActivityRepository;
 import com.felixsoinfotech.karma.repository.CommittedActivityRepository;
 import com.felixsoinfotech.karma.repository.IntroductionStoryRepository;
+import com.felixsoinfotech.karma.repository.MediaRepository;
 import com.felixsoinfotech.karma.repository.RegisteredUserRepository;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.IntroductionStoryDTO;
+import com.felixsoinfotech.karma.service.dto.MediaDTO;
 import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 import com.felixsoinfotech.karma.service.mapper.ActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.CommittedActivityMapper;
 import com.felixsoinfotech.karma.service.mapper.IntroductionStoryMapper;
+import com.felixsoinfotech.karma.service.mapper.MediaMapper;
 import com.felixsoinfotech.karma.service.mapper.RegisteredUserMapper;
 
 /**
@@ -74,11 +79,16 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 	private RegisteredUserRepository registeredUserRepository;
 
     private RegisteredUserMapper registeredUserMapper;
+    
+    private MediaRepository mediaRepository;
+    
+    private MediaMapper mediaMapper;
 
 	public AggregateCommandServiceImpl(ActivityRepository activityRepository, ActivityMapper activityMapper,
 			                           IntroductionStoryMapper introductionStoryMapper,IntroductionStoryRepository introductionStoryRepository,
 			                           CommittedActivityRepository committedActivityRepository,CommittedActivityMapper committedActivityMapper,
-			                           RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper) {
+			                           RegisteredUserRepository registeredUserRepository, RegisteredUserMapper registeredUserMapper,
+			                           MediaRepository mediaRepository,MediaMapper mediaMapper) {
 		this.activityRepository = activityRepository;
 		this.activityMapper = activityMapper;
 		this.introductionStoryMapper=introductionStoryMapper; 
@@ -87,6 +97,8 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
 		this.committedActivityRepository=committedActivityRepository;
 		this.registeredUserRepository = registeredUserRepository;
         this.registeredUserMapper = registeredUserMapper;
+        this.mediaMapper = mediaMapper;
+        this.mediaRepository = mediaRepository;
 	}
 
 	/**
@@ -129,15 +141,62 @@ public class AggregateCommandServiceImpl implements AggregateCommandService {
      * @return the persisted entity
      */
     @Override
-    public CommittedActivityDTO saveCommittedActivity(CommittedActivityDTO committedActivityDTO) {
-        log.debug("Request to save CommittedActivity : {}", committedActivityDTO);
+    public CommittedActivityStatusAggregate saveCommittedActivity(CommittedActivityStatusAggregate committedActivityStatusAggregate) {
+        log.debug("Request to save CommittedActivity : {}", committedActivityStatusAggregate);
         
-        if(committedActivityDTO.getStatus() == null)
-               committedActivityDTO.setStatus(Status.TODO);
+        CommittedActivityDTO committedActivityDTO = new CommittedActivityDTO();
+        MediaDTO mediaDTO = null;
         
-        CommittedActivity committedActivity = committedActivityMapper.toEntity(committedActivityDTO);
+        committedActivityDTO.setId(committedActivityStatusAggregate.getCommittedActivityId());
+        committedActivityDTO.setActivityId(committedActivityStatusAggregate.getActivityId());
+        committedActivityDTO.setDescription(committedActivityStatusAggregate.getDescription());
+        committedActivityDTO.setCreatedDate(committedActivityStatusAggregate.getCreatedDate());
+        committedActivityDTO.setReferenceId(committedActivityStatusAggregate.getReferenceId());
+        committedActivityDTO.setRegisteredUserId(committedActivityStatusAggregate.getRegisteredUserId());
+        
+          if(committedActivityStatusAggregate.getStatus() == null)
+              committedActivityDTO.setStatus(Status.TODO);
+        
+        committedActivityDTO.setStatus(committedActivityStatusAggregate.getStatus());
+        
+        CommittedActivity committedActivity = committedActivityMapper.toEntity(committedActivityDTO);       
         committedActivity = committedActivityRepository.save(committedActivity);
-        return committedActivityMapper.toDto(committedActivity);
+        committedActivityDTO = committedActivityMapper.toDto(committedActivity);
+        
+              if(committedActivityStatusAggregate.getProofFile() != null)
+              {	
+        	
+                mediaDTO = new MediaDTO();
+        
+                mediaDTO.setFileName(committedActivityStatusAggregate.getUserId()+""+committedActivityStatusAggregate.getCreatedDate());
+                mediaDTO.setCommittedActivityId(committedActivityStatusAggregate.getCommittedActivityId());        
+                mediaDTO.setFile(committedActivityStatusAggregate.getProofFile());
+                mediaDTO.setFileContentType(committedActivityStatusAggregate.getProofFileContentType());
+        
+                    Media media = mediaMapper.toEntity(mediaDTO);
+                    media = mediaRepository.save(media);
+                    mediaDTO = mediaMapper.toDto(media);
+        
+              if(mediaDTO != null)
+              {
+        	    committedActivityStatusAggregate.setProofFile(mediaDTO.getFile());
+                committedActivityStatusAggregate.setProofFileContentType(mediaDTO.getFileContentType());
+              }       
+        
+            }           
+             
+        if(committedActivityDTO != null)
+        {
+        committedActivityStatusAggregate.setActivityId(committedActivityDTO.getActivityId());  
+        committedActivityStatusAggregate.setCommittedActivityId(committedActivityDTO.getId());
+        committedActivityStatusAggregate.setCreatedDate(committedActivityDTO.getCreatedDate());
+        committedActivityStatusAggregate.setDescription(committedActivityDTO.getDescription());
+        committedActivityStatusAggregate.setReferenceId(committedActivityDTO.getReferenceId());
+        committedActivityStatusAggregate.setStatus(committedActivityDTO.getStatus());
+        committedActivityStatusAggregate.setRegisteredUserId(committedActivityDTO.getRegisteredUserId());
+        }
+                         
+        return committedActivityStatusAggregate;
     }
 	
     /**

@@ -18,6 +18,7 @@ package com.felixsoinfotech.karma.service;
 
 import com.felixsoinfotech.karma.model.ActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
+import com.felixsoinfotech.karma.model.CommittedActivityStatusAggregate;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
 
@@ -47,7 +48,7 @@ public interface AggregateCommandService   {
      * @param committedActivityDTO the entity to save
      * @return the persisted entity
      */
-	CommittedActivityDTO saveCommittedActivity(CommittedActivityDTO committedActivityDTO);
+	CommittedActivityStatusAggregate saveCommittedActivity(CommittedActivityStatusAggregate committedActivityStatusAggregate);
 	
 	/**
      * Save a registeredUser.

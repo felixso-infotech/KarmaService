@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.felixsoinfotech.karma.model.ActivityAggregate;
+import com.felixsoinfotech.karma.model.CommittedActivityStatusAggregate;
 import com.felixsoinfotech.karma.service.AggregateCommandService;
 import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.RegisteredUserDTO;
@@ -114,14 +115,17 @@ public class AggregateCommandResource {
      */
     @PostMapping("/committed-activities")
     @Timed
-    public ResponseEntity<CommittedActivityDTO> createCommittedActivity(@RequestBody CommittedActivityDTO committedActivityDTO) throws URISyntaxException {
-        log.debug("REST request to save CommittedActivity : {}", committedActivityDTO);
-        if (committedActivityDTO.getId() != null) {
+    public ResponseEntity<CommittedActivityStatusAggregate> createCommittedActivity(@RequestBody CommittedActivityStatusAggregate committedActivityStatusAggregate) throws URISyntaxException {
+        log.debug("REST request to save CommittedActivity : {}", committedActivityStatusAggregate);
+        
+        if (committedActivityStatusAggregate.getCommittedActivityId() != null) {
             throw new BadRequestAlertException("A new committedActivity cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CommittedActivityDTO result = aggregateCommandService.saveCommittedActivity(committedActivityDTO);
-        return ResponseEntity.created(new URI("/api/committed-activities/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+        
+        CommittedActivityStatusAggregate result = aggregateCommandService.saveCommittedActivity(committedActivityStatusAggregate);
+        
+        return ResponseEntity.created(new URI("/api/committed-activities/" + result.getCommittedActivityId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getCommittedActivityId().toString()))
             .body(result);
     }
     
@@ -137,14 +141,14 @@ public class AggregateCommandResource {
      */
     @PutMapping("/committed-activities")
     @Timed
-    public ResponseEntity<CommittedActivityDTO> updateCommittedActivity(@RequestBody CommittedActivityDTO committedActivityDTO) throws URISyntaxException {
-        log.debug("REST request to update CommittedActivity : {}", committedActivityDTO);
-        if (committedActivityDTO.getId() == null) {
+    public ResponseEntity<CommittedActivityStatusAggregate> updateCommittedActivity(@RequestBody CommittedActivityStatusAggregate committedActivityStatusAggregate) throws URISyntaxException {
+        log.debug("REST request to update CommittedActivity : {}", committedActivityStatusAggregate);
+        if (committedActivityStatusAggregate.getCommittedActivityId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CommittedActivityDTO result = aggregateCommandService.saveCommittedActivity(committedActivityDTO);
+        CommittedActivityStatusAggregate result = aggregateCommandService.saveCommittedActivity(committedActivityStatusAggregate);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, committedActivityDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, committedActivityStatusAggregate.getCommittedActivityId().toString()))
             .body(result);
     }
     

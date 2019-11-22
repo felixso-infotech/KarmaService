@@ -49,8 +49,7 @@ public class CommittedActivityProfileAggregate {
 	 private Type type;
 	 
 	 private Long noOfLoves;
-	 
-		 	
+	 		 	
 
 	/**
 	 * @return the committedActivityId
