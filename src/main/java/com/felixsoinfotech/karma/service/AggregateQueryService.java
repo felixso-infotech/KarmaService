@@ -30,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.ActivityViewAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
@@ -114,14 +115,8 @@ public interface AggregateQueryService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<ActivityDTO> findAll(Pageable pageable);
+    Page<ActivityViewAggregate> findAllActivities(Pageable pageable);
 
-    /**
-     * Get all the Activity with eager load of many-to-many relationships.
-     *
-     * @return the list of entities
-     */
-    Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable);
 	
     /**
      * Get all the challenges.

@@ -45,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.ActivityViewAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
@@ -490,27 +491,65 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
     }
     
-    /**
-     * Get all the activities.
-     *
-     * @param pageable the pagination information
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ActivityDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Activities");
-        return activityRepository.findAll(pageable)
-            .map(activityMapper::toDto);
-    }
     
     /**
      * Get all the Activity with eager load of many-to-many relationships.
      *
      * @return the list of entities
      */
-    public Page<ActivityDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return activityRepository.findAllWithEagerRelationships(pageable).map(activityMapper::toDto);
+    public Page<ActivityViewAggregate> findAllActivities(Pageable pageable) {
+    	
+    	List<ActivityViewAggregate> activityViewAggregateList = new ArrayList<ActivityViewAggregate>();
+    	
+    	ActivityViewAggregate activityViewAggregate;
+    	
+    	Base64Encoder encoder = new Base64Encoder();
+    	
+        List<ActivityDTO> activityDTOs = activityRepository.findAllWithEagerRelationships(pageable).map(activityMapper::toDto).getContent();
+        
+        for(ActivityDTO activityDto : activityDTOs)
+        {
+        	if(activityDto != null)
+        	{
+        		activityViewAggregate = new ActivityViewAggregate();
+        		
+        		activityViewAggregate.setActivityId(activityDto.getId());
+        		activityViewAggregate.setTitle(activityDto.getTitle()); 
+        		activityViewAggregate.setType(activityDto.getType());
+        		activityViewAggregate.setCreatedDate(activityDto.getCreatedDate());
+        		
+        		   if(activityDto.getChallengeId() != null)
+        		   {
+        			   ChallengeDTO challengeDTO = challengeRepository.findById(activityDto.getChallengeId()).map(challengeMapper::toDto).get();
+        			      if(challengeDTO != null)
+        			      {
+        			    	  activityViewAggregate.setChallengeName(challengeDTO.getName());
+        			      }
+        		   }   
+        			   
+        		   if(activityDto.getId() != null)
+        		   {
+        			  List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,activityDto.getId()).map(introductionStoryMapper::toDto).getContent();
+        		   
+                      for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
+                      {
+                         if(introductionStoryDTO != null)
+                          {
+                        	 activityViewAggregate.setImageStringContentType(introductionStoryDTO.getImageContentType()); 
+                                if(introductionStoryDTO.getImageContentType().contains("image"))
+                                	activityViewAggregate.setImageString(encoder.encode(introductionStoryDTO.getImage()));  
+
+                          }
+                      }
+        		   } 
+        		   
+        		   activityViewAggregateList.add(activityViewAggregate);
+        	    }
+           }
+        
+        Page<ActivityViewAggregate> pagee = new PageImpl<ActivityViewAggregate>(activityViewAggregateList, pageable, activityViewAggregateList.size());
+
+		return pagee;
     }
     
     /**
