@@ -353,10 +353,11 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	    	  {
         	    		  if(introductionStoryDTO != null)
         	    		  {
-        	    			  committedActivityProfileAggregate.setActivityImageContentType(introductionStoryDTO.getImageContentType()); 
-        	    			   if(introductionStoryDTO.getImageContentType().contains("image"))
+        	    			 
+        	    			   if(introductionStoryDTO.getImage()!=null && introductionStoryDTO.getImageContentType()!=null && introductionStoryDTO.getImageContentType().contains("image"))
         	    			   {
         	    				   committedActivityProfileAggregate.setActivityImageString(encoder.encode(introductionStoryDTO.getImage()));  
+        	    				   committedActivityProfileAggregate.setActivityImageContentType(introductionStoryDTO.getImageContentType()); 
         	    			   }
         	    		  }
         	    	  }
@@ -376,10 +377,12 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	
                 if(mediaDto != null)    
                 {
-                	committedActivityProfileAggregate.setProofImageContentType(mediaDto.getFileContentType());
             	
-            	        if(mediaDto.getFileContentType().contains("image"))
-            	        	committedActivityProfileAggregate.setProofImageString(encoder.encode(mediaDto.getFile())); 		              	        	
+            	        if(mediaDto.getFile()!=null && mediaDto.getFileContentType()!=null && mediaDto.getFileContentType().contains("image"))
+            	        {
+            	        	committedActivityProfileAggregate.setProofImageString(encoder.encode(mediaDto.getFile())); 	
+            	            committedActivityProfileAggregate.setProofImageContentType(mediaDto.getFileContentType());
+            	        }
                  }
         	}    
             
@@ -480,6 +483,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         			   ChallengeDTO challengeDTO = challengeRepository.findById(activityDto.getChallengeId()).map(challengeMapper::toDto).get();
         			      if(challengeDTO != null)
         			      {
+        			    	  activityViewAggregate.setChallengeId(activityDto.getChallengeId());
         			    	  activityViewAggregate.setChallengeName(challengeDTO.getName());
         			      }
         		   }   
@@ -492,10 +496,12 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                       {
                          if(introductionStoryDTO != null)
                           {
-                        	 activityViewAggregate.setImageStringContentType(introductionStoryDTO.getImageContentType()); 
-                                if(introductionStoryDTO.getImageContentType().contains("image"))
+                        	  
+                                if(introductionStoryDTO.getImage()!=null && introductionStoryDTO.getImageContentType()!=null && introductionStoryDTO.getImageContentType().contains("image"))
+                                {
                                 	activityViewAggregate.setImageString(encoder.encode(introductionStoryDTO.getImage()));  
-
+                                    activityViewAggregate.setImageStringContentType(introductionStoryDTO.getImageContentType());
+                                }
                           }
                       }
         		   } 
