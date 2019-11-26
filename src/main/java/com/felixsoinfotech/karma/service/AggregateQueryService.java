@@ -90,17 +90,7 @@ public interface AggregateQueryService {
 	Page<CommittedActivityProfileAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);
 	
    
-    /**
- 	 * Find time difference between current date and posted date.
- 	 *
- 	 * @param postedDate
- 	 *            to find the time
- 	 * 
- 	 * @return the time
- 	 */
-    
-    public String calculateTimeDifferenceBetweenCurrentAndPostedTime(ZonedDateTime postedDateTime);
-
+   
     /**
      * Get the "id" registeredUser.
      *

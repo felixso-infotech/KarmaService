@@ -79,9 +79,7 @@ public class CommittedActivityAggregate {
     private Long noOfLoves;
     
 	private Long noOfComments;
-	
-	private List<String> likedUserPhotos=new ArrayList<String>();  
-	
+		
 	private boolean isLiked;
 		
 	/**
@@ -154,19 +152,7 @@ public class CommittedActivityAggregate {
 		this.noOfComments = noOfComments;
 	}
 
-	/**
-	 * @return the likedUserPhotos
-	 */
-	public List<String> getLikedUserPhotos() {
-		return likedUserPhotos;
-	}
-
-	/**
-	 * @param likedUserPhotos the likedUserPhotos to set
-	 */
-	public void setLikedUserPhotos(List<String> likedUserPhotos) {
-		this.likedUserPhotos = likedUserPhotos;
-	}
+	
 
 	/**
 	 * @return the committedActivityId

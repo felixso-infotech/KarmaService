@@ -229,22 +229,18 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                 
         committedActivityDtoDoneList=committedActivityRepository.findAllCommittedActivitiesByStatus(pageable,Status.valueOf(status)).map(committedActivityMapper::toDto).getContent();
                 
-		/*
-		 * for(CommittedActivityDTO committedActivityDTO : page.getContent()) {
-		 * if(committedActivityDTO.getStatus().equals(Status.valueOf(status)))
-		 * committedActivityDtoDoneList.add(committedActivityDTO); }
-		 */    
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
         {
+         if(committedActivityDto != null)
+         {
         	committedActivityAggregate= new CommittedActivityAggregate();
         	
         	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
         	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
         	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
         	          	
-        	Optional<ActivityDTO> activitydto=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto);
-        	ActivityDTO activityDTO=activitydto.get();
+        	ActivityDTO activityDTO=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto).get();
         	
         	if(activityDTO != null)
         	{
@@ -260,43 +256,50 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         		
         	}
         	
-        	Optional<RegisteredUserDTO> registeredUserdto=registeredUserRepository.findById(committedActivityDto.getRegisteredUserId()).map(registeredUserMapper::toDto);
-        	RegisteredUserDTO registeredUserDto =  registeredUserdto.get();
-        	       	
-        	if(registeredUserDto != null)
-        	{
-        	   committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
-        	   
-        	   if(registeredUserDto.getProfilePictureContentType().contains("image"))
- 		       {
- 			    String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
- 			    committedActivityAggregate.setProfilePicture(profilePic);				
- 		       }
+               	
+            if(committedActivityDto.getRegisteredUserId() != null)
+            {
+            
+             RegisteredUserDTO registeredUserDto=registeredUserRepository.findById(committedActivityDto.getRegisteredUserId()).map(registeredUserMapper::toDto).get();
+        	       	       	
+        	   if(registeredUserDto != null)
+        	   {
+        		
+        	     if(registeredUserDto.getProfilePictureContentType()!=null && registeredUserDto.getProfilePicture()!=null && registeredUserDto.getProfilePictureContentType().contains("image"))
+     		     {
+     			   String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
+     			   committedActivityAggregate.setProfilePicture(profilePic);
+     			   committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
+     		     }      	  
         	   
         	   committedActivityAggregate.setFirstName(registeredUserDto.getFirstName());
+        	   committedActivityAggregate.setLastName(registeredUserDto.getLastName());
+        	   committedActivityAggregate.setUserId(registeredUserDto.getUserId());
         	   
-        	}
+        	   }
+            }
+            
+            if(committedActivityDto.getId() != null)
+            {
         	       	
-        	Optional<MediaDTO> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto);
-        	MediaDTO mediaDto=media.get();
+        	MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
         	
             if(mediaDto != null)    
-            {
-            	committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
-            	
-            	if(mediaDto.getFileContentType().contains("image"))
+            {           	
+            	if(mediaDto.getFileContentType()!=null && mediaDto.getFile()!=null && mediaDto.getFileContentType().contains("image"))
   		        {
   			    String image= encoder.encode(mediaDto.getFile());
   			    committedActivityAggregate.setImageString(image);
+  			    committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
   					
   		        }       	        	
             }
-            
-            committedActivityAggregate.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(committedActivityDto.getCreatedDate()));
+                       
             committedActivityAggregate.setNoOfReferences(committedActivityRepository.findNumberOfCommittedActivityByReferenceId(committedActivityDto.getId()));
+            }
             
         	committedActivityAggregateList.add(committedActivityAggregate);
-        	
+         }
         	
         }
         
@@ -389,57 +392,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	}
     
   
- 	/**
- 	 * Find time difference between current date and posted date.
- 	 *
- 	 * @param postedDateTime
- 	 *            to find the time
- 	 * 
- 	 * @return the time
- 	 */
-
- 	@Override
- 	public String calculateTimeDifferenceBetweenCurrentAndPostedTime(ZonedDateTime postedDateTime) {
  		
- 		long offsetMillis = ZoneOffset.from(postedDateTime).getTotalSeconds() * 1000;
- 		long isoMillis = postedDateTime.toInstant().toEpochMilli();
- 		Date date = new Date(isoMillis + offsetMillis);
- 				
- 		Instant instant = Instant.now();
- 		long hours = 5;
- 		long minutes = 30;
- 		Instant instant1 = instant.plus(hours, ChronoUnit.HOURS).plus(minutes, ChronoUnit.MINUTES);
-
- 		Date current = Date.from(instant1);
- 		long diffInSecond = 0l;
- 		String diffInString = null;
- 		if (date != null) {
- 			diffInSecond = (current.getTime() - date.getTime()) / 1000l;
- 		}
- 		long postedBefore = 0l;
- 		if (diffInSecond < 60l) {
- 			diffInString = "just now";
- 		} else if (diffInSecond < 3600l) {
- 			postedBefore = diffInSecond / 60l;
- 			diffInString = postedBefore + " minutes ago";
- 		} else if (diffInSecond < 86400l) {
- 			postedBefore = diffInSecond / 3600l;
- 			diffInString = postedBefore + " hours ago";
- 		} else if (diffInSecond < 2592000l) {
- 			postedBefore = diffInSecond / 86400l;
- 			diffInString = postedBefore + " days ago";
- 		} else if (diffInSecond < 31104000l) {
- 			postedBefore = diffInSecond / 2592000l;
- 			diffInString = postedBefore + " months ago";
- 		} else {
- 			postedBefore = diffInSecond / 31104000l;
- 			diffInString = postedBefore + " years ago";
- 		}
-
- 		return diffInString;
- 	}
-    
-	
     /**
      * Get one registeredUser by id.
      *
