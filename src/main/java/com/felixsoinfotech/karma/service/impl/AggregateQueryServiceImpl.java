@@ -336,7 +336,10 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	committedActivityProfileAggregate= new CommittedActivityProfileAggregate();
         	
         	if(committedActivityDto != null)
-        	{       	
+        	{  
+        		committedActivityProfileAggregate.setStatus(committedActivityDto.getStatus());
+                committedActivityProfileAggregate.setCommittedActivityCreatedDate(committedActivityDto.getCreatedDate());
+          		
         	    if(committedActivityDto.getActivityId() != null)
         	    {
         	    	ActivityDTO activityDto = activityRepository.findOneWithEagerRelationships(committedActivityDto.getActivityId()).map(activityMapper::toDto).get();
@@ -344,7 +347,9 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	    	  if(activityDto != null)
         	    	  {
         	    		  committedActivityProfileAggregate.setActivityId(activityDto.getId());
-        	    		  committedActivityProfileAggregate.setActivityTitle(activityDto.getTitle());
+        	    		  committedActivityProfileAggregate.setActivityTitle(activityDto.getTitle());        	    		  
+        	    		  committedActivityProfileAggregate.setType(activityDto.getType());
+        	    		  
         	    	  }
         	    	  
         	    	  List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,committedActivityDto.getActivityId())
@@ -368,8 +373,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	if(committedActivityDto.getId() != null) 
         	{
         	
-            committedActivityProfileAggregate.setCommittedActivityId(committedActivityDto.getId());
-        		
+              committedActivityProfileAggregate.setCommittedActivityId(committedActivityDto.getId());
+              
         	  //MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
             
                Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
