@@ -16,6 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Long> {
 	
-	Optional<Media> findByCommittedActivityId(Long committedActivityId);
+	Media findByCommittedActivityId(Long committedActivityId);
 
 }

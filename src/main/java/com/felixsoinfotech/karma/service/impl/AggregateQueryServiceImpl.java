@@ -41,7 +41,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import com.felixsoinfotech.karma.domain.Media;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
@@ -282,7 +282,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
             if(committedActivityDto.getId() != null)
             {
         	       	
-        	MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).orElse(null);
+        	Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
+        	MediaDTO mediaDto = mediaMapper.toDto(media);
         	
             if(mediaDto != null)    
             {           	
@@ -368,7 +369,10 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	
             committedActivityProfileAggregate.setCommittedActivityId(committedActivityDto.getId());
         		
-        	  MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
+        	  //MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
+            
+               Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
+        	   MediaDTO mediaDto = mediaMapper.toDto(media);
         	
                 if(mediaDto != null)    
                 {
