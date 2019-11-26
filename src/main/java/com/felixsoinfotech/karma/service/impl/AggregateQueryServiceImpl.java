@@ -282,7 +282,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
             if(committedActivityDto.getId() != null)
             {
         	       	
-        	MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
+        	MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).orElse(null);
         	
             if(mediaDto != null)    
             {           	
