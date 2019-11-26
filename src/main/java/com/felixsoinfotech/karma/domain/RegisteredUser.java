@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -41,7 +42,8 @@ public class RegisteredUser implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "user_id")
+    @NotNull
+    @Column(name = "user_id",unique = true, nullable = false)
     private String userId;
 
     @Lob
