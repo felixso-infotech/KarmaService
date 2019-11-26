@@ -470,18 +470,18 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         registeredUserAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
         
         
-          if(registeredUserDto.getCoverPhotoContentType().contains("image")) 
+          if(registeredUserDto.getCoverPhotoContentType()!=null && registeredUserDto.getCoverPhoto()!=null && registeredUserDto.getCoverPhotoContentType().contains("image")) 
         	{
       		   String coverPhoto= encoder.encode(registeredUserDto.getCoverPhoto());
 			   registeredUserAggregate.setCoverPhoto(coverPhoto);
         	}
-		  if(registeredUserDto.getProfilePictureContentType().contains("image"))
+		  if(registeredUserDto.getProfilePictureContentType()!=null && registeredUserDto.getProfilePicture()!=null && registeredUserDto.getProfilePictureContentType().contains("image"))
 		   {
 			String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
 			registeredUserAggregate.setProfilePicture(profilePic);				
 		   }
 		  
-		  registeredUserAggregate.setNoOfCompletedTasks(committedActivityRepository.findNumberOfCompletedCommittedActivitiesByRegisteredUserId(registeredUserDto.getUserId(),Status.DONE));
+		  registeredUserAggregate.setNoOfCompletedTasks(committedActivityRepository.findNumberOfCompletedCommittedActivitiesByRegisteredUserId(registeredUserDto.getId(),Status.DONE));
 		  
 		  //System.out.println(committedActivityRepository.findNumberOfCompletedCommittedActivitiesByRegisteredUserId(registeredUserDto.getUserId(),Status.DONE));
                           

@@ -28,8 +28,8 @@ public interface CommittedActivityRepository extends JpaRepository<CommittedActi
 	 * @param id
 	 * @return
 	 */
-	@Query(value = "select count(c) from CommittedActivity c where c.registeredUser.userId=:userId and c.status=:status")
-	Long findNumberOfCompletedCommittedActivitiesByRegisteredUserId(@Param("userId") String userId,@Param("status") Status status);
+	@Query(value = "select count(c) from CommittedActivity c where c.registeredUserId=:registeredUserId and c.status=:status")
+	Long findNumberOfCompletedCommittedActivitiesByRegisteredUserId(@Param("registeredUserId") Long registeredUserId,@Param("status") Status status);
 	
 	Page<CommittedActivity> findAllCommittedActivitiesByStatus(Pageable pageable ,Status status);
 	
