@@ -289,6 +289,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
             {           	
             	if(mediaDto.getFileContentType()!=null && mediaDto.getFile()!=null && mediaDto.getFileContentType().contains("image"))
   		        {
+            		
   			    String image= encoder.encode(mediaDto.getFile());
   			    committedActivityAggregate.setImageString(image);
   			    committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
@@ -379,14 +380,22 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
         	   MediaDTO mediaDto = mediaMapper.toDto(media);
         	   
-        	   System.out.println("********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto+"*************************************");
+        	   System.out.println("\n\n\t********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto+"*************************************\n\n\t");
         	
                 if(mediaDto != null)    
                 {
-            	
-            	        if(mediaDto.getFile()!=null && mediaDto.getFileContentType()!=null && mediaDto.getFileContentType().contains("image"))
+                	//System.out.println("\n\n\t in the if condition ********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto.getFile()+"\t"+mediaDto.getFileContentType()+"*************************************\n\n\t");
+            	        
+                	if(mediaDto.getFile()!=null && mediaDto.getFileContentType()!=null && mediaDto.getFileContentType().contains("image"))
             	        {
-            	        	committedActivityProfileAggregate.setProofImageString(encoder.encode(mediaDto.getFile())); 	
+                		    
+                		//System.out.println("\n\n\t in the file check condition ********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto.getFile()+"\t"+mediaDto.getFileContentType()+"*************************************\n\n\t");
+                		
+                		    String imgString = encoder.encode(mediaDto.getFile());
+                		    
+                		    //System.out.println("\n\n\t encode the file ********************************************\t"+imgString+"*********************");
+                		    
+            	        	committedActivityProfileAggregate.setProofImageString(imgString); 	
             	            committedActivityProfileAggregate.setProofImageContentType(mediaDto.getFileContentType());
             	        }
                  }
