@@ -240,14 +240,15 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	        	
         	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
         	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
-        	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
-        	          	
+        	committedActivityAggregate.setCommittedActivityCreatedDate(committedActivityDto.getCreatedDate());
+        	
+          if(committedActivityDto.getActivityId() != null)
+            {		
         	ActivityDTO activityDTO=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto).get();
         	
         	if(activityDTO != null)
         	{
-        		
-        		committedActivityAggregate.setActivityCreatedDate(activityDTO.getCreatedDate());
+        		committedActivityAggregate.setActivityId(activityDTO.getId());        		
         		committedActivityAggregate.setTitle(activityDTO.getTitle());
         		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
         		committedActivityAggregate.setType(activityDTO.getType());
@@ -258,7 +259,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         		
         	}
         	
-               	
+            }    	
             if(committedActivityDto.getRegisteredUserId() != null)
             {
             
@@ -382,7 +383,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
         	   MediaDTO mediaDto = mediaMapper.toDto(media);
         	   
-        	   System.out.println("\n\n\t********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto+"*************************************\n\n\t");
+        	   //System.out.println("\n\n\t********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto+"*************************************\n\n\t");
         	
                 if(mediaDto != null)    
                 {
@@ -600,6 +601,94 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
            }
          
            return Optional.of(activityViewAggregate);
+    }
+    
+    /**
+     * Get one committedActivity by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<CommittedActivityAggregate> findOneCommittedActivity(Long id) {
+        log.debug("Request to get CommittedActivity : {}", id);
+        
+        CommittedActivityAggregate committedActivityAggregate = new CommittedActivityAggregate();
+        
+        Base64Encoder encoder = new Base64Encoder();
+        
+        CommittedActivityDTO committedActivityDTO = committedActivityRepository.findById(id).map(committedActivityMapper::toDto).get();
+        
+        if(committedActivityDTO != null)
+        {
+        	committedActivityAggregate.setCommittedActivityId(committedActivityDTO.getId());
+        	committedActivityAggregate.setCommittedActivityDescription(committedActivityDTO.getDescription());
+        	committedActivityAggregate.setCommittedActivityCreatedDate(committedActivityDTO.getCreatedDate());
+        	 
+         if(committedActivityDTO.getActivityId() != null)
+         {		 
+                  ActivityDTO activityDTO=activityRepository.findById(committedActivityDTO.getActivityId()).map(activityMapper::toDto).get();
+        	
+        	if(activityDTO != null)
+        	{        		
+        		committedActivityAggregate.setTitle(activityDTO.getTitle());
+        		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
+        		committedActivityAggregate.setType(activityDTO.getType());
+        		committedActivityAggregate.setChallengeId(activityDTO.getChallengeId());
+        		committedActivityAggregate.setDimensions(activityDTO.getDimensions());
+        		committedActivityAggregate.setProofType(activityDTO.getProofType());  
+        		committedActivityAggregate.setSuccessMessage(activityDTO.getSuccessMessage());
+        		
+        	}
+        	
+         }      	
+            if(committedActivityDTO.getRegisteredUserId() != null)
+            {
+            
+             RegisteredUserDTO registeredUserDto=registeredUserRepository.findById(committedActivityDTO.getRegisteredUserId()).map(registeredUserMapper::toDto).get();
+        	       	       	
+        	   if(registeredUserDto != null)
+        	   {
+        		
+        	     if(registeredUserDto.getProfilePictureContentType()!=null && registeredUserDto.getProfilePicture()!=null && registeredUserDto.getProfilePictureContentType().contains("image"))
+     		     {
+     			   String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
+     			   committedActivityAggregate.setProfilePicture(profilePic);
+     			   committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
+     		     }      	  
+        	   
+        	   committedActivityAggregate.setFirstName(registeredUserDto.getFirstName());
+        	   committedActivityAggregate.setLastName(registeredUserDto.getLastName());
+        	   committedActivityAggregate.setUserId(registeredUserDto.getUserId());
+        	   
+        	   }
+            }
+            
+            if(committedActivityDTO.getId() != null)
+            {
+        	       	
+        	Media media=mediaRepository.findByCommittedActivityId(committedActivityDTO.getId());
+        	MediaDTO mediaDto = mediaMapper.toDto(media);
+        	
+            if(mediaDto != null)    
+            {           	
+            	if(mediaDto.getFileContentType()!=null && mediaDto.getFile()!=null && mediaDto.getFileContentType().contains("image"))
+  		        {
+            		
+  			    String image= encoder.encode(mediaDto.getFile());
+  			    committedActivityAggregate.setImageString(image);
+  			    committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
+  					
+  		        }       	        	
+            }
+                       
+            committedActivityAggregate.setNoOfReferences(committedActivityRepository.findNumberOfCommittedActivityByReferenceId(committedActivityDTO.getId()));
+            }        	
+        	
+        }
+         
+        return Optional.of(committedActivityAggregate);
     }
 
     

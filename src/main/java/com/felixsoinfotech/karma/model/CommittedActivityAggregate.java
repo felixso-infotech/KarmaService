@@ -46,7 +46,7 @@ public class CommittedActivityAggregate {
 
     private Type type;
 
-    private ZonedDateTime activityCreatedDate;
+    private ZonedDateTime committedActivityCreatedDate;
 
     private ProofType proofType;
 
@@ -227,15 +227,15 @@ public class CommittedActivityAggregate {
 	/**
 	 * @return the activityCreatedDate
 	 */
-	public ZonedDateTime getActivityCreatedDate() {
-		return activityCreatedDate;
+	public ZonedDateTime getCommittedActivityCreatedDate() {
+		return committedActivityCreatedDate;
 	}
 
 	/**
 	 * @param activityCreatedDate the activityCreatedDate to set
 	 */
-	public void setActivityCreatedDate(ZonedDateTime activityCreatedDate) {
-		this.activityCreatedDate = activityCreatedDate;
+	public void setCommittedActivityCreatedDate(ZonedDateTime committedActivityCreatedDate) {
+		this.committedActivityCreatedDate = committedActivityCreatedDate;
 	}
 
 	/**

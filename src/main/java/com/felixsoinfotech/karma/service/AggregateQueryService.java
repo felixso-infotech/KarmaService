@@ -36,6 +36,7 @@ import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.ChallengeDTO;
+import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
 
@@ -87,9 +88,7 @@ public interface AggregateQueryService {
      * @param status the status of the entity
      * @return the entity
      */
-	Page<CommittedActivityProfileAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);
-	
-   
+	Page<CommittedActivityProfileAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);  
    
     /**
      * Get the "id" registeredUser.
@@ -114,6 +113,14 @@ public interface AggregateQueryService {
      * @return the entity
      */
     Optional<ActivityViewAggregate> findOneActivity(Long id);
+    
+    /**
+     * Get the "id" committedActivity.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    Optional<CommittedActivityAggregate> findOneCommittedActivity(Long id);
 
 	
     /**
