@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
@@ -45,6 +46,8 @@ public class CommittedActivityAggregate {
     private String successMessage;
 
     private Type type;
+    
+    private Status status;
 
     private ZonedDateTime committedActivityCreatedDate;
 
@@ -81,7 +84,17 @@ public class CommittedActivityAggregate {
 	private Long noOfComments;
 		
 	private boolean isLiked;
+	
+	
 		
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	/**
 	 * @return the isLiked
 	 */

@@ -240,6 +240,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	        	
         	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
         	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
+        	committedActivityAggregate.setStatus(committedActivityDto.getStatus());
         	committedActivityAggregate.setCommittedActivityCreatedDate(committedActivityDto.getCreatedDate());
         	
           if(committedActivityDto.getActivityId() != null)
@@ -624,6 +625,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         {
         	committedActivityAggregate.setCommittedActivityId(committedActivityDTO.getId());
         	committedActivityAggregate.setCommittedActivityDescription(committedActivityDTO.getDescription());
+        	committedActivityAggregate.setStatus(committedActivityDTO.getStatus());
         	committedActivityAggregate.setCommittedActivityCreatedDate(committedActivityDTO.getCreatedDate());
         	 
          if(committedActivityDTO.getActivityId() != null)
@@ -631,7 +633,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                   ActivityDTO activityDTO=activityRepository.findById(committedActivityDTO.getActivityId()).map(activityMapper::toDto).get();
         	
         	if(activityDTO != null)
-        	{        		
+        	{   
+        		committedActivityAggregate.setActivityId(activityDTO.getId()); 
         		committedActivityAggregate.setTitle(activityDTO.getTitle());
         		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
         		committedActivityAggregate.setType(activityDTO.getType());
