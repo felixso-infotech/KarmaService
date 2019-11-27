@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
+import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
@@ -45,8 +46,10 @@ public class CommittedActivityAggregate {
     private String successMessage;
 
     private Type type;
+    
+    private Status status;
 
-    private ZonedDateTime activityCreatedDate;
+    private ZonedDateTime committedActivityCreatedDate;
 
     private ProofType proofType;
 
@@ -79,11 +82,19 @@ public class CommittedActivityAggregate {
     private Long noOfLoves;
     
 	private Long noOfComments;
-	
-	private List<String> likedUserPhotos=new ArrayList<String>();  
-	
-	private boolean isLiked;
 		
+	private boolean isLiked;
+	
+	
+		
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	/**
 	 * @return the isLiked
 	 */
@@ -154,19 +165,7 @@ public class CommittedActivityAggregate {
 		this.noOfComments = noOfComments;
 	}
 
-	/**
-	 * @return the likedUserPhotos
-	 */
-	public List<String> getLikedUserPhotos() {
-		return likedUserPhotos;
-	}
-
-	/**
-	 * @param likedUserPhotos the likedUserPhotos to set
-	 */
-	public void setLikedUserPhotos(List<String> likedUserPhotos) {
-		this.likedUserPhotos = likedUserPhotos;
-	}
+	
 
 	/**
 	 * @return the committedActivityId
@@ -241,15 +240,15 @@ public class CommittedActivityAggregate {
 	/**
 	 * @return the activityCreatedDate
 	 */
-	public ZonedDateTime getActivityCreatedDate() {
-		return activityCreatedDate;
+	public ZonedDateTime getCommittedActivityCreatedDate() {
+		return committedActivityCreatedDate;
 	}
 
 	/**
 	 * @param activityCreatedDate the activityCreatedDate to set
 	 */
-	public void setActivityCreatedDate(ZonedDateTime activityCreatedDate) {
-		this.activityCreatedDate = activityCreatedDate;
+	public void setCommittedActivityCreatedDate(ZonedDateTime committedActivityCreatedDate) {
+		this.committedActivityCreatedDate = committedActivityCreatedDate;
 	}
 
 	/**

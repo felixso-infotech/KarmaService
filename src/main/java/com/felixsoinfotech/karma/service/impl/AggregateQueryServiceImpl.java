@@ -41,10 +41,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import com.felixsoinfotech.karma.domain.Media;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.ActivityImageAggregate;
 import com.felixsoinfotech.karma.model.ActivityViewAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
@@ -229,27 +230,26 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
                 
         committedActivityDtoDoneList=committedActivityRepository.findAllCommittedActivitiesByStatus(pageable,Status.valueOf(status)).map(committedActivityMapper::toDto).getContent();
                 
-		/*
-		 * for(CommittedActivityDTO committedActivityDTO : page.getContent()) {
-		 * if(committedActivityDTO.getStatus().equals(Status.valueOf(status)))
-		 * committedActivityDtoDoneList.add(committedActivityDTO); }
-		 */    
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
         {
         	committedActivityAggregate= new CommittedActivityAggregate();
         	
+         if(committedActivityDto != null)
+         {
+        	        	
         	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
         	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
-        	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
-        	          	
-        	Optional<ActivityDTO> activitydto=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto);
-        	ActivityDTO activityDTO=activitydto.get();
+        	committedActivityAggregate.setStatus(committedActivityDto.getStatus());
+        	committedActivityAggregate.setCommittedActivityCreatedDate(committedActivityDto.getCreatedDate());
+        	
+          if(committedActivityDto.getActivityId() != null)
+            {		
+        	ActivityDTO activityDTO=activityRepository.findById(committedActivityDto.getActivityId()).map(activityMapper::toDto).get();
         	
         	if(activityDTO != null)
         	{
-        		
-        		committedActivityAggregate.setActivityCreatedDate(activityDTO.getCreatedDate());
+        		committedActivityAggregate.setActivityId(activityDTO.getId());        		
         		committedActivityAggregate.setTitle(activityDTO.getTitle());
         		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
         		committedActivityAggregate.setType(activityDTO.getType());
@@ -260,43 +260,52 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         		
         	}
         	
-        	Optional<RegisteredUserDTO> registeredUserdto=registeredUserRepository.findById(committedActivityDto.getRegisteredUserId()).map(registeredUserMapper::toDto);
-        	RegisteredUserDTO registeredUserDto =  registeredUserdto.get();
-        	       	
-        	if(registeredUserDto != null)
-        	{
-        	   committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
-        	   
-        	   if(registeredUserDto.getProfilePictureContentType().contains("image"))
- 		       {
- 			    String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
- 			    committedActivityAggregate.setProfilePicture(profilePic);				
- 		       }
+            }    	
+            if(committedActivityDto.getRegisteredUserId() != null)
+            {
+            
+             RegisteredUserDTO registeredUserDto=registeredUserRepository.findById(committedActivityDto.getRegisteredUserId()).map(registeredUserMapper::toDto).get();
+        	       	       	
+        	   if(registeredUserDto != null)
+        	   {
+        		
+        	     if(registeredUserDto.getProfilePictureContentType()!=null && registeredUserDto.getProfilePicture()!=null && registeredUserDto.getProfilePictureContentType().contains("image"))
+     		     {
+     			   String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
+     			   committedActivityAggregate.setProfilePicture(profilePic);
+     			   committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
+     		     }      	  
         	   
         	   committedActivityAggregate.setFirstName(registeredUserDto.getFirstName());
+        	   committedActivityAggregate.setLastName(registeredUserDto.getLastName());
+        	   committedActivityAggregate.setUserId(registeredUserDto.getUserId());
         	   
-        	}
+        	   }
+            }
+            
+            if(committedActivityDto.getId() != null)
+            {
         	       	
-        	Optional<MediaDTO> media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto);
-        	MediaDTO mediaDto=media.get();
+        	Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
+        	MediaDTO mediaDto = mediaMapper.toDto(media);
         	
             if(mediaDto != null)    
-            {
-            	committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
-            	
-            	if(mediaDto.getFileContentType().contains("image"))
+            {           	
+            	if(mediaDto.getFileContentType()!=null && mediaDto.getFile()!=null && mediaDto.getFileContentType().contains("image"))
   		        {
+            		
   			    String image= encoder.encode(mediaDto.getFile());
   			    committedActivityAggregate.setImageString(image);
+  			    committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
   					
   		        }       	        	
             }
-            
-            committedActivityAggregate.setTimeElapsed(calculateTimeDifferenceBetweenCurrentAndPostedTime(committedActivityDto.getCreatedDate()));
+                       
             committedActivityAggregate.setNoOfReferences(committedActivityRepository.findNumberOfCommittedActivityByReferenceId(committedActivityDto.getId()));
+            }
             
         	committedActivityAggregateList.add(committedActivityAggregate);
-        	
+         }
         	
         }
         
@@ -332,7 +341,10 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	committedActivityProfileAggregate= new CommittedActivityProfileAggregate();
         	
         	if(committedActivityDto != null)
-        	{       	
+        	{  
+        		committedActivityProfileAggregate.setStatus(committedActivityDto.getStatus());
+                committedActivityProfileAggregate.setCommittedActivityCreatedDate(committedActivityDto.getCreatedDate());
+          		
         	    if(committedActivityDto.getActivityId() != null)
         	    {
         	    	ActivityDTO activityDto = activityRepository.findOneWithEagerRelationships(committedActivityDto.getActivityId()).map(activityMapper::toDto).get();
@@ -340,22 +352,24 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	    	  if(activityDto != null)
         	    	  {
         	    		  committedActivityProfileAggregate.setActivityId(activityDto.getId());
-        	    		  committedActivityProfileAggregate.setActivityTitle(activityDto.getTitle());
+        	    		  committedActivityProfileAggregate.setActivityTitle(activityDto.getTitle());        	    		  
+        	    		  committedActivityProfileAggregate.setType(activityDto.getType());
+        	    		  
         	    	  }
         	    	  
         	    	  List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,committedActivityDto.getActivityId())
         	    			                                            .map(introductionStoryMapper::toDto).getContent();
-        	    	  for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
-        	    	  {
-        	    		  if(introductionStoryDTO != null)
+        	    	  
+        	    		  if(introductionStoryDTOs.get(0) != null)
         	    		  {
-        	    			  committedActivityProfileAggregate.setActivityImageContentType(introductionStoryDTO.getImageContentType()); 
-        	    			   if(introductionStoryDTO.getImageContentType().contains("image"))
+        	    			 
+        	    			   if(introductionStoryDTOs.get(0).getImage()!=null && introductionStoryDTOs.get(0).getImageContentType()!=null && introductionStoryDTOs.get(0).getImageContentType().contains("image"))
         	    			   {
-        	    				   committedActivityProfileAggregate.setActivityImageString(encoder.encode(introductionStoryDTO.getImage()));  
+        	    				   committedActivityProfileAggregate.setActivityImageString(encoder.encode(introductionStoryDTOs.get(0).getImage()));  
+        	    				   committedActivityProfileAggregate.setActivityImageContentType(introductionStoryDTOs.get(0).getImageContentType()); 
         	    			   }
         	    		  }
-        	    	  }
+        	    	  
         	    	        	    	  
         	    }       	
         	       
@@ -363,16 +377,31 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	if(committedActivityDto.getId() != null) 
         	{
         	
-            committedActivityProfileAggregate.setCommittedActivityId(committedActivityDto.getId());
-        		
-        	  MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
+              committedActivityProfileAggregate.setCommittedActivityId(committedActivityDto.getId());
+              
+        	  //MediaDTO mediaDto=mediaRepository.findByCommittedActivityId(committedActivityDto.getId()).map(mediaMapper::toDto).get();
+            
+               Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
+        	   MediaDTO mediaDto = mediaMapper.toDto(media);
+        	   
+        	   //System.out.println("\n\n\t********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto+"*************************************\n\n\t");
         	
                 if(mediaDto != null)    
                 {
-                	committedActivityProfileAggregate.setProofImageContentType(mediaDto.getFileContentType());
-            	
-            	        if(mediaDto.getFileContentType().contains("image"))
-            	        	committedActivityProfileAggregate.setProofImageString(encoder.encode(mediaDto.getFile())); 		              	        	
+                	//System.out.println("\n\n\t in the if condition ********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto.getFile()+"\t"+mediaDto.getFileContentType()+"*************************************\n\n\t");
+            	        
+                	if(mediaDto.getFile()!=null && mediaDto.getFileContentType()!=null && mediaDto.getFileContentType().contains("image"))
+            	        {
+                		    
+                		//System.out.println("\n\n\t in the file check condition ********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto.getFile()+"\t"+mediaDto.getFileContentType()+"*************************************\n\n\t");
+                		
+                		    String imgString = encoder.encode(mediaDto.getFile());
+                		    
+                		    //System.out.println("\n\n\t encode the file ********************************************\t"+imgString+"*********************");
+                		    
+            	        	committedActivityProfileAggregate.setProofImageString(imgString); 	
+            	            committedActivityProfileAggregate.setProofImageContentType(mediaDto.getFileContentType());
+            	        }
                  }
         	}    
             
@@ -389,57 +418,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 	}
     
   
- 	/**
- 	 * Find time difference between current date and posted date.
- 	 *
- 	 * @param postedDateTime
- 	 *            to find the time
- 	 * 
- 	 * @return the time
- 	 */
-
- 	@Override
- 	public String calculateTimeDifferenceBetweenCurrentAndPostedTime(ZonedDateTime postedDateTime) {
  		
- 		long offsetMillis = ZoneOffset.from(postedDateTime).getTotalSeconds() * 1000;
- 		long isoMillis = postedDateTime.toInstant().toEpochMilli();
- 		Date date = new Date(isoMillis + offsetMillis);
- 				
- 		Instant instant = Instant.now();
- 		long hours = 5;
- 		long minutes = 30;
- 		Instant instant1 = instant.plus(hours, ChronoUnit.HOURS).plus(minutes, ChronoUnit.MINUTES);
-
- 		Date current = Date.from(instant1);
- 		long diffInSecond = 0l;
- 		String diffInString = null;
- 		if (date != null) {
- 			diffInSecond = (current.getTime() - date.getTime()) / 1000l;
- 		}
- 		long postedBefore = 0l;
- 		if (diffInSecond < 60l) {
- 			diffInString = "just now";
- 		} else if (diffInSecond < 3600l) {
- 			postedBefore = diffInSecond / 60l;
- 			diffInString = postedBefore + " minutes ago";
- 		} else if (diffInSecond < 86400l) {
- 			postedBefore = diffInSecond / 3600l;
- 			diffInString = postedBefore + " hours ago";
- 		} else if (diffInSecond < 2592000l) {
- 			postedBefore = diffInSecond / 86400l;
- 			diffInString = postedBefore + " days ago";
- 		} else if (diffInSecond < 31104000l) {
- 			postedBefore = diffInSecond / 2592000l;
- 			diffInString = postedBefore + " months ago";
- 		} else {
- 			postedBefore = diffInSecond / 31104000l;
- 			diffInString = postedBefore + " years ago";
- 		}
-
- 		return diffInString;
- 	}
-    
-	
     /**
      * Get one registeredUser by id.
      *
@@ -523,6 +502,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         			   ChallengeDTO challengeDTO = challengeRepository.findById(activityDto.getChallengeId()).map(challengeMapper::toDto).get();
         			      if(challengeDTO != null)
         			      {
+        			    	  activityViewAggregate.setChallengeId(activityDto.getChallengeId());
         			    	  activityViewAggregate.setChallengeName(challengeDTO.getName());
         			      }
         		   }   
@@ -531,16 +511,17 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         		   {
         			  List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,activityDto.getId()).map(introductionStoryMapper::toDto).getContent();
         		   
-                      for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
-                      {
-                         if(introductionStoryDTO != null)
+                     
+                         if(introductionStoryDTOs.get(0) != null)
                           {
-                        	 activityViewAggregate.setImageStringContentType(introductionStoryDTO.getImageContentType()); 
-                                if(introductionStoryDTO.getImageContentType().contains("image"))
-                                	activityViewAggregate.setImageString(encoder.encode(introductionStoryDTO.getImage()));  
-
+                        	  
+                                if(introductionStoryDTOs.get(0).getImage()!=null && introductionStoryDTOs.get(0).getImageContentType()!=null && introductionStoryDTOs.get(0).getImageContentType().contains("image"))
+                                {
+                                	activityViewAggregate.setImageString(encoder.encode(introductionStoryDTOs.get(0).getImage()));  
+                                    activityViewAggregate.setImageStringContentType(introductionStoryDTOs.get(0).getImageContentType());
+                                }
                           }
-                      }
+                      
         		   } 
         		   
         		   activityViewAggregateList.add(activityViewAggregate);
@@ -551,6 +532,168 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 
 		return pagee;
     }
+    
+    /**
+     * Get one activity by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ActivityViewAggregate> findOneActivity(Long id) {
+        log.debug("Request to get Activity : {}", id);
+        
+        Pageable pageable =null;
+        
+        Base64Encoder encoder = new Base64Encoder();
+        
+        ActivityViewAggregate activityViewAggregate = new ActivityViewAggregate();
+        
+        List<ActivityImageAggregate> introductionStories =new ArrayList<ActivityImageAggregate>();	
+        
+        ActivityImageAggregate activityImageAggregate;
+        
+        ActivityDTO activityDTO = activityRepository.findOneWithEagerRelationships(id).map(activityMapper::toDto).get();
+           if(activityDTO != null)
+           {
+        	   activityViewAggregate.setActivityId(activityDTO.getId());
+        	   activityViewAggregate.setTitle(activityDTO.getTitle());
+        	   activityViewAggregate.setType(activityDTO.getType());
+        	   activityViewAggregate.setCreatedDate(activityDTO.getCreatedDate());
+        	   
+        	   if(activityDTO.getChallengeId() != null)
+        	   {
+        	     ChallengeDTO challengeDTO = challengeRepository.findById(activityDTO.getChallengeId()).map(challengeMapper::toDto).get();  
+        	     if(challengeDTO != null)
+        	     {
+        	        activityViewAggregate.setChallengeId(challengeDTO.getId());
+        	        activityViewAggregate.setChallengeName(challengeDTO.getName());
+        	     }
+        	   }
+        	   
+        	   if(activityDTO.getId() != null)
+        	   {
+        		  
+        		   List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,activityDTO.getId()).map(introductionStoryMapper::toDto).getContent();
+        		   for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
+        		   {
+        			   activityImageAggregate = new ActivityImageAggregate();
+        			   
+        			   activityImageAggregate.setId(introductionStoryDTO.getId());
+        			   activityImageAggregate.setStory(introductionStoryDTO.getStory());
+        			                 
+        			       if(introductionStoryDTO.getImageContentType()!=null && introductionStoryDTO.getImage()!=null && introductionStoryDTO.getImageContentType().contains("image"))
+         		            {
+                  			    String image= encoder.encode(introductionStoryDTO.getImage());
+                  			 
+                  			    activityImageAggregate.setImageString(image);
+ 			                    activityImageAggregate.setImageStringContentType(introductionStoryDTO.getImageContentType());         					
+         		            }    
+        			          			   
+        			   
+        			   introductionStories.add(activityImageAggregate);
+        		   }
+        		   
+        		   
+        		   activityViewAggregate.setIntroductionStories(introductionStories); 
+        		   
+        	   }
+           }
+         
+           return Optional.of(activityViewAggregate);
+    }
+    
+    /**
+     * Get one committedActivity by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<CommittedActivityAggregate> findOneCommittedActivity(Long id) {
+        log.debug("Request to get CommittedActivity : {}", id);
+        
+        CommittedActivityAggregate committedActivityAggregate = new CommittedActivityAggregate();
+        
+        Base64Encoder encoder = new Base64Encoder();
+        
+        CommittedActivityDTO committedActivityDTO = committedActivityRepository.findById(id).map(committedActivityMapper::toDto).get();
+        
+        if(committedActivityDTO != null)
+        {
+        	committedActivityAggregate.setCommittedActivityId(committedActivityDTO.getId());
+        	committedActivityAggregate.setCommittedActivityDescription(committedActivityDTO.getDescription());
+        	committedActivityAggregate.setStatus(committedActivityDTO.getStatus());
+        	committedActivityAggregate.setCommittedActivityCreatedDate(committedActivityDTO.getCreatedDate());
+        	 
+         if(committedActivityDTO.getActivityId() != null)
+         {		 
+                  ActivityDTO activityDTO=activityRepository.findById(committedActivityDTO.getActivityId()).map(activityMapper::toDto).get();
+        	
+        	if(activityDTO != null)
+        	{   
+        		committedActivityAggregate.setActivityId(activityDTO.getId()); 
+        		committedActivityAggregate.setTitle(activityDTO.getTitle());
+        		committedActivityAggregate.setActivityDescription(activityDTO.getDescription());
+        		committedActivityAggregate.setType(activityDTO.getType());
+        		committedActivityAggregate.setChallengeId(activityDTO.getChallengeId());
+        		committedActivityAggregate.setDimensions(activityDTO.getDimensions());
+        		committedActivityAggregate.setProofType(activityDTO.getProofType());  
+        		committedActivityAggregate.setSuccessMessage(activityDTO.getSuccessMessage());
+        		
+        	}
+        	
+         }      	
+            if(committedActivityDTO.getRegisteredUserId() != null)
+            {
+            
+             RegisteredUserDTO registeredUserDto=registeredUserRepository.findById(committedActivityDTO.getRegisteredUserId()).map(registeredUserMapper::toDto).get();
+        	       	       	
+        	   if(registeredUserDto != null)
+        	   {
+        		
+        	     if(registeredUserDto.getProfilePictureContentType()!=null && registeredUserDto.getProfilePicture()!=null && registeredUserDto.getProfilePictureContentType().contains("image"))
+     		     {
+     			   String profilePic= encoder.encode(registeredUserDto.getProfilePicture());
+     			   committedActivityAggregate.setProfilePicture(profilePic);
+     			   committedActivityAggregate.setProfilePictureContentType(registeredUserDto.getProfilePictureContentType());
+     		     }      	  
+        	   
+        	   committedActivityAggregate.setFirstName(registeredUserDto.getFirstName());
+        	   committedActivityAggregate.setLastName(registeredUserDto.getLastName());
+        	   committedActivityAggregate.setUserId(registeredUserDto.getUserId());
+        	   
+        	   }
+            }
+            
+            if(committedActivityDTO.getId() != null)
+            {
+        	       	
+        	Media media=mediaRepository.findByCommittedActivityId(committedActivityDTO.getId());
+        	MediaDTO mediaDto = mediaMapper.toDto(media);
+        	
+            if(mediaDto != null)    
+            {           	
+            	if(mediaDto.getFileContentType()!=null && mediaDto.getFile()!=null && mediaDto.getFileContentType().contains("image"))
+  		        {
+            		
+  			    String image= encoder.encode(mediaDto.getFile());
+  			    committedActivityAggregate.setImageString(image);
+  			    committedActivityAggregate.setImageStringContentType(mediaDto.getFileContentType());
+  					
+  		        }       	        	
+            }
+                       
+            committedActivityAggregate.setNoOfReferences(committedActivityRepository.findNumberOfCommittedActivityByReferenceId(committedActivityDTO.getId()));
+            }        	
+        	
+        }
+         
+        return Optional.of(committedActivityAggregate);
+    }
+
     
     /**
      * Get all the challenges.

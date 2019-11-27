@@ -40,7 +40,7 @@ public class CommittedActivityProfileAggregate {
 	    
 	 private String proofImageContentType;
 
-	 private ZonedDateTime activityCreatedDate;
+	 private ZonedDateTime committedActivityCreatedDate;
 	 
 	 private String timeElapsed;
 	 
@@ -50,6 +50,15 @@ public class CommittedActivityProfileAggregate {
 	 
 	 private Long noOfLoves;
 	 		 	
+	 
+	 
+	public ZonedDateTime getCommittedActivityCreatedDate() {
+		return committedActivityCreatedDate;
+	}
+
+	public void setCommittedActivityCreatedDate(ZonedDateTime committedActivityCreatedDate) {
+		this.committedActivityCreatedDate = committedActivityCreatedDate;
+	}
 
 	/**
 	 * @return the committedActivityId
@@ -177,19 +186,7 @@ public class CommittedActivityProfileAggregate {
 		this.proofImageContentType = proofImageContentType;
 	}
 
-	/**
-	 * @return the activityCreatedDate
-	 */
-	public ZonedDateTime getActivityCreatedDate() {
-		return activityCreatedDate;
-	}
-
-	/**
-	 * @param activityCreatedDate the activityCreatedDate to set
-	 */
-	public void setActivityCreatedDate(ZonedDateTime activityCreatedDate) {
-		this.activityCreatedDate = activityCreatedDate;
-	}
+	
 
 	/**
 	 * @return the timeElapsed

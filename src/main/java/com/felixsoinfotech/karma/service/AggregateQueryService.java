@@ -36,6 +36,7 @@ import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
 import com.felixsoinfotech.karma.model.RegisteredUserAggregate;
 import com.felixsoinfotech.karma.service.dto.ActivityDTO;
 import com.felixsoinfotech.karma.service.dto.ChallengeDTO;
+import com.felixsoinfotech.karma.service.dto.CommittedActivityDTO;
 import com.felixsoinfotech.karma.service.dto.DimensionDTO;
 
 
@@ -87,20 +88,8 @@ public interface AggregateQueryService {
      * @param status the status of the entity
      * @return the entity
      */
-	Page<CommittedActivityProfileAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);
-	
+	Page<CommittedActivityProfileAggregate> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,String status,Long registeredUserId);  
    
-    /**
- 	 * Find time difference between current date and posted date.
- 	 *
- 	 * @param postedDate
- 	 *            to find the time
- 	 * 
- 	 * @return the time
- 	 */
-    
-    public String calculateTimeDifferenceBetweenCurrentAndPostedTime(ZonedDateTime postedDateTime);
-
     /**
      * Get the "id" registeredUser.
      *
@@ -116,6 +105,22 @@ public interface AggregateQueryService {
      * @return the list of entities
      */
     Page<ActivityViewAggregate> findAllActivities(Pageable pageable);
+    
+    /**
+     * Get the "id" activity.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    Optional<ActivityViewAggregate> findOneActivity(Long id);
+    
+    /**
+     * Get the "id" committedActivity.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    Optional<CommittedActivityAggregate> findOneCommittedActivity(Long id);
 
 	
     /**
