@@ -45,6 +45,7 @@ import com.felixsoinfotech.karma.domain.Media;
 import com.felixsoinfotech.karma.domain.enumeration.ProofType;
 import com.felixsoinfotech.karma.domain.enumeration.Status;
 import com.felixsoinfotech.karma.domain.enumeration.Type;
+import com.felixsoinfotech.karma.model.ActivityImageAggregate;
 import com.felixsoinfotech.karma.model.ActivityViewAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityAggregate;
 import com.felixsoinfotech.karma.model.CommittedActivityProfileAggregate;
@@ -529,6 +530,78 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
 
 		return pagee;
     }
+    
+    /**
+     * Get one activity by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ActivityViewAggregate> findOneActivity(Long id) {
+        log.debug("Request to get Activity : {}", id);
+        
+        Pageable pageable =null;
+        
+        Base64Encoder encoder = new Base64Encoder();
+        
+        ActivityViewAggregate activityViewAggregate = new ActivityViewAggregate();
+        
+        List<ActivityImageAggregate> introductionStories =new ArrayList<ActivityImageAggregate>();	
+        
+        ActivityImageAggregate activityImageAggregate;
+        
+        ActivityDTO activityDTO = activityRepository.findOneWithEagerRelationships(id).map(activityMapper::toDto).get();
+           if(activityDTO != null)
+           {
+        	   activityViewAggregate.setActivityId(activityDTO.getId());
+        	   activityViewAggregate.setTitle(activityDTO.getTitle());
+        	   activityViewAggregate.setType(activityDTO.getType());
+        	   activityViewAggregate.setCreatedDate(activityDTO.getCreatedDate());
+        	   
+        	   if(activityDTO.getChallengeId() != null)
+        	   {
+        	     ChallengeDTO challengeDTO = challengeRepository.findById(activityDTO.getChallengeId()).map(challengeMapper::toDto).get();  
+        	     if(challengeDTO != null)
+        	     {
+        	        activityViewAggregate.setChallengeId(challengeDTO.getId());
+        	        activityViewAggregate.setChallengeName(challengeDTO.getName());
+        	     }
+        	   }
+        	   
+        	   if(activityDTO.getId() != null)
+        	   {
+        		  
+        		   List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,activityDTO.getId()).map(introductionStoryMapper::toDto).getContent();
+        		   for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
+        		   {
+        			   activityImageAggregate = new ActivityImageAggregate();
+        			   
+        			   activityImageAggregate.setId(introductionStoryDTO.getId());
+        			   activityImageAggregate.setStory(introductionStoryDTO.getStory());
+        			                 
+        			       if(introductionStoryDTO.getImageContentType()!=null && introductionStoryDTO.getImage()!=null && introductionStoryDTO.getImageContentType().contains("image"))
+         		            {
+                  			    String image= encoder.encode(introductionStoryDTO.getImage());
+                  			 
+                  			    activityImageAggregate.setImageString(image);
+ 			                    activityImageAggregate.setImageStringContentType(introductionStoryDTO.getImageContentType());         					
+         		            }    
+        			          			   
+        			   
+        			   introductionStories.add(activityImageAggregate);
+        		   }
+        		   
+        		   
+        		   activityViewAggregate.setIntroductionStories(introductionStories); 
+        		   
+        	   }
+           }
+         
+           return Optional.of(activityViewAggregate);
+    }
+
     
     /**
      * Get all the challenges.

@@ -17,6 +17,8 @@
 package com.felixsoinfotech.karma.model;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.felixsoinfotech.karma.domain.enumeration.Type;
 
@@ -40,7 +42,40 @@ public class ActivityViewAggregate {
     private String imageString;
     
     private String imageStringContentType;
-    
+	
+	List<ActivityImageAggregate> introductionStories =new ArrayList<ActivityImageAggregate>();	
+	
+	
+	
+	public String getImageString() {
+		return imageString;
+	}
+
+	public void setImageString(String imageString) {
+		this.imageString = imageString;
+	}
+
+	public String getImageStringContentType() {
+		return imageStringContentType;
+	}
+
+	public void setImageStringContentType(String imageStringContentType) {
+		this.imageStringContentType = imageStringContentType;
+	}
+
+	/**
+	 * @return the introductionStories
+	 */
+	public List<ActivityImageAggregate> getIntroductionStories() {
+		return introductionStories;
+	}
+
+	/**
+	 * @param introductionStories the introductionStories to set
+	 */
+	public void setIntroductionStories(List<ActivityImageAggregate> introductionStories) {
+		this.introductionStories = introductionStories;
+	}
 
 	/**
 	 * @return the challengeName
@@ -126,34 +161,7 @@ public class ActivityViewAggregate {
 		this.createdDate = createdDate;
 	}
 
-	/**
-	 * @return the imageString
-	 */
-	public String getImageString() {
-		return imageString;
-	}
-
-	/**
-	 * @param imageString the imageString to set
-	 */
-	public void setImageString(String imageString) {
-		this.imageString = imageString;
-	}
-
-	/**
-	 * @return the imageStringContentType
-	 */
-	public String getImageStringContentType() {
-		return imageStringContentType;
-	}
-
-	/**
-	 * @param imageStringContentType the imageStringContentType to set
-	 */
-	public void setImageStringContentType(String imageStringContentType) {
-		this.imageStringContentType = imageStringContentType;
-	}
-    
+	
     
     
 	

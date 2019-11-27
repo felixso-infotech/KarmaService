@@ -106,6 +106,14 @@ public interface AggregateQueryService {
      * @return the list of entities
      */
     Page<ActivityViewAggregate> findAllActivities(Pageable pageable);
+    
+    /**
+     * Get the "id" activity.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    Optional<ActivityViewAggregate> findOneActivity(Long id);
 
 	
     /**

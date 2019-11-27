@@ -208,6 +208,24 @@ public class AggregateQueryResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page,"/api/activities");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+    
+    
+    /**
+     * GET  /activities/:id : get the "id" activity.
+     *
+     * @param id the id of the activityDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the activityDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/activities/{id}")
+    @Timed
+    public ResponseEntity<ActivityViewAggregate> getActivityById(@PathVariable Long id) {
+        log.debug("REST request to get Activity : {}", id);
+        
+        Optional<ActivityViewAggregate> activityViewAggregate = aggregateQueryService.findOneActivity(id);
+        
+        return ResponseUtil.wrapOrNotFound(activityViewAggregate);
+    }
+
 
     /**
      * GET  /challenges : get all the challenges.
