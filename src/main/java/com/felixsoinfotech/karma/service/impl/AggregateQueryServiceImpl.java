@@ -354,18 +354,17 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	    	  
         	    	  List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,committedActivityDto.getActivityId())
         	    			                                            .map(introductionStoryMapper::toDto).getContent();
-        	    	  for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
-        	    	  {
-        	    		  if(introductionStoryDTO != null)
+        	    	  
+        	    		  if(introductionStoryDTOs.get(0) != null)
         	    		  {
         	    			 
-        	    			   if(introductionStoryDTO.getImage()!=null && introductionStoryDTO.getImageContentType()!=null && introductionStoryDTO.getImageContentType().contains("image"))
+        	    			   if(introductionStoryDTOs.get(0).getImage()!=null && introductionStoryDTOs.get(0).getImageContentType()!=null && introductionStoryDTOs.get(0).getImageContentType().contains("image"))
         	    			   {
-        	    				   committedActivityProfileAggregate.setActivityImageString(encoder.encode(introductionStoryDTO.getImage()));  
-        	    				   committedActivityProfileAggregate.setActivityImageContentType(introductionStoryDTO.getImageContentType()); 
+        	    				   committedActivityProfileAggregate.setActivityImageString(encoder.encode(introductionStoryDTOs.get(0).getImage()));  
+        	    				   committedActivityProfileAggregate.setActivityImageContentType(introductionStoryDTOs.get(0).getImageContentType()); 
         	    			   }
         	    		  }
-        	    	  }
+        	    	  
         	    	        	    	  
         	    }       	
         	       
@@ -379,6 +378,8 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
             
                Media media=mediaRepository.findByCommittedActivityId(committedActivityDto.getId());
         	   MediaDTO mediaDto = mediaMapper.toDto(media);
+        	   
+        	   System.out.println("********************************************\t"+committedActivityDto.getId()+"\t->"+mediaDto+"*************************************");
         	
                 if(mediaDto != null)    
                 {
