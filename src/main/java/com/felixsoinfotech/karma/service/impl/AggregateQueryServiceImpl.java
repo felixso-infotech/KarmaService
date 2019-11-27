@@ -232,10 +232,11 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
         {
-         if(committedActivityDto != null)
-         {
         	committedActivityAggregate= new CommittedActivityAggregate();
         	
+         if(committedActivityDto != null)
+         {
+        	        	
         	committedActivityAggregate.setCommittedActivityId(committedActivityDto.getId());
         	committedActivityAggregate.setCommittedActivityDescription(committedActivityDto.getDescription());
         	committedActivityAggregate.setActivityId(committedActivityDto.getActivityId()); 
