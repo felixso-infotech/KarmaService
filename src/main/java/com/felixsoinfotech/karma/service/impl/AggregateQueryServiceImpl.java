@@ -497,18 +497,17 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         		   {
         			  List<IntroductionStoryDTO> introductionStoryDTOs = introductionStoryRepository.findAllIntroductionStoriesByActivityId(pageable,activityDto.getId()).map(introductionStoryMapper::toDto).getContent();
         		   
-                      for(IntroductionStoryDTO introductionStoryDTO : introductionStoryDTOs)
-                      {
-                         if(introductionStoryDTO != null)
+                     
+                         if(introductionStoryDTOs.get(0) != null)
                           {
                         	  
-                                if(introductionStoryDTO.getImage()!=null && introductionStoryDTO.getImageContentType()!=null && introductionStoryDTO.getImageContentType().contains("image"))
+                                if(introductionStoryDTOs.get(0).getImage()!=null && introductionStoryDTOs.get(0).getImageContentType()!=null && introductionStoryDTOs.get(0).getImageContentType().contains("image"))
                                 {
-                                	activityViewAggregate.setImageString(encoder.encode(introductionStoryDTO.getImage()));  
-                                    activityViewAggregate.setImageStringContentType(introductionStoryDTO.getImageContentType());
+                                	activityViewAggregate.setImageString(encoder.encode(introductionStoryDTOs.get(0).getImage()));  
+                                    activityViewAggregate.setImageStringContentType(introductionStoryDTOs.get(0).getImageContentType());
                                 }
                           }
-                      }
+                      
         		   } 
         		   
         		   activityViewAggregateList.add(activityViewAggregate);
