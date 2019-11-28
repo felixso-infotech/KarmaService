@@ -42,11 +42,22 @@ public class ActivityViewAggregate {
     private String imageString;
     
     private String imageStringContentType;
+    
+    private String successMessage;
 	
 	List<ActivityImageAggregate> introductionStories =new ArrayList<ActivityImageAggregate>();	
 	
 	
 	
+	
+	public String getSuccessMessage() {
+		return successMessage;
+	}
+
+	public void setSuccessMessage(String successMessage) {
+		this.successMessage = successMessage;
+	}
+
 	public String getImageString() {
 		return imageString;
 	}

@@ -561,6 +561,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         	   activityViewAggregate.setTitle(activityDTO.getTitle());
         	   activityViewAggregate.setType(activityDTO.getType());
         	   activityViewAggregate.setCreatedDate(activityDTO.getCreatedDate());
+        	   activityViewAggregate.setSuccessMessage(activityDTO.getSuccessMessage());
         	   
         	   if(activityDTO.getChallengeId() != null)
         	   {
