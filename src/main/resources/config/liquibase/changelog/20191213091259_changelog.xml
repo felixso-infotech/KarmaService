@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="Owner (generated)" id="1571998230856-1">
+    <changeSet author="user (generated)" id="1576228386000-1">
         <createTable tableName="activity">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="activityPK"/>
@@ -16,7 +16,7 @@
             <column name="challenge_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-2">
+    <changeSet author="user (generated)" id="1576228386000-2">
         <createTable tableName="activity_dimension">
             <column name="activities_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -26,7 +26,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-3">
+    <changeSet author="user (generated)" id="1576228386000-3">
         <createTable tableName="challenge">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="challengePK"/>
@@ -36,7 +36,7 @@
             <column name="success_message" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-4">
+    <changeSet author="user (generated)" id="1576228386000-4">
         <createTable tableName="committed_activity">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="committed_activityPK"/>
@@ -49,7 +49,7 @@
             <column name="registered_user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-5">
+    <changeSet author="user (generated)" id="1576228386000-5">
         <createTable tableName="completed_challenge">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="completed_challengePK"/>
@@ -60,7 +60,7 @@
             <column name="registered_user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-6">
+    <changeSet author="user (generated)" id="1576228386000-6">
         <createTable tableName="dimension">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="dimensionPK"/>
@@ -68,7 +68,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-7">
+    <changeSet author="user (generated)" id="1576228386000-7">
         <createTable tableName="introduction_story">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="introduction_storyPK"/>
@@ -79,7 +79,71 @@
             <column name="activity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-8">
+    <changeSet author="user (generated)" id="1576228386000-8">
+        <createTable tableName="jhi_authority">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-9">
+        <createTable tableName="jhi_persistent_audit_event">
+            <column autoIncrement="true" name="event_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="jhi_persistent_audit_eventPK"/>
+            </column>
+            <column name="event_date" type="TINYBLOB"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="principal" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-10">
+        <createTable tableName="jhi_persistent_audit_evt_data">
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-11">
+        <createTable tableName="jhi_user">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TINYBLOB"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TINYBLOB"/>
+            <column name="activated" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(254)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="image_url" type="VARCHAR(256)"/>
+            <column name="lang_key" type="VARCHAR(6)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-12">
+        <createTable tableName="jhi_user_authority">
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-13">
         <createTable tableName="media">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="mediaPK"/>
@@ -91,7 +155,7 @@
             <column name="completed_challenge_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-9">
+    <changeSet author="user (generated)" id="1576228386000-14">
         <createTable tableName="registered_user">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="registered_userPK"/>
@@ -105,43 +169,75 @@
             <column name="phone_number" type="VARCHAR(255)"/>
             <column name="profile_picture" type="LONGBLOB"/>
             <column name="profile_picture_content_type" type="VARCHAR(255)"/>
-            <column name="user_id" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-10">
+    <changeSet author="user (generated)" id="1576228386000-15">
         <addPrimaryKey columnNames="activities_id, dimensions_id" tableName="activity_dimension"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-11">
+    <changeSet author="user (generated)" id="1576228386000-16">
+        <addPrimaryKey columnNames="event_id, name" tableName="jhi_persistent_audit_evt_data"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-17">
+        <addPrimaryKey columnNames="user_id, authority_name" tableName="jhi_user_authority"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-18">
+        <addPrimaryKey columnNames="name" constraintName="jhi_authorityPK" tableName="jhi_authority"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-19">
+        <addPrimaryKey columnNames="id" constraintName="jhi_userPK" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-20">
+        <addUniqueConstraint columnNames="email" constraintName="UC_JHI_USEREMAIL_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-21">
+        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-22">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_REGISTERED_USERUSER_ID_COL" tableName="registered_user"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-23">
         <addForeignKeyConstraint baseColumnNames="dimensions_id" baseTableName="activity_dimension" constraintName="FK16u4r5kh4mj3313wuiwsp8nhg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="dimension"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-12">
+    <changeSet author="user (generated)" id="1576228386000-24">
         <addForeignKeyConstraint baseColumnNames="registered_user_id" baseTableName="committed_activity" constraintName="FK1sqdqlgm5ig8qca87ar75ppw7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="registered_user"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-13">
+    <changeSet author="user (generated)" id="1576228386000-25">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="jhi_user_authority" constraintName="FK290okww5jujghp4el5i7mgwu0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-26">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="jhi_persistent_audit_evt_data" constraintName="FK2ehnyx2si4tjd2nt4q7y40v8m" deferrable="false" initiallyDeferred="false" referencedColumnNames="event_id" referencedTableName="jhi_persistent_audit_event"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-27">
         <addForeignKeyConstraint baseColumnNames="reference_id" baseTableName="committed_activity" constraintName="FK3iyj6s4219vf05khaqgwvrogw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="committed_activity"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-14">
+    <changeSet author="user (generated)" id="1576228386000-28">
         <addForeignKeyConstraint baseColumnNames="committed_activity_id" baseTableName="media" constraintName="FK3k8yllsylfhr6tqgxusj2o2w7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="committed_activity"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-15">
+    <changeSet author="user (generated)" id="1576228386000-29">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="jhi_user_authority" constraintName="FK4psxl0jtx6nr7rhqbynr6itoc" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="jhi_authority"/>
+    </changeSet>
+    <changeSet author="user (generated)" id="1576228386000-30">
         <addForeignKeyConstraint baseColumnNames="challenge_id" baseTableName="activity" constraintName="FK7fb1ammt5cp45y2ifkxmlgtkm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="challenge"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-16">
+    <changeSet author="user (generated)" id="1576228386000-31">
         <addForeignKeyConstraint baseColumnNames="activity_id" baseTableName="introduction_story" constraintName="FK7wcvtunhte4chhrrox5y57vid" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="activity"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-17">
+    <changeSet author="user (generated)" id="1576228386000-32">
         <addForeignKeyConstraint baseColumnNames="challenge_id" baseTableName="completed_challenge" constraintName="FKf0im6cpdsoqujw60nfesq80w2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="challenge"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-18">
+    <changeSet author="user (generated)" id="1576228386000-33">
         <addForeignKeyConstraint baseColumnNames="activities_id" baseTableName="activity_dimension" constraintName="FKohfp2bhf4ynhkt84da27pxc4g" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="activity"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-19">
+    <changeSet author="user (generated)" id="1576228386000-34">
         <addForeignKeyConstraint baseColumnNames="registered_user_id" baseTableName="completed_challenge" constraintName="FKp4mjt2ua8gnlx7mfsjcw2xs4l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="registered_user"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-20">
+    <changeSet author="user (generated)" id="1576228386000-35">
         <addForeignKeyConstraint baseColumnNames="completed_challenge_id" baseTableName="media" constraintName="FKpvxodfj22n4imx9kl1a2md1ll" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="completed_challenge"/>
     </changeSet>
-    <changeSet author="Owner (generated)" id="1571998230856-21">
+    <changeSet author="user (generated)" id="1576228386000-36">
         <addForeignKeyConstraint baseColumnNames="activity_id" baseTableName="committed_activity" constraintName="FKs5udyo1qk23ycn37r3xd61om1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="activity"/>
     </changeSet>
 </databaseChangeLog>
