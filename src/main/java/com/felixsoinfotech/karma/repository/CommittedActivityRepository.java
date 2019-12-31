@@ -33,7 +33,7 @@ public interface CommittedActivityRepository extends JpaRepository<CommittedActi
 	
 	Page<CommittedActivity> findAllCommittedActivitiesByStatusOrderByCreatedDateDesc(Pageable pageable ,Status status);
 	
-	Page<CommittedActivity> findAllCommittedActivitiesByStatusAndRegisteredUserId(Pageable pageable,Status status,Long registeredUserId);
+	Page<CommittedActivity> findAllCommittedActivitiesByStatusAndRegisteredUserIdOrderByCreatedDateDesc(Pageable pageable,Status status,Long registeredUserId);
 	
 	
 
