@@ -228,7 +228,7 @@ public class AggregateQueryServiceImpl implements AggregateQueryService {
         
         Base64Encoder encoder = new Base64Encoder();
                 
-        committedActivityDtoDoneList=committedActivityRepository.findAllCommittedActivitiesByStatus(pageable,Status.valueOf(status)).map(committedActivityMapper::toDto).getContent();
+        committedActivityDtoDoneList=committedActivityRepository.findAllCommittedActivitiesByStatusOrderByCreatedDateDesc(pageable,Status.valueOf(status)).map(committedActivityMapper::toDto).getContent();
                 
         
         for(CommittedActivityDTO committedActivityDto : committedActivityDtoDoneList)
