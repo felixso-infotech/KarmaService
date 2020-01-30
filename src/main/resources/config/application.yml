@@ -103,7 +103,7 @@ security:
             client-id: karma-app
             client-secret: 6b43e437-94a7-44f6-8d59-b498d00a0bc2
         resource:
-            user-info-uri: http://35.184.66.233:8099/auth/realms/karma/protocol/openid-connect/userinfo
+            user-info-uri: http://35.211.83.193:8099/auth/realms/karma/protocol/openid-connect/userinfo
 
 server:
     servlet:
